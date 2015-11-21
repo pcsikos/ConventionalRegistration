@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED8574B0-CA3A-45D9-83DA-1F269B00551D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Flubar</RootNamespace>
+    <AssemblyName>Flubar</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblySelector.cs" />
+    <Compile Include="BehaviorConfiguration.cs" />
+    <Compile Include="ConventionDefinition.cs" />
+    <Compile Include="IBehaviorConfiguration.cs" />
+    <Compile Include="Infrastructure\Check.cs" />
+    <Compile Include="ContainerDecorator.cs" />
+    <Compile Include="ConventioException.cs" />
+    <Compile Include="ConventionBuilder.cs" />
+    <Compile Include="Diagnostic\DebugExtensions.cs" />
+    <Compile Include="IContainerFacade.cs" />
+    <Compile Include="IContainerRegistration.cs" />
+    <Compile Include="IConventionBuilder.cs" />
+    <Compile Include="IRegistrationEntry.cs" />
+    <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
+    <Compile Include="RegistrationEntry.cs" />
+    <Compile Include="Infrastructure\Strings.cs" />
+    <Compile Include="LifetimeSelector.cs" />
+    <Compile Include="RegistrationProducers\AbstractRegistrationProducer.cs" />
+    <Compile Include="RegistrationProducers\DefaultServiceSelector.cs" />
+    <Compile Include="RegistrationProducers\IRegistrationProducer.cs" />
+    <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
+    <Compile Include="RegistrationHandler.cs" />
+    <Compile Include="Syntax\ILifetimeSyntax.cs" />
+    <Compile Include="ITypeExclusion.cs" />
+    <Compile Include="Syntax\IRegisterSyntax.cs" />
+    <Compile Include="Syntax\ISourceSyntax.cs" />
+    <Compile Include="Syntax\IStrategySyntax.cs" />
+    <Compile Include="Syntax\ITypeSourceSyntax.cs" />
+    <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
+    <Compile Include="TypeSelector.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
+    <Compile Include="Syntax\IExcludeSyntax.cs" />
+    <Compile Include="Syntax\IWhereSyntax.cs" />
+    <Compile Include="Syntax\IIncludeSyntax.cs" />
+    <Compile Include="Syntax\ISelectSyntax.cs" />
+    <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
