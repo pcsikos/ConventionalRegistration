@@ -22,7 +22,7 @@ namespace Flubar.RegistrationProducers
 
         #region IImplementationServiceSelector Members
 
-        public IEnumerable<Type> GetServicesFrom(Type implementation)
+        public virtual IEnumerable<Type> GetServicesFrom(Type implementation)
         {
             Check.NotNull(implementation, "implementation");
             if (!implementation.IsClass || implementation.IsAbstract)
@@ -40,8 +40,10 @@ namespace Flubar.RegistrationProducers
 
         private IEnumerable<Type> GetGenericInterfacesMatching(Type implementation)
         {
-            return implementation.GetInterfaces()
-                .Where(x => x.IsGenericTypeDefinition && x.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()));
+            var interfaces = implementation.GetInterfaces().ToArray();
+            interfaces = interfaces.Where(x => x.IsConstructedGenericType && x.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()))
+                .Select(x => x.IsConstructedGenericType ? x.GetGenericTypeDefinition() : x).ToArray();
+            return interfaces;
         }
 
         #endregion

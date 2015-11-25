@@ -7,8 +7,9 @@ namespace Flubar
     {
         ITypeExclusion Exclude(IRegistrationEntry registration);
         ITypeExclusion Exclude(IEnumerable<IRegistrationEntry> registrations);
-        ITypeExclusion Exclude(Type serviceType, Type implementationType);
-        ITypeExclusion Exclude(IEnumerable<Type> serviceTypes, Type implementationType);
-        ITypeExclusion Exclude(Type implementationType);
+        //ITypeExclusion Exclude(Type serviceType, Type implementationType);
+        //ITypeExclusion Exclude(IEnumerable<Type> serviceTypes, Type implementationType);
+        ITypeExclusion Exclude(Type serviceType);
+        ITypeExclusion Exclude(IEnumerable<Type> serviceTypes);
     }
 }

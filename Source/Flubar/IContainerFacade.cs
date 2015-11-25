@@ -8,6 +8,7 @@ namespace Flubar
     {
         void Register(Type serviceType, Type implementation, TContainerLifetime lifetime = null);
         void Register(IEnumerable<Type> serviceTypes, Type implementation, TContainerLifetime lifetime = null);
+        void Register<TService>(Func<TService> instanceCreator, TContainerLifetime lifetime = null) where TService : class;
         TContainerLifetime GetSingletonLifetime();
         TContainerLifetime GetDefaultLifetime();
         object InnerContainer { get; }

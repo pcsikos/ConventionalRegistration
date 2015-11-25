@@ -72,7 +72,7 @@ namespace Flubar
 
         public IFilterSyntax WithoutAttribute(Type attributeType)
         {
-            return Where(t => !t.GetCustomAttributes(attributeType).Any());
+            return Where(t => !t.GetCustomAttributes(attributeType, true).Any());
         }
 
         public IFilterSyntax WithAttribute<T>() where T : Attribute
@@ -82,7 +82,7 @@ namespace Flubar
 
         public IFilterSyntax WithAttribute(Type attributeType)
         {
-            return Where(t => t.GetCustomAttributes(attributeType).Any());
+            return Where(t => t.GetCustomAttributes(attributeType, true).Any());
         }
 
         public IFilterSyntax Where(Func<Type, bool> filter)
@@ -125,6 +125,11 @@ namespace Flubar
         public IRegisterSyntax UsingDefaultInterfaceStrategy()
         {
             return UsingStrategy(new DefaultInterfaceRegistrationProducer(new DefaultServiceSelector()));
+        }
+
+        public IRegisterSyntax UsingAllNonSystemInterfacesStrategy()
+        {
+            return UsingStrategy(new AllNonSystemInterfaceRegistrationProducer(new DefaultServiceSelector()));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy()

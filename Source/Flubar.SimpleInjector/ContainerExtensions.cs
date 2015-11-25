@@ -5,7 +5,12 @@ namespace Flubar.SimpleInjector
 {
     public static class ContainerExtensions
     {
-        public static ConventionBuilder<Lifestyle> RegistrationByConvention(this Container container, BehaviorConfiguration configuration = null)//, IEnumerable<Type> exclusions = null)
+        public static void RegistrationByConvention(this Container container, Action<SimpleInjectorConventionBuilder> convention)
+        {
+            RegistrationByConvention(container, null, convention);
+        }
+
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<SimpleInjectorConventionBuilder> convention)//, IEnumerable<Type> exclusions = null)
         {
             if (configuration == null)
             {
@@ -13,27 +18,13 @@ namespace Flubar.SimpleInjector
             }
 
             var facade = new SimpleInjectorContainerFacade(container);
-            var syntax = new ConventionBuilder<Lifestyle>(facade, configuration);
-            return syntax;
+            using (var builder = new SimpleInjectorConventionBuilder(facade, configuration))
+            {
+                convention(builder);
+            }
         }
 
-        public static ConventionBuilder<Lifestyle> Register<TService>(this ConventionBuilder<Lifestyle> builder, Func<TService> instanceCreator)
-            where TService : class
-        {
-            ((Container)builder.Container).Register(instanceCreator);
-            ((ITypeExclusion)builder).Exclude(typeof(TService));
-            return builder;
-        }
-
-        public static ConventionBuilder<Lifestyle> Register<TService, TImplementation>(this ConventionBuilder<Lifestyle> builder)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            ((Container)builder.Container).Register<TService, TImplementation>();
-            ITypeExclusion typeExlusion = builder;
-            typeExlusion.Exclude(typeof(TImplementation));
-            return builder;
-        }
+       
 
         //public static IConventionSyntax<Lifestyle> Register(this IConventionSyntax<Lifestyle> syntax, Action<INotifySyntax> notify)
         //{

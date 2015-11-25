@@ -30,6 +30,12 @@ namespace Flubar
             implementationLogging(implementation);
         }
 
+        public void Register<TService>(Func<TService> instanceCreator, TLifetime lifetime = null) where TService : class
+        {
+            decoratedContainer.Register(instanceCreator, lifetime);
+            implementationLogging(typeof(TService));
+        }
+
         public TLifetime GetSingletonLifetime()
         {
             return decoratedContainer.GetDefaultLifetime();
