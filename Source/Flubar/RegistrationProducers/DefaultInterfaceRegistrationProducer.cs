@@ -29,7 +29,7 @@ namespace Flubar.RegistrationProducers
         private static string GetInterfaceName(Type service)
         {
             var name = GetImplementationName(service);
-            if (name.StartsWith("I"))
+            if (name.StartsWith("I", StringComparison.Ordinal))
             {
                 return name.Substring(1);
             }

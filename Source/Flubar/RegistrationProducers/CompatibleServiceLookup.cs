@@ -5,15 +5,15 @@ using Flubar.Infrastructure;
 
 namespace Flubar.RegistrationProducers
 {
-    public class DefaultServiceSelector : IRegistrationServiceSelector
+    public class CompatibleServiceLookup : IRegistrationServiceSelector
     {
         private readonly Func<Type, bool> filter;
 
-        public DefaultServiceSelector()
+        public CompatibleServiceLookup()
         {
         }
 
-        public DefaultServiceSelector(Func<Type, bool> filter)
+        public CompatibleServiceLookup(Func<Type, bool> filter)
         {
             Check.NotNull(filter, "filter");
 

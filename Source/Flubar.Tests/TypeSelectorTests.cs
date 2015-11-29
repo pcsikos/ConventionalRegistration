@@ -14,8 +14,8 @@ namespace Flubar.Tests
         [TestMethod]
         public void Contructor_NullTypesGiven_ShouldThrowNullArgumentException()
         {
-            Instantiate(() => new TypeSelector(null))
-                .ShouldThrowExactly<ArgumentNullException>().Where(x => x.ParamName == "types");		 
+            Instantiate(() => new TypeSelector(null, new NullServiceFilter()))
+                .ShouldThrowExactly<ArgumentNullException>().Where(x => x.ParamName == "types");
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace Flubar.Tests
         public void Initialize()
         {
             unitTestType = typeof(UnitTest);
-            typeSelector = new TypeSelector(new[] { unitTestType });
+            typeSelector = new TypeSelector(new[] { unitTestType }, new NullServiceFilter());
         }
 
         private class TestRegistrationProducer : IRegistrationProducer

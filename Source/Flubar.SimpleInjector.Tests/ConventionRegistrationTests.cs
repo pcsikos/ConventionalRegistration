@@ -10,6 +10,7 @@ namespace Flubar.SimpleInjector.Tests
     {
         public ConventionRegistrationTests()
         {
+            
             Container.RegistrationByConvention(builder =>
             {
                 builder.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
@@ -26,7 +27,7 @@ namespace Flubar.SimpleInjector.Tests
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
-                     .UsingAllNonSystemInterfacesStrategy());
+                     .UsingAllInterfacesStrategy());
             });
         }
     }

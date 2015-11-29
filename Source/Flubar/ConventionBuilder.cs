@@ -5,11 +5,11 @@ using Flubar.Syntax;
 
 namespace Flubar
 {
-    public class ConventionBuilder<TLifetime> : /*IConventionBuilder<TLifetime>,*/  ITypeExclusion, IDisposable
+    public class ConventionBuilder<TLifetime> : /*IConventionBuilder<TLifetime>,*/  IConfigurationServiceExclusion, IDisposable
         where TLifetime : class
     {
         private readonly IContainerFacade<TLifetime> containerFacade;
-        private readonly IList<Type> registeredServices;
+        private readonly ISet<Type> registeredServices;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly BehaviorConfiguration behaviorConfiguration;
@@ -17,9 +17,9 @@ namespace Flubar
 
         public ConventionBuilder(IContainerFacade<TLifetime> container, BehaviorConfiguration behaviorConfiguration)
         {
-            registeredServices = new List<Type>();
+            registeredServices = new HashSet<Type>();
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
-            containerFacade = new ContainerDecorator<TLifetime>(container, type => Exclude(type));
+            containerFacade = new ContainerDecorator<TLifetime>(container, type => ExcludeService(type));
             conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
         }
@@ -70,37 +70,45 @@ namespace Flubar
             Exclude(registration.ServicesTypes);
         }
 
-        ITypeExclusion ITypeExclusion.Exclude(IRegistrationEntry registration)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IRegistrationEntry registration)
         {
             Exclude(registration);
             return this;
         }
 
-        ITypeExclusion ITypeExclusion.Exclude(IEnumerable<IRegistrationEntry> registrations)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IEnumerable<IRegistrationEntry> registrations)
         {
             throw new NotImplementedException();
         }
 
-        protected void Exclude(Type serviceType)
+        protected void ExcludeService(Type serviceType)
         {
-            registeredServices.Add(serviceType);
+            if (!serviceType.IsInterface)
+            {
+                return;
+            }
+
+            if (!registeredServices.Contains(serviceType))
+            {
+                registeredServices.Add(serviceType);
+            }
         }
 
         protected void Exclude(IEnumerable<Type> serviceTypes)
         {
             foreach (var serviceType in serviceTypes)
             {
-                registeredServices.Add(serviceType);
+                ExcludeService(serviceType);
             }
         }
 
-        ITypeExclusion ITypeExclusion.Exclude(Type serviceType)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(Type serviceType)
         {
-            Exclude(serviceType);
+            ExcludeService(serviceType);
             return this;
         }
 
-        ITypeExclusion ITypeExclusion.Exclude(IEnumerable<Type> serviceTypes)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IEnumerable<Type> serviceTypes)
         {
             Exclude(serviceTypes);
             return this;
@@ -133,10 +141,20 @@ namespace Flubar
 
         public void Dispose()
         {
+            IServiceFilter serviceFilter = GetServiceFilterFromConfiguration();
+            var asmSelector = new AssemblySelector(serviceFilter);
             foreach (var convention in conventions)
             {
-                convention(new AssemblySelector());
+                convention(asmSelector);
             }
         }
+
+        private IServiceFilter GetServiceFilterFromConfiguration()
+        {
+            var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
+            var serviceFilter = behaviorConfiguration.ExcludeRegisteredServices ? new AggregateServiceFilter(new[] { configurationServiceFilter, new ExcludedServiceFilter(registeredServices, t => false) }) : configurationServiceFilter;
+            return serviceFilter;
+        }
+
     }
 }

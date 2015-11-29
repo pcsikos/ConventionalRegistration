@@ -42,10 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregateServiceFilter.cs" />
     <Compile Include="AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="ConventionDefinition.cs" />
+    <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
+    <Compile Include="IConfigurable.cs" />
     <Compile Include="Infrastructure\Check.cs" />
     <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
@@ -55,18 +58,20 @@
     <Compile Include="IContainerRegistration.cs" />
     <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
-    <Compile Include="RegistrationProducers\AllNonSystemInterfaceRegistrationProducer.cs" />
+    <Compile Include="IServiceFilter.cs" />
+    <Compile Include="NullServiceFilter.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
     <Compile Include="Infrastructure\Strings.cs" />
     <Compile Include="LifetimeSelector.cs" />
     <Compile Include="RegistrationProducers\AbstractRegistrationProducer.cs" />
-    <Compile Include="RegistrationProducers\DefaultServiceSelector.cs" />
+    <Compile Include="RegistrationProducers\CompatibleServiceLookup.cs" />
     <Compile Include="RegistrationProducers\IRegistrationProducer.cs" />
     <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
     <Compile Include="RegistrationHandler.cs" />
+    <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
-    <Compile Include="ITypeExclusion.cs" />
+    <Compile Include="IConfigurationServiceExclusion.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />
     <Compile Include="Syntax\ISourceSyntax.cs" />
     <Compile Include="Syntax\IStrategySyntax.cs" />

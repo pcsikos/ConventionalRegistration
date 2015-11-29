@@ -10,7 +10,6 @@ namespace Flubar.Syntax
         IRegisterSyntax UsingSingleInterfaceStrategy();
         IRegisterSyntax UsingSingleInterfaceStrategy(IEnumerable<Type> excluding);
         IRegisterSyntax UsingDefaultInterfaceStrategy();
-        IRegisterSyntax UsingAllNonSystemInterfacesStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding);
         IRegisterSyntax UsingStrategy<T>() where T : IRegistrationProducer, new();

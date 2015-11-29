@@ -8,15 +8,15 @@ namespace Flubar
 {
     public class AssemblySelector : ISourceSyntax
     {
-        readonly IEnumerable<Type> exclusions;
+        readonly IServiceFilter serviceFilter;
 
-        public AssemblySelector() : this(Enumerable.Empty<Type>())
+        public AssemblySelector() : this(new NullServiceFilter())
         {
         }
 
-        public AssemblySelector(IEnumerable<Type> exclusions)
+        public AssemblySelector(IServiceFilter serviceFilter)
         {
-            this.exclusions = exclusions;
+            this.serviceFilter = serviceFilter;
         }
 
         #region IFromSyntax Members
@@ -80,7 +80,7 @@ namespace Flubar
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetTypes()).Where(type => !exclusions.Contains(type)));
+            return new TypeSelector(assemblies.SelectMany(x => x.GetTypes()), serviceFilter);
         }
     }
 }

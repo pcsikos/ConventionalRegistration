@@ -28,7 +28,7 @@ namespace Flubar.SimpleInjector
             foreach (var serviceType in serviceTypes.Where(t => t != typeof(IDisposable)))
             {
                 Container.AddRegistration(serviceType, registration);
-                Exclude(serviceType);
+                ExcludeService(serviceType);
             }
         }
 
@@ -36,17 +36,11 @@ namespace Flubar.SimpleInjector
             where T : class
         {
             Container.RegisterSingleton<Func<T>>(() => Container.GetInstance<T>());
-            var type = typeof(T);
-            if (type.IsInterface)
-            {
-                Exclude(type);
-            }
         }
 
         public void RegisterDecorator(Type serviceType, Type decoratorType)
         {
             Container.RegisterDecorator(serviceType, decoratorType);
-            Exclude(serviceType);
         }
     }
 }

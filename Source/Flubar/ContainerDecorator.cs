@@ -21,13 +21,16 @@ namespace Flubar
         public void Register(Type serviceType, Type implementation, TLifetime lifetime)
         {
             decoratedContainer.Register(serviceType, implementation, lifetime);
-            implementationLogging(implementation);
+            implementationLogging(serviceType);
         }
 
         public void Register(IEnumerable<Type> serviceTypes, Type implementation, TLifetime lifetime)
         {
             decoratedContainer.Register(serviceTypes, implementation, lifetime);
-            implementationLogging(implementation);
+            foreach (var serviceType in serviceTypes)
+            {
+                implementationLogging(serviceType);
+            }
         }
 
         public void Register<TService>(Func<TService> instanceCreator, TLifetime lifetime = null) where TService : class

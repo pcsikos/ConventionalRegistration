@@ -11,11 +11,13 @@ namespace Flubar
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {
         private IEnumerable<Type> filteredTypes;
+        readonly IServiceFilter serviceFilter;
 
-        public TypeSelector(IEnumerable<Type> types)
+        public TypeSelector(IEnumerable<Type> types, IServiceFilter serviceFilter)
         {
             Check.NotNull(types, "types");
             filteredTypes = types;
+            this.serviceFilter = serviceFilter;
         }
 
         #region IIncludeSyntax Members
@@ -124,17 +126,12 @@ namespace Flubar
 
         public IRegisterSyntax UsingDefaultInterfaceStrategy()
         {
-            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new DefaultServiceSelector()));
-        }
-
-        public IRegisterSyntax UsingAllNonSystemInterfacesStrategy()
-        {
-            return UsingStrategy(new AllNonSystemInterfaceRegistrationProducer(new DefaultServiceSelector()));
+            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup()));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy()
         {
-            throw new NotImplementedException();
+            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup()));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding)
@@ -149,6 +146,12 @@ namespace Flubar
 
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
         {
+            var configurable = registrationProducer as IConfigurable;
+            if (configurable != null)
+            {
+                configurable.ServiceFilter = serviceFilter;
+            }
+
             var registrations = filteredTypes.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
             return new RegistrationHandler(registrations, null);
         }

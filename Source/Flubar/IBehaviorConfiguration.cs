@@ -5,7 +5,6 @@ namespace Flubar
 {
     public interface IBehaviorConfiguration
     {
-        IEnumerable<Type> ExcludedServices { get; }
-        IEnumerable<Type> ExcludedBaseTypes { get; }
+        IServiceFilter GetServiceFilter();
     }
 }
