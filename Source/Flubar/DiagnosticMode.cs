@@ -2,7 +2,6 @@
 {
     public enum DiagnosticMode
     {
-        Disabled,
         Info,
         Warning
     }

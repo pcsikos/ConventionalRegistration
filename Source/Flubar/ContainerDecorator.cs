@@ -8,9 +8,9 @@ namespace Flubar
     {
         private readonly IContainerFacade<TLifetime> decoratedContainer;
 
-        private readonly Action<Type> implementationLogging;
+        private readonly Action<IEnumerable<Type>, Type> implementationLogging;
 
-        public ContainerDecorator(IContainerFacade<TLifetime> container, Action<Type> implementationLogging)
+        public ContainerDecorator(IContainerFacade<TLifetime> container, Action<IEnumerable<Type>, Type> implementationLogging)
         {
             this.decoratedContainer = container;
             this.implementationLogging = implementationLogging;
@@ -21,22 +21,19 @@ namespace Flubar
         public void Register(Type serviceType, Type implementation, TLifetime lifetime)
         {
             decoratedContainer.Register(serviceType, implementation, lifetime);
-            implementationLogging(serviceType);
+            implementationLogging(new[] { serviceType }, implementation);
         }
 
         public void Register(IEnumerable<Type> serviceTypes, Type implementation, TLifetime lifetime)
         {
             decoratedContainer.Register(serviceTypes, implementation, lifetime);
-            foreach (var serviceType in serviceTypes)
-            {
-                implementationLogging(serviceType);
-            }
+            implementationLogging(serviceTypes, implementation);
         }
 
         public void Register<TService>(Func<TService> instanceCreator, TLifetime lifetime = null) where TService : class
         {
             decoratedContainer.Register(instanceCreator, lifetime);
-            implementationLogging(typeof(TService));
+            implementationLogging(new[] { typeof(TService) }, null);
         }
 
         public TLifetime GetSingletonLifetime()

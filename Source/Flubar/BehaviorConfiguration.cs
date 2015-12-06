@@ -20,7 +20,6 @@ namespace Flubar
         {
             this.filter = filter;
             excludedServices = new Type[0];
-            Diagnostic = DiagnosticMode.Disabled;
             log = (mode, message) => { };
         }
 
@@ -42,8 +41,6 @@ namespace Flubar
         /// Gets or sets a value, indicating whether future registrations of same service should be excluded.
         /// </summary>
         public bool ExcludeRegisteredServices { get; set; }
-
-        public DiagnosticMode Diagnostic { get; set; }
 
         private Action<DiagnosticMode, string> log;
 

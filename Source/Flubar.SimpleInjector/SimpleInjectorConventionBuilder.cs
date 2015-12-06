@@ -22,25 +22,33 @@ namespace Flubar.SimpleInjector
             get { return container; }
         }
 
-        public void RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifestyle)
+        public void ExplicitRegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifestyle)
         {
             var registration = lifestyle.CreateRegistration(implementation, Container);
             foreach (var serviceType in serviceTypes.Where(t => t != typeof(IDisposable)))
             {
                 Container.AddRegistration(serviceType, registration);
-                ExcludeService(serviceType);
             }
+            ExcludeService(serviceTypes, implementation);
         }
 
-        public void RegisterFunc<T>()
+        public void ExplicitRegisterFunc<T>()
             where T : class
         {
             Container.RegisterSingleton<Func<T>>(() => Container.GetInstance<T>());
         }
 
-        public void RegisterDecorator(Type serviceType, Type decoratorType)
+        public void ExplicitRegisterDecorator(Type serviceType, Type decoratorType)
         {
             Container.RegisterDecorator(serviceType, decoratorType);
+            ExcludeService(serviceType, decoratorType);
+        }
+
+        public void ExplicitRegisterCollection<TService>(IEnumerable<Type> serviceTypes)
+            where TService : class
+        {
+            Container.RegisterCollection<TService>(serviceTypes);
+            //ExcludeService(serviceTypes, implementation);
         }
     }
 }

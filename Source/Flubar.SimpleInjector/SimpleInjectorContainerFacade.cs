@@ -18,7 +18,7 @@ namespace Flubar.SimpleInjector
         public void Register(Type serviceType, Type implementation, Lifestyle lifetime)
         {
             container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
-            System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", serviceType, implementation, lifetime);
+            //System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", serviceType, implementation, lifetime);
         }
 
         public void Register(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
@@ -32,7 +32,7 @@ namespace Flubar.SimpleInjector
             {
                 container.AddRegistration(type, registration);
             }
-            System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", string.Join(", ", serviceTypes.Select(x => x.Name).ToArray()), implementation, lifetime);
+            //System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", string.Join(", ", serviceTypes.Select(x => x.Name).ToArray()), implementation, lifetime);
         }
 
         public void Register<TService>(Func<TService> instanceCreator, Lifestyle lifetime)

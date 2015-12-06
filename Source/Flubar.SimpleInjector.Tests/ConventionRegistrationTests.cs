@@ -10,21 +10,26 @@ namespace Flubar.SimpleInjector.Tests
     {
         public ConventionRegistrationTests()
         {
-            
-            Container.RegistrationByConvention(builder =>
+            var config = BehaviorConfiguration.Default;
+            config.Log = (mode, message) =>
             {
-                builder.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
-                builder.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
-                builder.Register<DbContext1>(Lifestyle.Scoped);
-                builder.Register<DbContext2>(Lifestyle.Scoped);
+                if (mode == DiagnosticMode.Warning)
+                System.Diagnostics.Debug.WriteLine(message);
+            };
+            Container.RegistrationByConvention(config, builder =>
+            {
+                builder.ExplicitRegister<ISingletonService, SingletonService>(Lifestyle.Singleton);
+                builder.ExplicitRegister(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
+                builder.ExplicitRegister<DbContext1>(Lifestyle.Scoped);
+                builder.ExplicitRegister<DbContext2>(Lifestyle.Scoped);
 
-                builder.RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-                builder.RegisterFunc<ITransientService>();
+                builder.ExplicitRegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                builder.ExplicitRegisterFunc<ITransientService>();
 
-                builder.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-                builder.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+                builder.ExplicitRegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
+                builder.ExplicitRegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
 
-                
+
 
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()

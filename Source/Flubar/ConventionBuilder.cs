@@ -5,11 +5,11 @@ using Flubar.Syntax;
 
 namespace Flubar
 {
-    public class ConventionBuilder<TLifetime> : /*IConventionBuilder<TLifetime>,*/  IConfigurationServiceExclusion, IDisposable
+    public class ConventionBuilder<TLifetime> : IConfigurationServiceExclusion, IDisposable
         where TLifetime : class
     {
         private readonly IContainerFacade<TLifetime> containerFacade;
-        private readonly ISet<Type> registeredServices;
+        private readonly IDictionary<Type, RegisteredService> registeredServices;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly BehaviorConfiguration behaviorConfiguration;
@@ -17,9 +17,9 @@ namespace Flubar
 
         public ConventionBuilder(IContainerFacade<TLifetime> container, BehaviorConfiguration behaviorConfiguration)
         {
-            registeredServices = new HashSet<Type>();
+            registeredServices = new Dictionary<Type, RegisteredService>();
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
-            containerFacade = new ContainerDecorator<TLifetime>(container, type => ExcludeService(type));
+            containerFacade = new ContainerDecorator<TLifetime>(container, (services, implementation) => ExcludeService(services, implementation));
             conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
         }
@@ -43,19 +43,69 @@ namespace Flubar
 
         private IRegistrationEntry ValidateRegistration(IRegistrationEntry oldRegistration)
         {
+            IRegistrationEntry registration = null;
             if (behaviorConfiguration.ExcludeRegisteredServices)
             {
-                var allowedServices = oldRegistration.ServicesTypes.Where(serviceType => !registeredServices.Contains(serviceType)).ToArray();
+                var allowedServices = oldRegistration.ServicesTypes.Where(serviceType => !registeredServices.ContainsKey(serviceType)).ToArray();
                 if (allowedServices.Length == 0)
                 {
+                    WriteAboutExcludedServices(oldRegistration, allowedServices);
                     return null;
                 }
                 if (allowedServices.Length != oldRegistration.ServicesTypes.Count())
                 {
-                    return new RegistrationEntry(oldRegistration.ImplementationType, allowedServices);
+                    WriteAboutExcludedServices(oldRegistration, allowedServices);
+                    registration = new RegistrationEntry(oldRegistration.ImplementationType, allowedServices);
                 }
             }
-            return oldRegistration;
+            registration = registration ?? oldRegistration;
+            WriteAboutRegistration(registration);
+            return registration;
+        }
+
+        private void WriteAboutRegistration(IRegistrationEntry registration)
+        {
+            foreach (var serviceType in registration.ServicesTypes)
+            {
+                WriteInfo("Registration {0} to {1}", serviceType.FullName, registration.ImplementationType.FullName);
+            }
+        }
+
+        private void WriteInfo(string message)
+        {
+            behaviorConfiguration.Log(DiagnosticMode.Info, message);
+        }
+
+        private void WriteInfo(string format, params object[] args)
+        {
+            behaviorConfiguration.Log(DiagnosticMode.Info, string.Format(format, args));
+        }
+
+        private void WriteAboutExcludedServices(IRegistrationEntry registration, Type[] allowedServices)
+        {
+            foreach (var serviceType in registration.ServicesTypes)
+            {
+                if (allowedServices.Any(type => type == serviceType))
+                {
+                    continue;
+                }
+                var registeredService = registeredServices[serviceType];
+                var skippingMessage = string.Format("Skipping {0} to {1}, because {2} is already registered to this type.", 
+                        serviceType.FullName, registration.ImplementationType.FullName, registeredService.Implementation.FullName);
+                if (registration.ImplementationType == registeredService.Implementation)
+                {
+                    WriteInfo(skippingMessage);
+                }
+                else
+                {
+                    WriteWarning(skippingMessage);
+                }
+            }
+        }
+
+        private void WriteWarning(string message)
+        {
+            behaviorConfiguration.Log(DiagnosticMode.Warning, message);
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -64,23 +114,23 @@ namespace Flubar
             return this;
         }
 
-        public void Register<TService>(Func<TService> instanceCreator, TLifetime lifetime = null)
+        public void ExplicitRegister<TService>(Func<TService> instanceCreator, TLifetime lifetime = null)
             where TService : class
         {
             containerFacade.Register(instanceCreator, lifetime);
         }
 
-        public void Register<TService, TImplementation>(TLifetime lifetime = null)
+        public void ExplicitRegister<TService, TImplementation>(TLifetime lifetime = null)
             where TService : class
             where TImplementation : class, TService
         {
             containerFacade.Register(typeof(TService), typeof(TImplementation), lifetime);
         }
 
-        public void Register<TConcrete>(TLifetime lifetime)
+        public void ExplicitRegister<TConcrete>(TLifetime lifetime)
             where TConcrete : class
         {
-            Register<TConcrete, TConcrete>(lifetime);
+            ExplicitRegister<TConcrete, TConcrete>(lifetime);
         }
 
         #endregion
@@ -89,7 +139,7 @@ namespace Flubar
 
         void Exclude(IRegistrationEntry registration)
         {
-            Exclude(registration.ServicesTypes);
+            ExcludeService(registration.ServicesTypes, registration.ImplementationType);
         }
 
         IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IRegistrationEntry registration)
@@ -103,36 +153,37 @@ namespace Flubar
             throw new NotImplementedException();
         }
 
-        protected void ExcludeService(Type serviceType)
+        protected void ExcludeService(Type serviceType, Type implementation)
         {
             if (!serviceType.IsInterface)
             {
                 return;
             }
 
-            if (!registeredServices.Contains(serviceType))
+            if (!registeredServices.ContainsKey(serviceType))
             {
-                registeredServices.Add(serviceType);
+                var registeredService = new RegisteredService(serviceType, implementation);
+                registeredServices.Add(serviceType, registeredService);
             }
         }
 
-        protected void Exclude(IEnumerable<Type> serviceTypes)
+        protected void ExcludeService(IEnumerable<Type> serviceTypes, Type implementation)
         {
             foreach (var serviceType in serviceTypes)
             {
-                ExcludeService(serviceType);
+                ExcludeService(serviceType, implementation);
             }
         }
 
-        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(Type serviceType)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(Type serviceType, Type implementation)
         {
-            ExcludeService(serviceType);
+            ExcludeService(serviceType, implementation);
             return this;
         }
 
-        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IEnumerable<Type> serviceTypes)
+        IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IEnumerable<Type> serviceTypes, Type implementation)
         {
-            Exclude(serviceTypes);
+            ExcludeService(serviceTypes, implementation);
             return this;
         }
 
@@ -179,5 +230,32 @@ namespace Flubar
             return configurationServiceFilter;
         }
 
+        class RegisteredService
+        {
+            private readonly Type implementation;
+            private readonly Type serviceType;
+
+            public RegisteredService(Type serviceType, Type implementation)
+            {
+                this.serviceType = serviceType;
+                this.implementation = implementation;
+            }
+
+            public Type Implementation
+            {
+                get
+                {
+                    return implementation;
+                }
+            }
+
+            public Type ServiceType
+            {
+                get
+                {
+                    return serviceType;
+                }
+            }
+        }
     }
 }

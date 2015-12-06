@@ -15,7 +15,7 @@ namespace Flubar.SimpleInjector.Tests
             container.RegistrationByConvention(builder =>
             {
                 //builder.DefineGlobal(types => types.)
-                builder.Register(() => new Usage());
+                builder.ExplicitRegister(() => new Usage());
 
                 builder.Define(source => source
                      .FromThisAssembly()
