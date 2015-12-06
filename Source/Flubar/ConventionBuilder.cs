@@ -30,10 +30,32 @@ namespace Flubar
         {
             lifetimeSelection = GetDefaultLifetimeWhenNull(lifetimeSelection);
             return Define(syntax => rules(syntax).RegisterEach((registration) =>
+            {
+                registration = ValidateRegistration(registration);
+                if (registration == null)
                 {
-                    AutomaticRegistration(registration, lifetimeSelection(lifetimeSelector));
-                    Exclude(registration);
-                }));
+                    return;
+                }
+                AutomaticRegistration(registration, lifetimeSelection(lifetimeSelector));
+                Exclude(registration);
+            }));
+        }
+
+        private IRegistrationEntry ValidateRegistration(IRegistrationEntry oldRegistration)
+        {
+            if (behaviorConfiguration.ExcludeRegisteredServices)
+            {
+                var allowedServices = oldRegistration.ServicesTypes.Where(serviceType => !registeredServices.Contains(serviceType)).ToArray();
+                if (allowedServices.Length == 0)
+                {
+                    return null;
+                }
+                if (allowedServices.Length != oldRegistration.ServicesTypes.Count())
+                {
+                    return new RegistrationEntry(oldRegistration.ImplementationType, allowedServices);
+                }
+            }
+            return oldRegistration;
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -152,8 +174,9 @@ namespace Flubar
         private IServiceFilter GetServiceFilterFromConfiguration()
         {
             var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
-            var serviceFilter = behaviorConfiguration.ExcludeRegisteredServices ? new AggregateServiceFilter(new[] { configurationServiceFilter, new ExcludedServiceFilter(registeredServices, t => false) }) : configurationServiceFilter;
-            return serviceFilter;
+            //var serviceFilter = behaviorConfiguration.ExcludeRegisteredServices && behaviorConfiguration.Diagnostic == DiagnosticMode.Disabled
+            //    ? new AggregateServiceFilter(new[] { configurationServiceFilter, new ExcludedServiceFilter(registeredServices, t => false) }) : configurationServiceFilter;
+            return configurationServiceFilter;
         }
 
     }

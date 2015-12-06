@@ -7,12 +7,12 @@ namespace Flubar
     class RegistrationHandler : IRegisterSyntax
     {
         private readonly IEnumerable<IRegistrationEntry> registrations;
-        private readonly IConfigurationServiceExclusion notify;
+        private readonly IConfigurationServiceExclusion configurationServiceExclusion;
 
-        public RegistrationHandler(IEnumerable<IRegistrationEntry> registrations, IConfigurationServiceExclusion notify)
+        public RegistrationHandler(IEnumerable<IRegistrationEntry> registrations, IConfigurationServiceExclusion configurationServiceExclusion)
         {
             this.registrations = registrations;
-            this.notify = notify;
+            this.configurationServiceExclusion = configurationServiceExclusion;
         }
 
         #region IRegisterSyntax Members
@@ -29,7 +29,7 @@ namespace Flubar
         {
             foreach (var registration in registrations)
             {
-                handleRegistration(registration, notify);
+                handleRegistration(registration, configurationServiceExclusion);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Flubar
 
         public void RegisterAll(Action<IEnumerable<IRegistrationEntry>, IConfigurationServiceExclusion> handleRegistration)
         {
-            handleRegistration(registrations, notify);
+            handleRegistration(registrations, configurationServiceExclusion);
         }
 
         #endregion

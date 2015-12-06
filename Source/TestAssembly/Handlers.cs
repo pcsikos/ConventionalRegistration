@@ -5,21 +5,22 @@ using System.Text;
 
 namespace TestAssembly
 {
-    public interface ITransientService : IDisposable
+    public interface IHandler
     {
+        void Execute(string command);
     }
 
-    public class TransientService : ITransientService
+    class MailCommand : IHandler
     {
-        public void Dispose()
+        public void Execute(string command)
         {
             throw new NotImplementedException();
         }
     }
 
-    public class TransientService2 : ITransientService
+    class SaveCommand : IHandler
     {
-        public void Dispose()
+        public void Execute(string command)
         {
             throw new NotImplementedException();
         }

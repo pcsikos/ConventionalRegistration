@@ -47,6 +47,7 @@
     <Compile Include="Decorator.cs" />
     <Compile Include="DummyList.cs" />
     <Compile Include="FileOperation.cs" />
+    <Compile Include="Handlers.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="SingletonService.cs" />
     <Compile Include="TransientService.cs" />

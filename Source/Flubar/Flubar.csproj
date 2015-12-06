@@ -46,6 +46,7 @@
     <Compile Include="AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="ConventionDefinition.cs" />
+    <Compile Include="DiagnosticMode.cs" />
     <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
     <Compile Include="IConfigurable.cs" />

@@ -24,6 +24,8 @@ namespace Flubar.SimpleInjector.Tests
                 builder.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
                 builder.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
 
+                
+
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
