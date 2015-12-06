@@ -41,7 +41,6 @@ namespace Flubar.SimpleInjector
         public void ExplicitRegisterDecorator(Type serviceType, Type decoratorType)
         {
             Container.RegisterDecorator(serviceType, decoratorType);
-            ExcludeService(serviceType, decoratorType);
         }
 
         public void ExplicitRegisterCollection<TService>(IEnumerable<Type> serviceTypes)
