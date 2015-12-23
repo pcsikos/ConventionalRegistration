@@ -8,20 +8,44 @@ namespace Flubar
     public class ConventionBuilder<TLifetime> : IConfigurationServiceExclusion, IDisposable
         where TLifetime : class
     {
-        private readonly IContainerFacade<TLifetime> containerFacade;
+        private readonly IContainer<TLifetime> container;
         private readonly IDictionary<Type, RegisteredService> registeredServices;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly BehaviorConfiguration behaviorConfiguration;
+        private readonly ISet<Type> excludedImplementations;
         //private IList<Type> registeredServices;
 
-        public ConventionBuilder(IContainerFacade<TLifetime> container, BehaviorConfiguration behaviorConfiguration)
+        public ConventionBuilder(IContainer<TLifetime> container, BehaviorConfiguration behaviorConfiguration)
         {
             registeredServices = new Dictionary<Type, RegisteredService>();
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
-            containerFacade = new ContainerDecorator<TLifetime>(container, (services, implementation) => ExcludeService(services, implementation));
+            this.container = container;
+            container.RegistrationCreated += ContainerRegistrationCreated;
+            //containerFacade = new ContainerDecorator<TLifetime>(container, (services, implementation) => ExcludeService(services, implementation));
             conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
+            excludedImplementations = new HashSet<Type>();
+        }
+
+        private void ContainerRegistrationCreated(object sender, RegistrationEventArgs e)
+        {
+            if (e.Services.Count() == 0)
+            {
+                ExcludeImplementation(e.Implementation);
+            }
+            else
+            {
+                ExcludeService(e.Services, e.Implementation);
+            }
+        }
+
+        private void ExcludeImplementation(Type implementation)
+        {
+            if (!excludedImplementations.Contains(implementation))
+            {
+                excludedImplementations.Add(implementation);
+            }
         }
 
         #region IConventionSyntax<TLifetime> Members
@@ -114,24 +138,7 @@ namespace Flubar
             return this;
         }
 
-        public void ExplicitRegister<TService>(Func<TService> instanceCreator, TLifetime lifetime = null)
-            where TService : class
-        {
-            containerFacade.Register(instanceCreator, lifetime);
-        }
 
-        public void ExplicitRegister<TService, TImplementation>(TLifetime lifetime = null)
-            where TService : class
-            where TImplementation : class, TService
-        {
-            containerFacade.Register(typeof(TService), typeof(TImplementation), lifetime);
-        }
-
-        public void ExplicitRegister<TConcrete>(TLifetime lifetime)
-            where TConcrete : class
-        {
-            ExplicitRegister<TConcrete, TConcrete>(lifetime);
-        }
 
         #endregion
 
@@ -204,11 +211,11 @@ namespace Flubar
 
             if (count == 1)//one to one
             {
-                containerFacade.Register(registration.ServicesTypes.First(), registration.ImplementationType, lifetime);
+                container.Register(registration.ServicesTypes.First(), registration.ImplementationType, lifetime);
             }
             else
             {
-                containerFacade.Register(registration.ServicesTypes, registration.ImplementationType, lifetime);
+                container.Register(registration.ServicesTypes, registration.ImplementationType, lifetime);
             }
         }
 

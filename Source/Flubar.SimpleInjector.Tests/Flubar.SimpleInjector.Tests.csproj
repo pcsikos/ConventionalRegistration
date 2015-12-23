@@ -57,7 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Usage.cs" />
     <Compile Include="ConventionRegistrationTests.cs" />
     <Compile Include="InstanceResolverTests.cs" />
     <Compile Include="ManualRegistrationTests.cs" />

@@ -5,9 +5,9 @@ namespace Flubar
     internal class LifetimeSelector<TLifetime> : ILifetimeSyntax<TLifetime>
         where TLifetime : class
     {
-        private readonly IContainerFacade<TLifetime> container;
+        private readonly IContainer<TLifetime> container;
         
-        public LifetimeSelector(IContainerFacade<TLifetime> container)
+        public LifetimeSelector(IContainer<TLifetime> container)
         {
             this.container = container;
         }

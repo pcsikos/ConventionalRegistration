@@ -10,7 +10,7 @@ namespace TestAssembly
         void Execute(string command);
     }
 
-    class MailCommand : IHandler
+    public class MailHandler : IHandler
     {
         public void Execute(string command)
         {
@@ -18,7 +18,7 @@ namespace TestAssembly
         }
     }
 
-    class SaveCommand : IHandler
+    public class SaveHandler : IHandler
     {
         public void Execute(string command)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
@@ -18,24 +19,35 @@ namespace Flubar.SimpleInjector.Tests
             };
             Container.RegistrationByConvention(config, builder =>
             {
-                builder.ExplicitRegister<ISingletonService, SingletonService>(Lifestyle.Singleton);
-                builder.ExplicitRegister(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
-                builder.ExplicitRegister<DbContext1>(Lifestyle.Scoped);
-                builder.ExplicitRegister<DbContext2>(Lifestyle.Scoped);
+                builder.ExplicitRegistration(c =>
+                {
+                    c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
+                    c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
+                    c.Register<DbContext1>(Lifestyle.Scoped);
+                    c.Register<DbContext2>(Lifestyle.Scoped);
+                    c.Register(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    c.RegisterFunc<ITransientService>();
 
-                builder.ExplicitRegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-                builder.ExplicitRegisterFunc<ITransientService>();
-
-                builder.ExplicitRegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-                builder.ExplicitRegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
-
-
+                    c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
+                    c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+                });
 
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
                      .UsingAllInterfacesStrategy());
             });
+        }
+
+        [TestMethod]
+        public void MyTestMethod()
+        {
+            var container = new Container();
+            container.RegisterCollection<IHandler>(new [] { typeof(MailHandler), typeof(SaveHandler) });
+            container.Register<IHandler, MailHandler>();
+
+            var handlers = container.GetAllInstances<IHandler>().ToArray();
+            var handler = container.GetInstance<IHandler>();
         }
     }
 }
