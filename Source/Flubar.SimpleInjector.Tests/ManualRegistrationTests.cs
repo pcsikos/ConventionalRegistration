@@ -15,8 +15,10 @@ namespace Flubar.SimpleInjector.Tests
     [TestClass]
     public class ManualRegistrationTests : InstanceResolverTests
     {
-        public ManualRegistrationTests()
+        [TestInitialize]
+        public override void Initialize()
         {
+            base.Initialize();
             Container.Register<ITransientService, TransientService>();
             Container.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
             Container.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
@@ -24,10 +26,11 @@ namespace Flubar.SimpleInjector.Tests
             Container.Register<DbContext2>(Lifestyle.Scoped);
             RegisterMultipleServices(new [] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
             //Container.RegisterOpenGeneric(typeof(NLogger<>), typeof(NLogger<>), Lifestyle.Singleton);
-            Container.Register<IDataProvider, XmlDataProvider>();
             RegisterFunc<ITransientService>();
             Container.Register(typeof(IRepository<>), typeof(Repository<>));
             Container.Register<ICommand, Command>();
+            Container.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
+
 
             Container.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
             Container.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));

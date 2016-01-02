@@ -49,7 +49,7 @@ namespace Flubar
 
         public IFilterSyntax Excluding(IEnumerable<Type> types)
         {
-            filteredTypes = filteredTypes.Where(t => types.Contains(t));
+            filteredTypes = filteredTypes.Where(t => !types.Contains(t));
             return this;
         }
 

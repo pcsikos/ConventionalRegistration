@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Container adapter
+    /// </summary>
+    /// <typeparam name="TContainerLifetime"></typeparam>
     public interface IContainer<TContainerLifetime>
         where TContainerLifetime : class
     {
@@ -11,7 +15,7 @@ namespace Flubar
         void Register<TService>(Func<TService> instanceCreator, TContainerLifetime lifetime = null) where TService : class;
         TContainerLifetime GetSingletonLifetime();
         TContainerLifetime GetDefaultLifetime();
-        //object InnerContainer { get; }
         event EventHandler<RegistrationEventArgs> RegistrationCreated;
+        event EventHandler<ImplementationExcludedEventArgs> ImplementationExcluded;
     }
 }

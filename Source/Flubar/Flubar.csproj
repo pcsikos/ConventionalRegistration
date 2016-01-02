@@ -46,8 +46,7 @@
     <Compile Include="AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="AbstractContainer.cs" />
-    <Compile Include="ConventionDefinition.cs" />
-    <Compile Include="DiagnosticMode.cs" />
+    <Compile Include="DiagnosticLevel.cs" />
     <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
     <Compile Include="IConfigurable.cs" />
@@ -61,6 +60,8 @@
     <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="IServiceFilter.cs" />
+    <Compile Include="ITypeExclusion.cs" />
+    <Compile Include="IUsageTracker.cs" />
     <Compile Include="NullServiceFilter.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Syntax\IStrategySyntax.cs" />
     <Compile Include="Syntax\ITypeSourceSyntax.cs" />
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
+    <Compile Include="ImplementationExcludedEventArgs.cs" />
     <Compile Include="TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
@@ -88,6 +90,7 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
+    <Compile Include="UsageTracker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

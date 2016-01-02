@@ -46,6 +46,7 @@
     <Compile Include="Data\DbContext2.cs" />
     <Compile Include="Decorator.cs" />
     <Compile Include="DummyList.cs" />
+    <Compile Include="ExcludeFromRegistrationAttribute.cs" />
     <Compile Include="FileOperation.cs" />
     <Compile Include="Handlers.cs" />
     <Compile Include="Repository.cs" />

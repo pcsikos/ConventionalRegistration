@@ -5,6 +5,7 @@ using Flubar.Syntax;
 
 namespace Flubar
 {
+    //TODO: exclude logger
     public class ConventionBuilder<TLifetime> : IConfigurationServiceExclusion, IDisposable
         where TLifetime : class
     {
@@ -13,7 +14,7 @@ namespace Flubar
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly BehaviorConfiguration behaviorConfiguration;
-        private readonly ISet<Type> excludedImplementations;
+        private readonly IDictionary<Type, ExcludedImplementation> excludedImplementations;
         //private IList<Type> registeredServices;
 
         public ConventionBuilder(IContainer<TLifetime> container, BehaviorConfiguration behaviorConfiguration)
@@ -22,30 +23,32 @@ namespace Flubar
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             this.container = container;
             container.RegistrationCreated += ContainerRegistrationCreated;
+            container.ImplementationExcluded += ContainerImplementationExcluded;
             //containerFacade = new ContainerDecorator<TLifetime>(container, (services, implementation) => ExcludeService(services, implementation));
             conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
-            excludedImplementations = new HashSet<Type>();
+            excludedImplementations = new Dictionary<Type, ExcludedImplementation>();
+        }
+
+        private void ContainerImplementationExcluded(object sender, ImplementationExcludedEventArgs e)
+        {
+            ExcludeImplementation(e.Implementation, e.Services);
         }
 
         private void ContainerRegistrationCreated(object sender, RegistrationEventArgs e)
         {
-            if (e.Services.Count() == 0)
-            {
-                ExcludeImplementation(e.Implementation);
-            }
-            else
-            {
-                ExcludeService(e.Services, e.Implementation);
-            }
+            ExcludeService(e.Services, e.Implementation);
         }
 
-        private void ExcludeImplementation(Type implementation)
+        private void ExcludeImplementation(Type implementation, IEnumerable<Type> services)
         {
-            if (!excludedImplementations.Contains(implementation))
+            if (!excludedImplementations.ContainsKey(implementation))
             {
-                excludedImplementations.Add(implementation);
+                excludedImplementations.Add(implementation, new ExcludedImplementation(implementation, services));
+                return;
             }
+            var excluded = excludedImplementations[implementation];
+            excluded.AddServices(services);
         }
 
         #region IConventionSyntax<TLifetime> Members
@@ -55,36 +58,68 @@ namespace Flubar
             lifetimeSelection = GetDefaultLifetimeWhenNull(lifetimeSelection);
             return Define(syntax => rules(syntax).RegisterEach((registration) =>
             {
-                registration = ValidateRegistration(registration);
-                if (registration == null)
+                var newRegistration = ValidateRegistration(registration);
+                if (newRegistration == null)
                 {
                     return;
                 }
-                AutomaticRegistration(registration, lifetimeSelection(lifetimeSelector));
-                Exclude(registration);
+                AutomaticRegistration(newRegistration, lifetimeSelection(lifetimeSelector));
             }));
         }
 
         private IRegistrationEntry ValidateRegistration(IRegistrationEntry oldRegistration)
         {
-            IRegistrationEntry registration = null;
-            if (behaviorConfiguration.ExcludeRegisteredServices)
+            IRegistrationEntry registration = oldRegistration;
+            if (excludedImplementations.ContainsKey(oldRegistration.ImplementationType))
             {
-                var allowedServices = oldRegistration.ServicesTypes.Where(serviceType => !registeredServices.ContainsKey(serviceType)).ToArray();
-                if (allowedServices.Length == 0)
+                var excludedImplementation = excludedImplementations[oldRegistration.ImplementationType];
+                bool excludeAll = !excludedImplementation.Services.Any();
+                if (!excludeAll && excludedImplementation.Services.Any(excludedService => oldRegistration.ServicesTypes.Any(service => service == excludedService)))
                 {
-                    WriteAboutExcludedServices(oldRegistration, allowedServices);
+                    var allowedServices = oldRegistration.ServicesTypes.Where(service => !excludedImplementation.Services.Any(excludedService => excludedService == service));
+                    excludeAll = !allowedServices.Any();
+                    if (!excludeAll)
+                    {
+                        registration = new RegistrationEntry(oldRegistration.ImplementationType, allowedServices);
+                        WriteAboutExcludedImplementation(excludedImplementation.Implementation, excludedImplementation.Services);
+                    }
+                }
+                if (excludeAll)//exclude every service
+                {
+                    WriteAboutExcludedImplementation(excludedImplementation.Implementation);
                     return null;
                 }
-                if (allowedServices.Length != oldRegistration.ServicesTypes.Count())
+            }
+            if (behaviorConfiguration.ExcludeRegisteredServices)
+            {
+                var allowedServices = registration.ServicesTypes.Where(serviceType => !registeredServices.ContainsKey(serviceType)).ToArray();
+                if (allowedServices.Length == 0)
                 {
-                    WriteAboutExcludedServices(oldRegistration, allowedServices);
-                    registration = new RegistrationEntry(oldRegistration.ImplementationType, allowedServices);
+                    WriteAboutExcludedServices(registration, allowedServices);
+                    return null;
+                }
+                if (allowedServices.Length != registration.ServicesTypes.Count())
+                {
+                    WriteAboutExcludedServices(registration, allowedServices);
+                    registration = new RegistrationEntry(registration.ImplementationType, allowedServices);
                 }
             }
-            registration = registration ?? oldRegistration;
+            //registration = registration ?? oldRegistration;
             WriteAboutRegistration(registration);
             return registration;
+        }
+
+        private void WriteAboutExcludedImplementation(Type implementation)
+        {
+            WriteInfo("Excluded Implementation {0}.", implementation.FullName);
+        }
+
+        private void WriteAboutExcludedImplementation(Type implementation, IEnumerable<Type> excludedServices)
+        {
+            foreach (var serviceType in excludedServices)
+            {
+                WriteInfo("Excluded Implementation {0} for service {1}.", implementation.FullName, serviceType.FullName);
+            }
         }
 
         private void WriteAboutRegistration(IRegistrationEntry registration)
@@ -97,12 +132,12 @@ namespace Flubar
 
         private void WriteInfo(string message)
         {
-            behaviorConfiguration.Log(DiagnosticMode.Info, message);
+            behaviorConfiguration.Log(DiagnosticLevel.Info, message);
         }
 
         private void WriteInfo(string format, params object[] args)
         {
-            behaviorConfiguration.Log(DiagnosticMode.Info, string.Format(format, args));
+            behaviorConfiguration.Log(DiagnosticLevel.Info, string.Format(format, args));
         }
 
         private void WriteAboutExcludedServices(IRegistrationEntry registration, Type[] allowedServices)
@@ -114,8 +149,9 @@ namespace Flubar
                     continue;
                 }
                 var registeredService = registeredServices[serviceType];
-                var skippingMessage = string.Format("Skipping {0} to {1}, because {2} is already registered to this type.", 
-                        serviceType.FullName, registration.ImplementationType.FullName, registeredService.Implementation.FullName);
+                var registeredImplementationName = GetRegisteredServiceImplementationName(registeredService);
+                var skippingMessage = string.Format("Skipping {0} to {1}, because {2} is already registered to this service.",
+                        serviceType.FullName, registration.ImplementationType.FullName, registeredImplementationName);
                 if (registration.ImplementationType == registeredService.Implementation)
                 {
                     WriteInfo(skippingMessage);
@@ -127,9 +163,14 @@ namespace Flubar
             }
         }
 
+        private static string GetRegisteredServiceImplementationName(RegisteredService registeredService)
+        {
+            return registeredService.Implementation == null ? "[Unknown]" : registeredService.Implementation.FullName;
+        }
+
         private void WriteWarning(string message)
         {
-            behaviorConfiguration.Log(DiagnosticMode.Warning, message);
+            behaviorConfiguration.Log(DiagnosticLevel.Warning, message);
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -137,8 +178,6 @@ namespace Flubar
             conventions.Add(convention);
             return this;
         }
-
-
 
         #endregion
 
@@ -232,8 +271,6 @@ namespace Flubar
         private IServiceFilter GetServiceFilterFromConfiguration()
         {
             var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
-            //var serviceFilter = behaviorConfiguration.ExcludeRegisteredServices && behaviorConfiguration.Diagnostic == DiagnosticMode.Disabled
-            //    ? new AggregateServiceFilter(new[] { configurationServiceFilter, new ExcludedServiceFilter(registeredServices, t => false) }) : configurationServiceFilter;
             return configurationServiceFilter;
         }
 
@@ -248,19 +285,34 @@ namespace Flubar
                 this.implementation = implementation;
             }
 
-            public Type Implementation
+            public Type Implementation => implementation;
+
+            public Type ServiceType => serviceType;
+        }
+
+        class ExcludedImplementation
+        {
+            readonly Type implementation;
+            readonly IList<Type> excludedServices;
+
+            public ExcludedImplementation(Type implementation, IEnumerable<Type> services)
             {
-                get
-                {
-                    return implementation;
-                }
+                this.excludedServices = new List<Type>(services);
+                this.implementation = implementation;
             }
 
-            public Type ServiceType
+            public Type Implementation => implementation;
+
+            public IEnumerable<Type> Services => excludedServices;
+
+            public void AddServices(IEnumerable<Type> services)
             {
-                get
+                foreach (var service in services)
                 {
-                    return serviceType;
+                    if (!excludedServices.Contains(service))
+                    {
+                        excludedServices.Add(service);
+                    }
                 }
             }
         }

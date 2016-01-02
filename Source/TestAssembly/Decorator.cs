@@ -18,13 +18,18 @@ namespace TestAssembly
         string GetString();
     }
 
-    public class TransactionCommand : ICommand
+    public class TransactionCommand : ICommand, IDisposable, ITransaction
     {
         readonly ICommand command;
 
         public TransactionCommand(ICommand command)
         {
             this.command = command;
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
 
         public string GetString()
@@ -46,5 +51,10 @@ namespace TestAssembly
         {
             return "c" + command.GetString() + "c";
         }
+    }
+
+    public interface ITransaction
+    {
+
     }
 }

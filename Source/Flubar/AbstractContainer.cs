@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flubar
 {
@@ -10,12 +7,7 @@ namespace Flubar
         where TLifetime : class
     {
         public event EventHandler<RegistrationEventArgs> RegistrationCreated;
-
-        //public void Register<TService>(Func<TService> instanceCreator, TLifetime lifetime = null)
-        //    where TService : class
-        //{
-        //    Register(instanceCreator, lifetime ?? GetDefaultLifetime());
-        //}
+        public event EventHandler<ImplementationExcludedEventArgs> ImplementationExcluded;
 
         public void Register<TService, TImplementation>(TLifetime lifetime = null)
             where TService : class
@@ -41,6 +33,14 @@ namespace Flubar
             if (RegistrationCreated != null)
             {
                 RegistrationCreated(this, e);
+            }
+        }
+
+        protected virtual void OnImplementationExcluded(ImplementationExcludedEventArgs e)
+        {
+            if (ImplementationExcluded != null)
+            {
+                ImplementationExcluded(this, e);
             }
         }
     }

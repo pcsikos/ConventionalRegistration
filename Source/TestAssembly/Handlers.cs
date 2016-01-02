@@ -18,6 +18,7 @@ namespace TestAssembly
         }
     }
 
+    [ExcludeFromRegistration]
     public class SaveHandler : IHandler
     {
         public void Execute(string command)

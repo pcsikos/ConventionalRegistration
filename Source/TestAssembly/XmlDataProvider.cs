@@ -7,6 +7,10 @@ namespace TestAssembly
 {
     public class XmlDataProvider : IDataProvider
     {
+        public XmlDataProvider(string pathToDirectory)
+        {
+
+        }
     }
 
     public interface IDataProvider

@@ -5,26 +5,22 @@ using SimpleInjector;
 using TestAssembly;
 using SimpleInjector.Extensions.LifetimeScoping;
 using TestAssembly.Data;
+using System.Diagnostics;
 
 namespace Flubar.SimpleInjector.Tests
 {
     public abstract class InstanceResolverTests
     {
-        private readonly Container container;
+        private Container container;
 
-        public InstanceResolverTests()
+        [TestInitialize]
+        public virtual void Initialize()
         {
             container = new Container();
             container.Options.DefaultScopedLifestyle = new LifetimeScopeLifestyle();
         }
 
-        protected Container Container
-        {
-            get
-            {
-                return container;
-            }
-        }
+        protected Container Container => container;
 
         protected object GetInstance(Type type)
         {
@@ -51,6 +47,7 @@ namespace Flubar.SimpleInjector.Tests
 
             instance1.Should().NotBeNull();
             instance1.Should().NotBeSameAs(instance2);
+
         }
 
         [TestMethod]
@@ -66,7 +63,7 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_DbConnectionInSameScope_ShouldAlwaysReturnSameInstance()
         {
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 var instance1 = GetInstance<DbConnection>();
                 var instance2 = GetInstance<DbConnection>();
@@ -80,14 +77,14 @@ namespace Flubar.SimpleInjector.Tests
         public void Resolving_DbConnectionInDifferentScope_ShouldReturnDifferentInstance()
         {
             DbConnection instance1;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 instance1 = GetInstance<DbConnection>();
 
             }
 
             DbConnection instance2;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 instance2 = GetInstance<DbConnection>();
             }
@@ -98,7 +95,7 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_DbContext1InSameScope_ShouldAlwaysReturnSameInstance()
         {
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 var instance1 = GetInstance<DbContext1>();
                 var instance2 = GetInstance<DbContext1>();
@@ -112,16 +109,16 @@ namespace Flubar.SimpleInjector.Tests
         public void Resolving_DbContext1InDifferentScope_ShouldReturnDifferentInstance()
         {
             DbContext1 instance1;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 instance1 = GetInstance<DbContext1>();
 
             }
 
             DbContext1 instance2;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
-                instance2 = container.GetInstance<DbContext1>();
+                instance2 = Container.GetInstance<DbContext1>();
             }
             instance1.Should().NotBeNull();
             instance1.Should().NotBeSameAs(instance2);
@@ -130,7 +127,7 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_DbContext2InSameScope_ShouldAlwaysReturnSameInstance()
         {
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 var instance1 = GetInstance<DbContext2>();
                 var instance2 = GetInstance<DbContext2>();
@@ -144,14 +141,14 @@ namespace Flubar.SimpleInjector.Tests
         public void Resolving_DbContext2InDifferentScope_ShouldReturnDifferentInstance()
         {
             DbContext2 instance1;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 instance1 = GetInstance<DbContext2>();
 
             }
 
             DbContext2 instance2;
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 instance2 = GetInstance<DbContext2>();
             }
@@ -162,7 +159,7 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_DbContextsInSameScope_ShouldHaveSameDbConnectionInstance()
         {
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 var context1 = GetInstance<DbContext1>();
                 var context2 = GetInstance<DbContext2>();
@@ -210,7 +207,7 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_OpenGeneric_ShouldInstanceWithCorrectGenericArgument()
         {
-            using (container.BeginLifetimeScope())
+            using (Container.BeginLifetimeScope())
             {
                 var customerRepository = GetInstance<IRepository<Customer>>();
                 var orderRepository = GetInstance<IRepository<Order>>();
@@ -229,6 +226,23 @@ namespace Flubar.SimpleInjector.Tests
 
             result.Should().NotBeNull();
             result.Should().Be("cbabc");
+        }
+
+        private TestContext testContextInstance;
+        /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext
+        {
+            get
+            {
+                return testContextInstance;
+            }
+            set
+            {
+                testContextInstance = value;
+            }
         }
     }
 }

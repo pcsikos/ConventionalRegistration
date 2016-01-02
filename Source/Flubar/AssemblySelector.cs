@@ -68,7 +68,7 @@ namespace Flubar
 
         public IStrategySyntax ExplicitlySpecifyTypes(params Type[] types)
         {
-            throw new NotImplementedException();
+            return new TypeSelector(types, serviceFilter);
         }
 
         #endregion

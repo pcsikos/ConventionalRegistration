@@ -42,9 +42,9 @@ namespace Flubar
         /// </summary>
         public bool ExcludeRegisteredServices { get; set; }
 
-        private Action<DiagnosticMode, string> log;
+        private Action<DiagnosticLevel, string> log;
 
-        public Action<DiagnosticMode, string> Log
+        public Action<DiagnosticLevel, string> Log
         {
             get { return log; }
             set

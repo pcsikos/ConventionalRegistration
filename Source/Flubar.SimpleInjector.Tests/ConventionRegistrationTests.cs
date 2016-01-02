@@ -3,19 +3,27 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
+using System.Diagnostics;
+using System;
+using SimpleInjector.Extensions.LifetimeScoping;
 
 namespace Flubar.SimpleInjector.Tests
 {
     [TestClass]
     public class ConventionRegistrationTests : InstanceResolverTests
     {
-        public ConventionRegistrationTests()
+        [TestInitialize]
+        public override void Initialize()
         {
+            base.Initialize();
+
             var config = BehaviorConfiguration.Default;
             config.Log = (mode, message) =>
             {
-                if (mode == DiagnosticMode.Warning)
-                System.Diagnostics.Debug.WriteLine(message);
+                if (mode == DiagnosticLevel.Warning)
+                {
+                    TestContext.WriteLine(message);
+                }
             };
             Container.RegistrationByConvention(config, builder =>
             {
@@ -23,6 +31,7 @@ namespace Flubar.SimpleInjector.Tests
                 {
                     c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
                     c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
+                    c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
                     c.Register(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
@@ -35,9 +44,13 @@ namespace Flubar.SimpleInjector.Tests
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
+                     .WithoutAttribute<ExcludeFromRegistrationAttribute>()
+                     .Excluding(typeof(TransientService2))//, typeof(XmlDataProvider))
                      .UsingAllInterfacesStrategy());
             });
         }
+
+       
 
         [TestMethod]
         public void MyTestMethod()

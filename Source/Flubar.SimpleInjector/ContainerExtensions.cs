@@ -17,7 +17,7 @@ namespace Flubar.SimpleInjector
                 configuration = BehaviorConfiguration.Default;
             }
 
-            var facade = new SimpleInjectorContainerFacade(container);
+            var facade = new SimpleInjectorContainerAdapter(container);
             using (var builder = new SimpleInjectorConventionBuilder(facade, configuration))
             {
                 convention(builder);

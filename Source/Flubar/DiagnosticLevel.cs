@@ -1,6 +1,6 @@
 ﻿namespace Flubar
 {
-    public enum DiagnosticMode
+    public enum DiagnosticLevel
     {
         Info,
         Warning
