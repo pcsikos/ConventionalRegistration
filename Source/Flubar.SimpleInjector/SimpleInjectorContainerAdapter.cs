@@ -4,24 +4,48 @@ using SimpleInjector;
 
 namespace Flubar.SimpleInjector
 {
-    class SimpleInjectorContainerAdapter : AbstractContainer<Lifestyle>, ISimpleInjectorContainer
+    class SimpleInjectorContainerAdapter : ISimpleInjectorContainer
     {
         private readonly Container container;
-        public SimpleInjectorContainerAdapter(Container container)
+        private readonly ITypeExclusionTracker typeExclusionTracker;
+
+        public SimpleInjectorContainerAdapter(Container container, ITypeExclusionTracker typeExclusionTracker)
         {
             this.container = container;
+            this.typeExclusionTracker = typeExclusionTracker;
+        }
+
+        internal Container Container
+        {
+            get
+            {
+                return container;
+            }
         }
 
         #region IContainer<Lifestyle> Members
 
-        public override void Register(Type serviceType, Type implementation, Lifestyle lifetime)
+        public void Register<TService, TImplementation>(Lifestyle lifetime = null)
+            where TService : class
+            where TImplementation : class, TService
         {
-            container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
-            OnServiceRegistered(new RegistrationEventArgs(serviceType, implementation));
-            //System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", serviceType, implementation, lifetime);
+            Register(typeof(TService), typeof(TImplementation), lifetime);
         }
 
-        public override void Register(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
+        public void Register<TConcrete>(Lifestyle lifetime)
+            where TConcrete : class
+        {
+            Register<TConcrete, TConcrete>(lifetime);
+        }
+
+        public void Register(Type serviceType, Type implementation, Lifestyle lifetime)
+        {
+            container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
+            typeExclusionTracker.ExcludeService(serviceType, implementation);
+            //container.RegisterConditional<>
+        }
+
+        public void RegisterAll(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
         {
             if (lifetime == null)
             {
@@ -32,55 +56,31 @@ namespace Flubar.SimpleInjector
             {
                 container.AddRegistration(type, registration);
             }
-            OnServiceRegistered(new RegistrationEventArgs(serviceTypes, implementation));
-            //System.Diagnostics.Debug.WriteLine("{0} => {1} ({2})", string.Join(", ", serviceTypes.Select(x => x.Name).ToArray()), implementation, lifetime);
+            typeExclusionTracker.ExcludeServices(serviceTypes, implementation);
         }
 
-        public override void Register<TService>(Func<TService> instanceCreator, Lifestyle lifetime = null)
+        public void Register<TService>(Func<TService> instanceCreator, Lifestyle lifetime = null) where TService : class
         {
             container.Register<TService>(instanceCreator, lifetime ?? GetDefaultLifetime());
             if (typeof(TService).IsInterface)
             {
-                OnServiceRegistered(new RegistrationEventArgs(typeof(TService)));
+                typeExclusionTracker.ExcludeService(typeof(TService));
             }
-            //todo: if tservice is interface exclude future registration for this service
-
         }
 
-        public override Lifestyle GetSingletonLifetime()
+        public Lifestyle GetSingletonLifetime()
         {
             return Lifestyle.Singleton;
         }
 
-        public override Lifestyle GetDefaultLifetime()
+        public Lifestyle GetDefaultLifetime()
         {
             return Lifestyle.Transient;
         }
 
-        //public Container InnerContainer
-        //{
-        //    get { return container; }
-        //}
-
-        //object IContainerFacade<Lifestyle>.InnerContainer
-        //{
-        //    get { return container; }
-        //}
-
         #endregion
 
         #region ISimpleInjectorContainer Members
-
-        //public void RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifestyle)
-        //{
-        //    var registration = lifestyle.CreateRegistration(implementation, container);
-        //    foreach (var serviceType in serviceTypes.Where(t => t != typeof(IDisposable)))
-        //    {
-        //        container.AddRegistration(serviceType, registration);
-        //    }
-        //    OnServiceRegistered(new RegistrationEventArgs(serviceTypes, implementation));
-        //    //todo: ExcludeService(serviceTypes, implementation);
-        //}
 
         public void RegisterFunc<T>()
             where T : class
@@ -91,20 +91,15 @@ namespace Flubar.SimpleInjector
         public void RegisterDecorator(Type serviceType, Type decoratorType)
         {
             container.RegisterDecorator(serviceType, decoratorType);
-            OnImplementationExcluded(new ImplementationExcludedEventArgs(decoratorType, serviceType));
+            typeExclusionTracker.ExcludeImplementation(decoratorType, new[] { serviceType });
         }
 
         public void RegisterCollection<TService>(IEnumerable<Type> implementationTypes)
             where TService : class
         {
             container.RegisterCollection<TService>(implementationTypes);
-            //foreach (var implementationType in implementationTypes)
-            //{
-            //    OnServiceRegistered(new RegistrationEventArgs(typeof(TService), implementationType));
-            //}
         }
 
         #endregion
-
     }
 }

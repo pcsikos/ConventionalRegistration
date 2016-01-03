@@ -25,11 +25,11 @@ namespace Flubar.SimpleInjector.Tests
             Container.Register<DbContext1>(Lifestyle.Scoped);
             Container.Register<DbContext2>(Lifestyle.Scoped);
             RegisterMultipleServices(new [] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-            //Container.RegisterOpenGeneric(typeof(NLogger<>), typeof(NLogger<>), Lifestyle.Singleton);
             RegisterFunc<ITransientService>();
             Container.Register(typeof(IRepository<>), typeof(Repository<>));
             Container.Register<ICommand, Command>();
             Container.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
+            Container.RegisterCollection(typeof(IValidator<>), new[] { typeof(CustomerLocationValidator), typeof(CustomerCreditValidator), typeof(OrderValidator) });
 
 
             Container.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));

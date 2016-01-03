@@ -54,6 +54,7 @@
     <Compile Include="TransientService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnmanagedResources.cs" />
+    <Compile Include="Validator.cs" />
     <Compile Include="XmlDataProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

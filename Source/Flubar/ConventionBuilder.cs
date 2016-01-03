@@ -12,25 +12,18 @@ namespace Flubar
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly BehaviorConfiguration behaviorConfiguration;
-        private readonly ITypeExclusionTracker exclusionTracker;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
+        private readonly IDictionary<Type, CustomRegistration> customRegistrations = new Dictionary<Type, CustomRegistration>();
 
         public ConventionBuilder(IContainer<TLifetime> container, 
-            BehaviorConfiguration behaviorConfiguration)
-            //RegistrationEntryValidator registrationEntryValidator,
-            //ILog logger)
+            BehaviorConfiguration behaviorConfiguration,
+            ITypeExclusionTracker exclusionTracker)
         {
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             this.container = container;
-            container.RegistrationCreated += ContainerRegistrationCreated;
-            container.ImplementationExcluded += ContainerImplementationExcluded;
-            //containerFacade = new ContainerDecorator<TLifetime>(container, (services, implementation) => ExcludeService(services, implementation));
             conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
-            exclusionTracker = new TypeExclusionTracker();
-            //this.logger = logger;
-            //this.registrationEntryValidator = registrationEntryValidator;
             logger = new DiagnosticLogger(behaviorConfiguration);
             registrationEntryValidator = new RegistrationEntryValidator(exclusionTracker, logger);
         }
@@ -45,9 +38,35 @@ namespace Flubar
                 {
                     return;
                 }
+                if (AddToCustomRegistrationIfApplicable(services, registration.ImplementationType))
+                {
+                    return;
+                }
+
                 AutomaticRegistration(registration.ImplementationType, services, lifetimeSelection(lifetimeSelector));
                 WriteAboutRegistration(registration.ImplementationType, services);
             }));
+        }
+
+        private bool AddToCustomRegistrationIfApplicable(IEnumerable<Type> services, Type implementationType)
+        {
+            foreach (var serviceType in services)
+            {
+                if (customRegistrations.ContainsKey(serviceType))
+                {
+                    var customRegistration = customRegistrations[serviceType];
+                    customRegistration.AddImlementation(implementationType);
+                    return true;
+                }
+                var genericType = serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : null;
+                if (genericType != null && customRegistrations.ContainsKey(genericType))
+                {
+                    var customRegistration = customRegistrations[genericType];
+                    customRegistration.AddImlementation(implementationType);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -56,14 +75,13 @@ namespace Flubar
             return this;
         }
 
-        private void ContainerImplementationExcluded(object sender, ImplementationExcludedEventArgs e)
+        protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
         {
-            exclusionTracker.ExcludeImplementation(e.Implementation, e.Services);
-        }
-
-        private void ContainerRegistrationCreated(object sender, RegistrationEventArgs e)
-        {
-            exclusionTracker.ExcludeServices(e.Services, e.Implementation);
+            if (customRegistrations.ContainsKey(serviceType))
+            {
+                throw new ArgumentException();
+            }
+            customRegistrations.Add(serviceType, new CustomRegistration(serviceType, callback));
         }
 
         private Func<ILifetimeSyntax<TLifetime>, TLifetime> GetDefaultLifetimeWhenNull(Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection)
@@ -80,7 +98,7 @@ namespace Flubar
             }
             else
             {
-                container.Register(services, implementation, lifetime);
+                container.RegisterAll(services, implementation, lifetime);
             }
         }
 
@@ -108,8 +126,45 @@ namespace Flubar
             {
                 convention(asmSelector);
             }
+
+            foreach (var customRegistration in customRegistrations.Values)
+            {
+                customRegistration.InvokeCallback();
+            }
         }
 
         #endregion
+
+        private class CustomRegistration
+        {
+            readonly Type serviceType;
+            readonly Action<IEnumerable<Type>> callback;
+            private readonly ISet<Type> implementations;
+
+            public CustomRegistration(Type serviceType, Action<IEnumerable<Type>> callback)
+            {
+                this.callback = callback;
+                this.serviceType = serviceType;
+                implementations = new HashSet<Type>();
+            }
+
+            public void AddImlementation(Type implementationType)
+            {
+                if (!implementations.Contains(implementationType))
+                {
+                    implementations.Add(implementationType);
+                }
+            }
+
+            public IEnumerable<Type> GetImplementations()
+            {
+                return implementations;
+            }
+
+            internal void InvokeCallback()
+            {
+                callback(GetImplementations());
+            }
+        }
     }
 }

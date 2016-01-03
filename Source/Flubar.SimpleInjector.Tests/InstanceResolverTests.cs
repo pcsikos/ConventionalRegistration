@@ -224,9 +224,26 @@ namespace Flubar.SimpleInjector.Tests
 
             var result = command.GetString();
 
-            result.Should().NotBeNull();
-            result.Should().Be("cbabc");
+            result.Should().NotBeNull().And.Be("cbabc");
         }
+
+        [TestMethod]
+        public void Resolving_CollectionOfOpenGenericsForDefinedType()
+        {
+            var customerValidators = Container.GetAllInstances<IValidator<Customer>>();
+            var orderValidators = Container.GetAllInstances<IValidator<Order>>();
+
+            customerValidators.Should().NotBeNull().And.HaveCount(2);
+            orderValidators.Should().NotBeNull().And.HaveCount(1);
+        }
+
+        [TestMethod]
+        public void Resolving_CollectionOfOpenGenericsForUndefinedType()
+        {
+            var productValidators = Container.GetAllInstances<IValidator<Product>>();
+            productValidators.Should().BeEmpty();
+        }
+
 
         private TestContext testContextInstance;
         /// <summary>

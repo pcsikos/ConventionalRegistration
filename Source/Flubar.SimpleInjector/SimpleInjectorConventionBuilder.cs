@@ -9,10 +9,12 @@ namespace Flubar.SimpleInjector
 {
     public class SimpleInjectorConventionBuilder : ConventionBuilder<Lifestyle>
     {
-        private readonly ISimpleInjectorContainer containerAdapter;
+        private readonly SimpleInjectorContainerAdapter containerAdapter;
 
-        internal SimpleInjectorConventionBuilder(ISimpleInjectorContainer containerAdapter, BehaviorConfiguration behaviorConfiguration) 
-            : base(containerAdapter, behaviorConfiguration)
+        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapter containerAdapter, 
+            BehaviorConfiguration behaviorConfiguration, 
+            ITypeExclusionTracker exclusionTracker) 
+            : base(containerAdapter, behaviorConfiguration, exclusionTracker)
         {
             this.containerAdapter = containerAdapter;
         }
@@ -20,6 +22,14 @@ namespace Flubar.SimpleInjector
         public void ExplicitRegistration(Action<ISimpleInjectorContainer> explicitRegistrations)
         {
             explicitRegistrations(containerAdapter);
+        }
+
+        public void RegisterAsCollection(Type serviceType)
+        {
+            SearchForImplementations(serviceType, types =>
+            {
+                containerAdapter.Container.RegisterCollection(serviceType, types);
+            });
         }
     }
 }

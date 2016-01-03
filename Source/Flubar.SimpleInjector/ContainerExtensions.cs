@@ -17,19 +17,12 @@ namespace Flubar.SimpleInjector
                 configuration = BehaviorConfiguration.Default;
             }
 
-            var facade = new SimpleInjectorContainerAdapter(container);
-            using (var builder = new SimpleInjectorConventionBuilder(facade, configuration))
+            var typeExclusionTracker = new TypeExclusionTracker();
+            var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
+            using (var builder = new SimpleInjectorConventionBuilder(adapter, configuration, typeExclusionTracker))
             {
                 convention(builder);
             }
         }
-
-       
-
-        //public static IConventionSyntax<Lifestyle> Register(this IConventionSyntax<Lifestyle> syntax, Action<INotifySyntax> notify)
-        //{
-        //    notify(syntax.Notify);
-        //    return syntax;
-        //}
     }
 }

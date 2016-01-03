@@ -19,9 +19,19 @@ namespace TestAssembly
 
     }
 
-    public class Customer
+    public interface ICustomerRepository : IRepository<Customer>
     {
 
+    }
+
+    public class CustomerRepository : ICustomerRepository
+    {
+
+    }
+
+    public class Customer
+    {
+        public string Name { get; set; }
     }
 
     public class Order

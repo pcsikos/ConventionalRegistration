@@ -45,7 +45,6 @@
     <Compile Include="AggregateServiceFilter.cs" />
     <Compile Include="AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
-    <Compile Include="AbstractContainer.cs" />
     <Compile Include="DiagnosticLevel.cs" />
     <Compile Include="DiagnosticLogger.cs" />
     <Compile Include="ExcludedServiceFilter.cs" />

@@ -6,6 +6,7 @@ using TestAssembly.Data;
 using System.Diagnostics;
 using System;
 using SimpleInjector.Extensions.LifetimeScoping;
+using System.Collections.Generic;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -34,33 +35,23 @@ namespace Flubar.SimpleInjector.Tests
                     c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
-                    c.Register(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
                     c.RegisterFunc<ITransientService>();
 
                     c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
                     c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
                 });
 
+                builder.RegisterAsCollection(typeof(IValidator<>));
+
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
                      .WithoutAttribute<ExcludeFromRegistrationAttribute>()
-                     .Excluding(typeof(TransientService2))//, typeof(XmlDataProvider))
+                     .Excluding(typeof(TransientService2), typeof(Repository<>), typeof(XmlDataProvider))
                      .UsingAllInterfacesStrategy());
             });
-        }
-
-       
-
-        [TestMethod]
-        public void MyTestMethod()
-        {
-            var container = new Container();
-            container.RegisterCollection<IHandler>(new [] { typeof(MailHandler), typeof(SaveHandler) });
-            container.Register<IHandler, MailHandler>();
-
-            var handlers = container.GetAllInstances<IHandler>().ToArray();
-            var handler = container.GetInstance<IHandler>();
+            Container.RegisterConditional(typeof(IRepository<>), typeof(Repository<>), context => !context.Handled);
         }
     }
 }
