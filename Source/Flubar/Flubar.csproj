@@ -50,6 +50,7 @@
     <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
     <Compile Include="IConfigurable.cs" />
+    <Compile Include="IImplementationExclusion.cs" />
     <Compile Include="Infrastructure\Check.cs" />
     <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="IServiceFilter.cs" />
-    <Compile Include="ITypeExclusion.cs" />
+    <Compile Include="IServiceExclusion.cs" />
     <Compile Include="IUsageTracker.cs" />
     <Compile Include="NullServiceFilter.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Syntax\ITypeSourceSyntax.cs" />
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
     <Compile Include="ImplementationExcludedEventArgs.cs" />
+    <Compile Include="TypeExclusionTracker.cs" />
     <Compile Include="TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />

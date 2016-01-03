@@ -12,10 +12,10 @@ namespace Flubar.Syntax
         void RegisterEach(Action<IRegistrationEntry> handleRegistration);
 
         ///// <summary>
-        ///// Register one registration at a time for each registrations. Need to call INotify.Notify to mark Registration as registered.
+        ///// Register one registration at a time for each registrations. Need to call IServiceExclusion methods to mark services as registered.
         ///// </summary>
         ///// <param name="handleRegistration">Action method to do a user defined registration. Second parameter INotify van be used to mark the current registration as registered.</param>
-        //void RegisterEach(Action<IRegistrationEntry, ITypeExclusion> handleRegistration);
+        void RegisterEach(Action<IRegistrationEntry, IServiceExclusion> handleRegistration);
 
         /// <summary>
         /// Register all registration in one call. All registrations is marked as registered automatically.
@@ -24,11 +24,9 @@ namespace Flubar.Syntax
         void RegisterAll(Action<IEnumerable<IRegistrationEntry>> handleRegistration);
 
         ///// <summary>
-        ///// Register all registration in one call. Need to call INotify.Notify to mark Registration as registered.
+        ///// Register all registration in one call. Need to call IServiceExclusion methods to mark services as registered.
         ///// </summary>
         ///// <param name="handleRegistration">Action method to do a user defined registrations. Second parameter INotify van be used to mark the current registration as registered.</param>
-        //void RegisterAll(Action<IEnumerable<IRegistrationEntry>, ITypeExclusion> handleRegistration);
-
-        //IRegisterSyntax RegisterEach(Action<IImplementationRegistration, INotifySyntax> action);
+        void RegisterAll(Action<IEnumerable<IRegistrationEntry>, IServiceExclusion> handleRegistration);
     }
 }

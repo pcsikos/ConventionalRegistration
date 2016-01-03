@@ -20,7 +20,7 @@ namespace Flubar
         {
             this.filter = filter;
             excludedServices = new Type[0];
-            log = (mode, message) => { };
+            log = (level, message) => { };
         }
 
         public static BehaviorConfiguration Default
