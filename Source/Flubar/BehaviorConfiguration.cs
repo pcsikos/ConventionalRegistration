@@ -32,7 +32,7 @@ namespace Flubar
                     //new[] { typeof(Exception) }
                     )
                 {
-                    ExcludeRegisteredServices = true
+                    //ExcludeRegisteredServices = true
                 };
             }
         }
@@ -40,7 +40,7 @@ namespace Flubar
         /// <summary>
         /// Gets or sets a value, indicating whether future registrations of same service should be excluded.
         /// </summary>
-        public bool ExcludeRegisteredServices { get; set; }
+        //public bool ExcludeRegisteredServices { get; set; }
 
         private Action<DiagnosticLevel, string> log;
 

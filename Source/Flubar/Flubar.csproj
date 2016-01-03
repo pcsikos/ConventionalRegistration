@@ -47,10 +47,12 @@
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="AbstractContainer.cs" />
     <Compile Include="DiagnosticLevel.cs" />
+    <Compile Include="DiagnosticLogger.cs" />
     <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
     <Compile Include="IConfigurable.cs" />
     <Compile Include="IImplementationExclusion.cs" />
+    <Compile Include="ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
     <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
@@ -62,8 +64,8 @@
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="IServiceFilter.cs" />
     <Compile Include="IServiceExclusion.cs" />
-    <Compile Include="IUsageTracker.cs" />
     <Compile Include="NullServiceFilter.cs" />
+    <Compile Include="RegistrationEntryValidator.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
     <Compile Include="Infrastructure\Strings.cs" />
@@ -92,7 +94,6 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
-    <Compile Include="UsageTracker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
