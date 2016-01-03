@@ -30,7 +30,27 @@ namespace Flubar
             excludedImplementations = new Dictionary<Type, ExcludedImplementation>();
         }
 
-        protected void ExcludeService(Type serviceType, Type implementation)
+        public ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
+        {
+            lifetimeSelection = GetDefaultLifetimeWhenNull(lifetimeSelection);
+            return Define(syntax => rules(syntax).RegisterEach((registration) =>
+            {
+                var newRegistration = ValidateRegistration(registration);
+                if (newRegistration == null)
+                {
+                    return;
+                }
+                AutomaticRegistration(newRegistration, lifetimeSelection(lifetimeSelector));
+            }));
+        }
+
+        public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
+        {
+            conventions.Add(convention);
+            return this;
+        }
+
+        private void ExcludeService(Type serviceType, Type implementation)
         {
             if (!serviceType.IsInterface)
             {
@@ -44,12 +64,17 @@ namespace Flubar
             }
         }
 
-        protected void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation)
+        private void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation)
         {
             foreach (var serviceType in serviceTypes)
             {
                 ExcludeService(serviceType, implementation);
             }
+        }
+
+        private void ExcludeRegistration(IRegistrationEntry registration)
+        {
+            ExcludeServices(registration.ServicesTypes, registration.ImplementationType);
         }
 
         private void ContainerImplementationExcluded(object sender, ImplementationExcludedEventArgs e)
@@ -96,32 +121,10 @@ namespace Flubar
             }
         }
 
-        private void Exclude(IRegistrationEntry registration)
-        {
-            ExcludeServices(registration.ServicesTypes, registration.ImplementationType);
-        }
-
         private IServiceFilter GetServiceFilterFromConfiguration()
         {
             var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
             return configurationServiceFilter;
-        }
-
-
-        #region IConventionSyntax<TLifetime> Members
-
-        public ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
-        {
-            lifetimeSelection = GetDefaultLifetimeWhenNull(lifetimeSelection);
-            return Define(syntax => rules(syntax).RegisterEach((registration) =>
-            {
-                var newRegistration = ValidateRegistration(registration);
-                if (newRegistration == null)
-                {
-                    return;
-                }
-                AutomaticRegistration(newRegistration, lifetimeSelection(lifetimeSelector));
-            }));
         }
 
         private IRegistrationEntry ValidateRegistration(IRegistrationEntry oldRegistration)
@@ -230,19 +233,11 @@ namespace Flubar
             behaviorConfiguration.Log(DiagnosticLevel.Warning, message);
         }
 
-        public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
-        {
-            conventions.Add(convention);
-            return this;
-        }
-
-        #endregion
-
         #region ITypeExclusion Members
 
         IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(IRegistrationEntry registration)
         {
-            Exclude(registration);
+            ExcludeRegistration(registration);
             return this;
         }
 
@@ -250,8 +245,6 @@ namespace Flubar
         {
             throw new NotImplementedException();
         }
-
-       
 
         IConfigurationServiceExclusion IConfigurationServiceExclusion.Exclude(Type serviceType, Type implementation)
         {
