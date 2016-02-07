@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
+using TestAssembly;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -32,6 +33,17 @@ namespace Flubar.SimpleInjector.Tests
                 builder.Define(x => x.ExplicitlySpecifyTypes(typeof(Usage))
                             .UsingDefaultInterfaceStrategy(), x => x.Singleton)
             );
+
+        }
+
+        [TestMethod]
+        public void Run2()
+        {
+            var container = new Container();
+
+            container.Register<ITransientService, TransientService>();
+            container.GetRegistration(typeof(ITransientService));
+            container.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
 
         }
     }

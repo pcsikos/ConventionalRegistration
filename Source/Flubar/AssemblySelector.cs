@@ -53,7 +53,7 @@ namespace Flubar
 
         public ISelectSyntax FromAssemblyContaining(params Type[] types)
         {
-            return FromAssemblyContaining(types);
+            return FromAssemblyContaining((IEnumerable<Type>)types);
         }
 
         public ISelectSyntax FromAssemblyContaining(IEnumerable<Type> types)
@@ -80,7 +80,7 @@ namespace Flubar
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetTypes()), serviceFilter);
+            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), serviceFilter);
         }
     }
 }

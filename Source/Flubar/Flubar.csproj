@@ -76,6 +76,7 @@
     <Compile Include="RegistrationHandler.cs" />
     <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEventArgs.cs" />
+    <Compile Include="Syntax\IBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
     <Compile Include="IConfigurationServiceExclusion.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />

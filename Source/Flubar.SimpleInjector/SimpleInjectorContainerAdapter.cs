@@ -68,6 +68,15 @@ namespace Flubar.SimpleInjector
             }
         }
 
+        public void Register(Type serviceType, Func<object> instanceCreator, Lifestyle lifetime = null)
+        {
+            container.Register(serviceType, instanceCreator, lifetime ?? GetDefaultLifetime());
+            if (serviceType.IsInterface)
+            {
+                typeExclusionTracker.ExcludeService(serviceType);
+            }
+        }
+
         public Lifestyle GetSingletonLifetime()
         {
             return Lifestyle.Singleton;
@@ -98,6 +107,27 @@ namespace Flubar.SimpleInjector
             where TService : class
         {
             container.RegisterCollection<TService>(implementationTypes);
+        }
+
+        public void RegisterSingleton<T>(T instance) where T : class
+        {
+            container.RegisterSingleton<T>(instance);
+            if (typeof(T).IsInterface)
+            {
+                typeExclusionTracker.ExcludeService(typeof(T), instance.GetType());
+            }
+            else
+            {
+                typeExclusionTracker.ExcludeImplementation(instance.GetType());
+            }
+        }
+
+        public void RegisterSingleton<TService, TImplementation>()
+              where TService : class
+              where TImplementation : class, TService
+        {
+            container.RegisterSingleton<TService, TImplementation>();
+            typeExclusionTracker.ExcludeService(typeof(TService), typeof(TImplementation));
         }
 
         #endregion

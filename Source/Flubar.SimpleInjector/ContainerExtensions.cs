@@ -1,5 +1,6 @@
 ﻿using System;
 using SimpleInjector;
+using Flubar.Syntax;
 
 namespace Flubar.SimpleInjector
 {
@@ -16,7 +17,7 @@ namespace Flubar.SimpleInjector
             {
                 configuration = BehaviorConfiguration.Default;
             }
-
+            
             var typeExclusionTracker = new TypeExclusionTracker();
             var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
             using (var builder = new SimpleInjectorConventionBuilder(adapter, configuration, typeExclusionTracker))
@@ -24,5 +25,21 @@ namespace Flubar.SimpleInjector
                 convention(builder);
             }
         }
+
+        //public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, params ISimpleInjectorBuilderPackage[] packages)
+        //{
+        //    RegistrationByConvention(container, configuration, builder =>
+        //    {
+        //        foreach (var package in packages)
+        //        {
+        //            package.RegisterByConvention(container, builder);
+        //        }
+
+        //        foreach (var package in packages)
+        //        {
+        //            package.PostRegistrations(container);
+        //        }
+        //    });
+        //}
     }
 }
