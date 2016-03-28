@@ -13,7 +13,7 @@
 <#
 	var wrappedType = typeof(Container);
 	var className = wrappedType.Name + "Wrapper";
-	var namespace2 = wrappedType.Namespace;
+	var namespace2 = "Flubar.SimpleInjector";
 	bool createMethodsAsVirtual = true;
 	bool createInterface = true;
 	var interfaceName = "I" + wrappedType.Name;
@@ -22,10 +22,16 @@
 	var fieldName = "_" + variableNameName;
 #>
 using <#= wrappedType.Namespace #>;
+using System;
+using SimpleInjector;
+using System.Collections.Generic;
+using SimpleInjector.Advanced;
+using System.Reflection;
+using System.Collections;
 
 namespace <#= namespace2#>
 {
-	public partial class <#= className #> <#=createInterface ? ": " + interfaceName : "" #>
+	partial class <#= className #> <#=createInterface ? ": " + interfaceName : "" #>
 	{
 		private readonly <#=wrappedType.Name#> <#=fieldName#>;
 

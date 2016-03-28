@@ -1,9 +1,15 @@
 ﻿
 using SimpleInjector;
+using System;
+using SimpleInjector;
+using System.Collections.Generic;
+using SimpleInjector.Advanced;
+using System.Reflection;
+using System.Collections;
 
-namespace SimpleInjector
+namespace Flubar.SimpleInjector
 {
-	public partial class ContainerWrapper : IContainer
+	partial class ContainerWrapper : IContainer
 	{
 		private readonly Container _container;
 
@@ -12,15 +18,15 @@ namespace SimpleInjector
 			_container = container;
 		}
 
-		public virtual SimpleInjector.InstanceProducer[] GetCurrentRegistrations() 		
+		public virtual InstanceProducer[] GetCurrentRegistrations() 		
 		{
 			return _container.GetCurrentRegistrations();
 		}
-		public virtual SimpleInjector.InstanceProducer[] GetRootRegistrations() 		
+		public virtual InstanceProducer[] GetRootRegistrations() 		
 		{
 			return _container.GetRootRegistrations();
 		}
-		public override bool Equals(System.Object obj) 		
+		public override bool Equals(Object obj) 		
 		{
 			return _container.Equals(obj);
 		}
@@ -32,7 +38,7 @@ namespace SimpleInjector
 		{
 			return _container.ToString();
 		}
-		public new System.Type GetType() 		
+		public new Type GetType() 		
 		{
 			return _container.GetType();
 		}
@@ -45,7 +51,7 @@ namespace SimpleInjector
 		{
 			_container.Register<TConcrete>();
 		}
-		public virtual void Register<TConcrete>(SimpleInjector.Lifestyle lifestyle) 
+		public virtual void Register<TConcrete>(Lifestyle lifestyle) 
             where TConcrete: class		
 		{
 			_container.Register<TConcrete>(lifestyle);
@@ -56,39 +62,39 @@ namespace SimpleInjector
 		{
 			_container.Register<TService, TImplementation>();
 		}
-		public virtual void Register<TService, TImplementation>(SimpleInjector.Lifestyle lifestyle) 
+		public virtual void Register<TService, TImplementation>(Lifestyle lifestyle) 
             where TService: class
             where TImplementation: class, TService		
 		{
 			_container.Register<TService, TImplementation>(lifestyle);
 		}
-		public virtual void Register<TService>(System.Func<TService> instanceCreator) 
+		public virtual void Register<TService>(Func<TService> instanceCreator) 
             where TService: class		
 		{
 			_container.Register<TService>(instanceCreator);
 		}
-		public virtual void Register<TService>(System.Func<TService> instanceCreator, SimpleInjector.Lifestyle lifestyle) 
+		public virtual void Register<TService>(Func<TService> instanceCreator, Lifestyle lifestyle) 
             where TService: class		
 		{
 			_container.Register<TService>(instanceCreator, lifestyle);
 		}
-		public virtual void Register(System.Type concreteType) 		
+		public virtual void Register(Type concreteType) 		
 		{
 			_container.Register(concreteType);
 		}
-		public virtual void Register(System.Type serviceType, System.Type implementationType) 		
+		public virtual void Register(Type serviceType, Type implementationType) 		
 		{
 			_container.Register(serviceType, implementationType);
 		}
-		public virtual void Register(System.Type serviceType, System.Type implementationType, SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void Register(Type serviceType, Type implementationType, Lifestyle lifestyle) 		
 		{
 			_container.Register(serviceType, implementationType, lifestyle);
 		}
-		public virtual void Register(System.Type serviceType, System.Func<System.Object> instanceCreator) 		
+		public virtual void Register(Type serviceType, Func<Object> instanceCreator) 		
 		{
 			_container.Register(serviceType, instanceCreator);
 		}
-		public virtual void Register(System.Type serviceType, System.Func<System.Object> instanceCreator, SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void Register(Type serviceType, Func<Object> instanceCreator, Lifestyle lifestyle) 		
 		{
 			_container.Register(serviceType, instanceCreator, lifestyle);
 		}
@@ -97,7 +103,7 @@ namespace SimpleInjector
 		{
 			_container.RegisterSingleton<TService>(instance);
 		}
-		public virtual void RegisterSingleton(System.Type serviceType, System.Object instance) 		
+		public virtual void RegisterSingleton(Type serviceType, Object instance) 		
 		{
 			_container.RegisterSingleton(serviceType, instance);
 		}
@@ -112,29 +118,29 @@ namespace SimpleInjector
 		{
 			_container.RegisterSingleton<TService, TImplementation>();
 		}
-		public virtual void RegisterSingleton<TService>(System.Func<TService> instanceCreator) 
+		public virtual void RegisterSingleton<TService>(Func<TService> instanceCreator) 
             where TService: class		
 		{
 			_container.RegisterSingleton<TService>(instanceCreator);
 		}
-		public virtual void RegisterSingleton(System.Type serviceType, System.Type implementationType) 		
+		public virtual void RegisterSingleton(Type serviceType, Type implementationType) 		
 		{
 			_container.RegisterSingleton(serviceType, implementationType);
 		}
-		public virtual void RegisterSingleton(System.Type serviceType, System.Func<System.Object> instanceCreator) 		
+		public virtual void RegisterSingleton(Type serviceType, Func<Object> instanceCreator) 		
 		{
 			_container.RegisterSingleton(serviceType, instanceCreator);
 		}
-		public virtual void RegisterInitializer<TService>(System.Action<TService> instanceInitializer) 
+		public virtual void RegisterInitializer<TService>(Action<TService> instanceInitializer) 
             where TService: class		
 		{
 			_container.RegisterInitializer<TService>(instanceInitializer);
 		}
-		public virtual void RegisterInitializer(System.Action<SimpleInjector.Advanced.InstanceInitializationData> instanceInitializer, System.Predicate<SimpleInjector.Advanced.InitializationContext> predicate) 		
+		public virtual void RegisterInitializer(Action<SimpleInjector.Advanced.InstanceInitializationData> instanceInitializer, Predicate<InitializationContext> predicate) 		
 		{
 			_container.RegisterInitializer(instanceInitializer, predicate);
 		}
-		public virtual void AddRegistration(System.Type serviceType, SimpleInjector.Registration registration) 		
+		public virtual void AddRegistration(Type serviceType, Registration registration) 		
 		{
 			_container.AddRegistration(serviceType, registration);
 		}
@@ -143,93 +149,93 @@ namespace SimpleInjector
 		{
 			return _container.GetInstance<TService>();
 		}
-		public virtual System.Object GetInstance(System.Type serviceType) 		
+		public virtual Object GetInstance(Type serviceType) 		
 		{
 			return _container.GetInstance(serviceType);
 		}
-		public virtual System.Collections.Generic.IEnumerable<TService> GetAllInstances<TService>() 
+		public virtual IEnumerable<TService> GetAllInstances<TService>() 
             where TService: class		
 		{
 			return _container.GetAllInstances<TService>();
 		}
-		public virtual System.Collections.Generic.IEnumerable<System.Object> GetAllInstances(System.Type serviceType) 		
+		public virtual IEnumerable<Object> GetAllInstances(Type serviceType) 		
 		{
 			return _container.GetAllInstances(serviceType);
 		}
-		public virtual SimpleInjector.InstanceProducer GetRegistration(System.Type serviceType) 		
+		public virtual InstanceProducer GetRegistration(Type serviceType) 		
 		{
 			return _container.GetRegistration(serviceType);
 		}
-		public virtual SimpleInjector.InstanceProducer GetRegistration(System.Type serviceType, bool throwOnFailure) 		
+		public virtual InstanceProducer GetRegistration(Type serviceType, bool throwOnFailure) 		
 		{
 			return _container.GetRegistration(serviceType, throwOnFailure);
 		}
-		public virtual void RegisterConditional<TService, TImplementation>(System.Predicate<SimpleInjector.PredicateContext> predicate) 
+		public virtual void RegisterConditional<TService, TImplementation>(Predicate<PredicateContext> predicate) 
             where TService: class
             where TImplementation: class, TService		
 		{
 			_container.RegisterConditional<TService, TImplementation>(predicate);
 		}
-		public virtual void RegisterConditional<TService, TImplementation>(SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate) 
+		public virtual void RegisterConditional<TService, TImplementation>(Lifestyle lifestyle, Predicate<PredicateContext> predicate) 
             where TService: class
             where TImplementation: class, TService		
 		{
 			_container.RegisterConditional<TService, TImplementation>(lifestyle, predicate);
 		}
-		public virtual void RegisterConditional(System.Type serviceType, System.Type implementationType, System.Predicate<SimpleInjector.PredicateContext> predicate) 		
+		public virtual void RegisterConditional(Type serviceType, Type implementationType, Predicate<PredicateContext> predicate) 		
 		{
 			_container.RegisterConditional(serviceType, implementationType, predicate);
 		}
-		public virtual void RegisterConditional(System.Type serviceType, System.Type implementationType, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate) 		
+		public virtual void RegisterConditional(Type serviceType, Type implementationType, Lifestyle lifestyle, Predicate<PredicateContext> predicate) 		
 		{
 			_container.RegisterConditional(serviceType, implementationType, lifestyle, predicate);
 		}
-		public virtual void RegisterConditional(System.Type serviceType, System.Func<SimpleInjector.TypeFactoryContext, System.Type> implementationTypeFactory, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate) 		
+		public virtual void RegisterConditional(Type serviceType, Func<TypeFactoryContext, Type> implementationTypeFactory, Lifestyle lifestyle, Predicate<PredicateContext> predicate) 		
 		{
 			_container.RegisterConditional(serviceType, implementationTypeFactory, lifestyle, predicate);
 		}
-		public virtual void RegisterConditional(System.Type serviceType, SimpleInjector.Registration registration, System.Predicate<SimpleInjector.PredicateContext> predicate) 		
+		public virtual void RegisterConditional(Type serviceType, Registration registration, Predicate<PredicateContext> predicate) 		
 		{
 			_container.RegisterConditional(serviceType, registration, predicate);
 		}
-		public virtual void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) 		
+		public virtual void Register(Type openGenericServiceType, IEnumerable<Assembly> assemblies) 		
 		{
 			_container.Register(openGenericServiceType, assemblies);
 		}
-		public virtual void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies, SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void Register(Type openGenericServiceType, IEnumerable<Assembly> assemblies, Lifestyle lifestyle) 		
 		{
 			_container.Register(openGenericServiceType, assemblies, lifestyle);
 		}
-		public virtual void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Type> implementationTypes) 		
+		public virtual void Register(Type openGenericServiceType, IEnumerable<Type> implementationTypes) 		
 		{
 			_container.Register(openGenericServiceType, implementationTypes);
 		}
-		public virtual void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Type> implementationTypes, SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void Register(Type openGenericServiceType, IEnumerable<Type> implementationTypes, Lifestyle lifestyle) 		
 		{
 			_container.Register(openGenericServiceType, implementationTypes, lifestyle);
 		}
-		public virtual void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) 
+		public virtual void RegisterCollection<TService>(IEnumerable<Assembly> assemblies) 
             where TService: class		
 		{
 			_container.RegisterCollection<TService>(assemblies);
 		}
-		public virtual void RegisterCollection(System.Type serviceType, params System.Reflection.Assembly[] assemblies) 		
+		public virtual void RegisterCollection(Type serviceType, params Assembly[] assemblies) 		
 		{
 			_container.RegisterCollection(serviceType, assemblies);
 		}
-		public virtual void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) 		
+		public virtual void RegisterCollection(Type serviceType, IEnumerable<Assembly> assemblies) 		
 		{
 			_container.RegisterCollection(serviceType, assemblies);
 		}
-		public virtual System.Collections.Generic.IEnumerable<System.Type> GetTypesToRegister(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies) 		
+		public virtual IEnumerable<Type> GetTypesToRegister(Type serviceType, IEnumerable<Assembly> assemblies) 		
 		{
 			return _container.GetTypesToRegister(serviceType, assemblies);
 		}
-		public virtual System.Collections.Generic.IEnumerable<System.Type> GetTypesToRegister(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies, SimpleInjector.TypesToRegisterOptions options) 		
+		public virtual IEnumerable<Type> GetTypesToRegister(Type serviceType, IEnumerable<Assembly> assemblies, TypesToRegisterOptions options) 		
 		{
 			return _container.GetTypesToRegister(serviceType, assemblies, options);
 		}
-		public virtual void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<TService> containerUncontrolledCollection) 
+		public virtual void RegisterCollection<TService>(IEnumerable<TService> containerUncontrolledCollection) 
             where TService: class		
 		{
 			_container.RegisterCollection<TService>(containerUncontrolledCollection);
@@ -239,25 +245,25 @@ namespace SimpleInjector
 		{
 			_container.RegisterCollection<TService>(singletons);
 		}
-		public virtual void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<System.Type> serviceTypes) 
+		public virtual void RegisterCollection<TService>(IEnumerable<Type> serviceTypes) 
             where TService: class		
 		{
 			_container.RegisterCollection<TService>(serviceTypes);
 		}
-		public virtual void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<SimpleInjector.Registration> registrations) 
+		public virtual void RegisterCollection<TService>(IEnumerable<Registration> registrations) 
             where TService: class		
 		{
 			_container.RegisterCollection<TService>(registrations);
 		}
-		public virtual void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Type> serviceTypes) 		
+		public virtual void RegisterCollection(Type serviceType, IEnumerable<Type> serviceTypes) 		
 		{
 			_container.RegisterCollection(serviceType, serviceTypes);
 		}
-		public virtual void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<SimpleInjector.Registration> registrations) 		
+		public virtual void RegisterCollection(Type serviceType, IEnumerable<Registration> registrations) 		
 		{
 			_container.RegisterCollection(serviceType, registrations);
 		}
-		public virtual void RegisterCollection(System.Type serviceType, System.Collections.IEnumerable containerUncontrolledCollection) 		
+		public virtual void RegisterCollection(Type serviceType, IEnumerable containerUncontrolledCollection) 		
 		{
 			_container.RegisterCollection(serviceType, containerUncontrolledCollection);
 		}
@@ -267,27 +273,27 @@ namespace SimpleInjector
 		{
 			_container.RegisterDecorator<TService, TDecorator>();
 		}
-		public virtual void RegisterDecorator<TService, TDecorator>(SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void RegisterDecorator<TService, TDecorator>(Lifestyle lifestyle) 		
 		{
 			_container.RegisterDecorator<TService, TDecorator>(lifestyle);
 		}
-		public virtual void RegisterDecorator(System.Type serviceType, System.Type decoratorType) 		
+		public virtual void RegisterDecorator(Type serviceType, Type decoratorType) 		
 		{
 			_container.RegisterDecorator(serviceType, decoratorType);
 		}
-		public virtual void RegisterDecorator(System.Type serviceType, System.Type decoratorType, SimpleInjector.Lifestyle lifestyle) 		
+		public virtual void RegisterDecorator(Type serviceType, Type decoratorType, Lifestyle lifestyle) 		
 		{
 			_container.RegisterDecorator(serviceType, decoratorType, lifestyle);
 		}
-		public virtual void RegisterDecorator(System.Type serviceType, System.Type decoratorType, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate) 		
+		public virtual void RegisterDecorator(Type serviceType, Type decoratorType, Lifestyle lifestyle, Predicate<DecoratorPredicateContext> predicate) 		
 		{
 			_container.RegisterDecorator(serviceType, decoratorType, lifestyle, predicate);
 		}
-		public virtual void RegisterDecorator(System.Type serviceType, System.Func<SimpleInjector.DecoratorPredicateContext, System.Type> decoratorTypeFactory, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate) 		
+		public virtual void RegisterDecorator(Type serviceType, Func<DecoratorPredicateContext, Type> decoratorTypeFactory, Lifestyle lifestyle, Predicate<DecoratorPredicateContext> predicate) 		
 		{
 			_container.RegisterDecorator(serviceType, decoratorTypeFactory, lifestyle, predicate);
 		}
-		public virtual void RegisterDecorator(System.Type serviceType, System.Type decoratorType, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate) 		
+		public virtual void RegisterDecorator(Type serviceType, Type decoratorType, Predicate<DecoratorPredicateContext> predicate) 		
 		{
 			_container.RegisterDecorator(serviceType, decoratorType, predicate);
 		}
@@ -295,7 +301,7 @@ namespace SimpleInjector
 		{
 			_container.Verify();
 		}
-		public virtual void Verify(SimpleInjector.VerificationOption option) 		
+		public virtual void Verify(VerificationOption option) 		
 		{
 			_container.Verify(option);
 		}
@@ -303,46 +309,46 @@ namespace SimpleInjector
 	public partial interface IContainer		
 	{
 
-      SimpleInjector.InstanceProducer[] GetCurrentRegistrations();
+      InstanceProducer[] GetCurrentRegistrations();
 
-      SimpleInjector.InstanceProducer[] GetRootRegistrations();
+      InstanceProducer[] GetRootRegistrations();
 
       void Dispose();
 
       void Register<TConcrete>()
             where TConcrete: class;
 
-      void Register<TConcrete>(SimpleInjector.Lifestyle lifestyle)
+      void Register<TConcrete>(Lifestyle lifestyle)
             where TConcrete: class;
 
       void Register<TService, TImplementation>()
             where TService: class
             where TImplementation: class, TService;
 
-      void Register<TService, TImplementation>(SimpleInjector.Lifestyle lifestyle)
+      void Register<TService, TImplementation>(Lifestyle lifestyle)
             where TService: class
             where TImplementation: class, TService;
 
-      void Register<TService>(System.Func<TService> instanceCreator)
+      void Register<TService>(Func<TService> instanceCreator)
             where TService: class;
 
-      void Register<TService>(System.Func<TService> instanceCreator, SimpleInjector.Lifestyle lifestyle)
+      void Register<TService>(Func<TService> instanceCreator, Lifestyle lifestyle)
             where TService: class;
 
-      void Register(System.Type concreteType);
+      void Register(Type concreteType);
 
-      void Register(System.Type serviceType, System.Type implementationType);
+      void Register(Type serviceType, Type implementationType);
 
-      void Register(System.Type serviceType, System.Type implementationType, SimpleInjector.Lifestyle lifestyle);
+      void Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
 
-      void Register(System.Type serviceType, System.Func<System.Object> instanceCreator);
+      void Register(Type serviceType, Func<Object> instanceCreator);
 
-      void Register(System.Type serviceType, System.Func<System.Object> instanceCreator, SimpleInjector.Lifestyle lifestyle);
+      void Register(Type serviceType, Func<Object> instanceCreator, Lifestyle lifestyle);
 
       void RegisterSingleton<TService>(TService instance)
             where TService: class;
 
-      void RegisterSingleton(System.Type serviceType, System.Object instance);
+      void RegisterSingleton(Type serviceType, Object instance);
 
       void RegisterSingleton<TConcrete>()
             where TConcrete: class;
@@ -351,106 +357,106 @@ namespace SimpleInjector
             where TService: class
             where TImplementation: class, TService;
 
-      void RegisterSingleton<TService>(System.Func<TService> instanceCreator)
+      void RegisterSingleton<TService>(Func<TService> instanceCreator)
             where TService: class;
 
-      void RegisterSingleton(System.Type serviceType, System.Type implementationType);
+      void RegisterSingleton(Type serviceType, Type implementationType);
 
-      void RegisterSingleton(System.Type serviceType, System.Func<System.Object> instanceCreator);
+      void RegisterSingleton(Type serviceType, Func<Object> instanceCreator);
 
-      void RegisterInitializer<TService>(System.Action<TService> instanceInitializer)
+      void RegisterInitializer<TService>(Action<TService> instanceInitializer)
             where TService: class;
 
-      void RegisterInitializer(System.Action<SimpleInjector.Advanced.InstanceInitializationData> instanceInitializer, System.Predicate<SimpleInjector.Advanced.InitializationContext> predicate);
+      void RegisterInitializer(Action<SimpleInjector.Advanced.InstanceInitializationData> instanceInitializer, Predicate<InitializationContext> predicate);
 
-      void AddRegistration(System.Type serviceType, SimpleInjector.Registration registration);
+      void AddRegistration(Type serviceType, Registration registration);
 
       TService GetInstance<TService>()
             where TService: class;
 
-      System.Object GetInstance(System.Type serviceType);
+      Object GetInstance(Type serviceType);
 
-      System.Collections.Generic.IEnumerable<TService> GetAllInstances<TService>()
+      IEnumerable<TService> GetAllInstances<TService>()
             where TService: class;
 
-      System.Collections.Generic.IEnumerable<System.Object> GetAllInstances(System.Type serviceType);
+      IEnumerable<Object> GetAllInstances(Type serviceType);
 
-      SimpleInjector.InstanceProducer GetRegistration(System.Type serviceType);
+      InstanceProducer GetRegistration(Type serviceType);
 
-      SimpleInjector.InstanceProducer GetRegistration(System.Type serviceType, bool throwOnFailure);
+      InstanceProducer GetRegistration(Type serviceType, bool throwOnFailure);
 
-      void RegisterConditional<TService, TImplementation>(System.Predicate<SimpleInjector.PredicateContext> predicate)
+      void RegisterConditional<TService, TImplementation>(Predicate<PredicateContext> predicate)
             where TService: class
             where TImplementation: class, TService;
 
-      void RegisterConditional<TService, TImplementation>(SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate)
+      void RegisterConditional<TService, TImplementation>(Lifestyle lifestyle, Predicate<PredicateContext> predicate)
             where TService: class
             where TImplementation: class, TService;
 
-      void RegisterConditional(System.Type serviceType, System.Type implementationType, System.Predicate<SimpleInjector.PredicateContext> predicate);
+      void RegisterConditional(Type serviceType, Type implementationType, Predicate<PredicateContext> predicate);
 
-      void RegisterConditional(System.Type serviceType, System.Type implementationType, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate);
+      void RegisterConditional(Type serviceType, Type implementationType, Lifestyle lifestyle, Predicate<PredicateContext> predicate);
 
-      void RegisterConditional(System.Type serviceType, System.Func<SimpleInjector.TypeFactoryContext, System.Type> implementationTypeFactory, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.PredicateContext> predicate);
+      void RegisterConditional(Type serviceType, Func<TypeFactoryContext, Type> implementationTypeFactory, Lifestyle lifestyle, Predicate<PredicateContext> predicate);
 
-      void RegisterConditional(System.Type serviceType, SimpleInjector.Registration registration, System.Predicate<SimpleInjector.PredicateContext> predicate);
+      void RegisterConditional(Type serviceType, Registration registration, Predicate<PredicateContext> predicate);
 
-      void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies);
+      void Register(Type openGenericServiceType, IEnumerable<Assembly> assemblies);
 
-      void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies, SimpleInjector.Lifestyle lifestyle);
+      void Register(Type openGenericServiceType, IEnumerable<Assembly> assemblies, Lifestyle lifestyle);
 
-      void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Type> implementationTypes);
+      void Register(Type openGenericServiceType, IEnumerable<Type> implementationTypes);
 
-      void Register(System.Type openGenericServiceType, System.Collections.Generic.IEnumerable<System.Type> implementationTypes, SimpleInjector.Lifestyle lifestyle);
+      void Register(Type openGenericServiceType, IEnumerable<Type> implementationTypes, Lifestyle lifestyle);
 
-      void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies)
+      void RegisterCollection<TService>(IEnumerable<Assembly> assemblies)
             where TService: class;
 
-      void RegisterCollection(System.Type serviceType, params System.Reflection.Assembly[] assemblies);
+      void RegisterCollection(Type serviceType, params Assembly[] assemblies);
 
-      void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies);
+      void RegisterCollection(Type serviceType, IEnumerable<Assembly> assemblies);
 
-      System.Collections.Generic.IEnumerable<System.Type> GetTypesToRegister(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies);
+      IEnumerable<Type> GetTypesToRegister(Type serviceType, IEnumerable<Assembly> assemblies);
 
-      System.Collections.Generic.IEnumerable<System.Type> GetTypesToRegister(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Reflection.Assembly> assemblies, SimpleInjector.TypesToRegisterOptions options);
+      IEnumerable<Type> GetTypesToRegister(Type serviceType, IEnumerable<Assembly> assemblies, TypesToRegisterOptions options);
 
-      void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<TService> containerUncontrolledCollection)
+      void RegisterCollection<TService>(IEnumerable<TService> containerUncontrolledCollection)
             where TService: class;
 
       void RegisterCollection<TService>(params TService[] singletons)
             where TService: class;
 
-      void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<System.Type> serviceTypes)
+      void RegisterCollection<TService>(IEnumerable<Type> serviceTypes)
             where TService: class;
 
-      void RegisterCollection<TService>(System.Collections.Generic.IEnumerable<SimpleInjector.Registration> registrations)
+      void RegisterCollection<TService>(IEnumerable<Registration> registrations)
             where TService: class;
 
-      void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<System.Type> serviceTypes);
+      void RegisterCollection(Type serviceType, IEnumerable<Type> serviceTypes);
 
-      void RegisterCollection(System.Type serviceType, System.Collections.Generic.IEnumerable<SimpleInjector.Registration> registrations);
+      void RegisterCollection(Type serviceType, IEnumerable<Registration> registrations);
 
-      void RegisterCollection(System.Type serviceType, System.Collections.IEnumerable containerUncontrolledCollection);
+      void RegisterCollection(Type serviceType, IEnumerable containerUncontrolledCollection);
 
       void RegisterDecorator<TService, TDecorator>()
             where TService: class
             where TDecorator: class, TService;
 
-      void RegisterDecorator<TService, TDecorator>(SimpleInjector.Lifestyle lifestyle);
+      void RegisterDecorator<TService, TDecorator>(Lifestyle lifestyle);
 
-      void RegisterDecorator(System.Type serviceType, System.Type decoratorType);
+      void RegisterDecorator(Type serviceType, Type decoratorType);
 
-      void RegisterDecorator(System.Type serviceType, System.Type decoratorType, SimpleInjector.Lifestyle lifestyle);
+      void RegisterDecorator(Type serviceType, Type decoratorType, Lifestyle lifestyle);
 
-      void RegisterDecorator(System.Type serviceType, System.Type decoratorType, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate);
+      void RegisterDecorator(Type serviceType, Type decoratorType, Lifestyle lifestyle, Predicate<DecoratorPredicateContext> predicate);
 
-      void RegisterDecorator(System.Type serviceType, System.Func<SimpleInjector.DecoratorPredicateContext, System.Type> decoratorTypeFactory, SimpleInjector.Lifestyle lifestyle, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate);
+      void RegisterDecorator(Type serviceType, Func<DecoratorPredicateContext, Type> decoratorTypeFactory, Lifestyle lifestyle, Predicate<DecoratorPredicateContext> predicate);
 
-      void RegisterDecorator(System.Type serviceType, System.Type decoratorType, System.Predicate<SimpleInjector.DecoratorPredicateContext> predicate);
+      void RegisterDecorator(Type serviceType, Type decoratorType, Predicate<DecoratorPredicateContext> predicate);
 
       void Verify();
 
-      void Verify(SimpleInjector.VerificationOption option);
+      void Verify(VerificationOption option);
 	}
 }
 

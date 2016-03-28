@@ -36,7 +36,7 @@ namespace Flubar.SimpleInjector.Tests
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
                     c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-                    c.RegisterFunc<ITransientService>();
+                    //c.RegisterFunc<ITransientService>();
 
                     c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
                     c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));

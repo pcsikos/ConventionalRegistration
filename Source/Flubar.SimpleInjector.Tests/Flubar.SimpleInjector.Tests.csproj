@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeDomTest2.cs" />
     <Compile Include="Usage.cs" />
     <Compile Include="ConventionRegistrationTests.cs" />
     <Compile Include="InstanceResolverTests.cs" />
