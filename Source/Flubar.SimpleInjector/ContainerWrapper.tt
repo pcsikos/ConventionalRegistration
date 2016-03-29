@@ -15,7 +15,9 @@
 	var className = wrappedType.Name + "Wrapper";
 	var namespace2 = "Flubar.SimpleInjector";
 	bool createMethodsAsVirtual = true;
-	bool createInterface = true;
+	var outputType = OutputType.Class | OutputType.Interface;
+	bool createInterface = (outputType | OutputType.Interface) == OutputType.Interface;
+
 	var interfaceName = "I" + wrappedType.Name;
 
 	var variableNameName = wrappedType.Name.ToLower();
@@ -23,7 +25,6 @@
 #>
 using <#= wrappedType.Namespace #>;
 using System;
-using SimpleInjector;
 using System.Collections.Generic;
 using SimpleInjector.Advanced;
 using System.Reflection;
@@ -39,7 +40,6 @@ namespace <#= namespace2#>
 		{
 			<#=fieldName#> = <#= variableNameName #>;
 		}
-
 <#		
 		var methods = new List<GeneratedMethod>();
 		foreach (var sourceMethod in wrappedType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
@@ -134,6 +134,12 @@ namespace <#= namespace2#>
 	{
 		public string Signature { get;set;}
 		public IEnumerable<string> Constraints {get;set;}
+	}
+
+	enum OutputType
+	{
+		Interface,
+		Class
 	}
 
 #>

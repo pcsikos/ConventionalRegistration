@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Flubar.SimpleInjector
 {
     //todo: rename to adapter
-    public interface ISimpleInjectorContainer : IContainer<Lifestyle>, IContainer
+    public interface ISimpleInjectorContainer : IContainer<Lifestyle>//, IContainer
     {
     //    void RegisterCollection<TService>(IEnumerable<Type> serviceTypes) where TService : class;
     //    void RegisterDecorator(Type serviceType, Type decoratorType);
