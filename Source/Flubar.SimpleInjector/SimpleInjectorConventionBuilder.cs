@@ -9,26 +9,26 @@ namespace Flubar.SimpleInjector
 {
     public class SimpleInjectorConventionBuilder : ConventionBuilder<Lifestyle>
     {
-        private readonly SimpleInjectorContainerAdapter containerAdapter;
+        private readonly SimpleInjectorContainerAdapterAdapter _containerAdapterAdapter;
 
-        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapter containerAdapter, 
+        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapterAdapter _containerAdapterAdapter, 
             BehaviorConfiguration behaviorConfiguration, 
             ITypeExclusionTracker exclusionTracker) 
-            : base(containerAdapter, behaviorConfiguration, exclusionTracker)
+            : base(_containerAdapterAdapter, behaviorConfiguration, exclusionTracker)
         {
-            this.containerAdapter = containerAdapter;
+            this._containerAdapterAdapter = _containerAdapterAdapter;
         }
 
-        public void ExplicitRegistration(Action<ISimpleInjectorContainer> explicitRegistrations)
+        public void ExplicitRegistration(Action<ISimpleInjectorContainerAdapter> explicitRegistrations)
         {
-            explicitRegistrations(containerAdapter);
+            explicitRegistrations(_containerAdapterAdapter);
         }
 
         public void RegisterAsCollection(Type serviceType)
         {
             SearchForImplementations(serviceType, types =>
             {
-                containerAdapter.Container.RegisterCollection(serviceType, types);
+                _containerAdapterAdapter.Container.RegisterCollection(serviceType, types);
             });
         }
     }

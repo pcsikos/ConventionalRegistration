@@ -14,24 +14,55 @@
 	var wrappedType = typeof(Container);
 	var className = wrappedType.Name + "Wrapper";
 	var namespace2 = "Flubar.SimpleInjector";
-	bool createMethodsAsVirtual = true;
-	var outputType = OutputType.Class | OutputType.Interface;
-	bool createInterface = (outputType | OutputType.Interface) == OutputType.Interface;
+	bool createMethodsAsVirtual = false;
+	var outputType = OutputType.Interface;
+	bool createInterface = (outputType & OutputType.Interface) == OutputType.Interface;
 
 	var interfaceName = "I" + wrappedType.Name;
 
 	var variableNameName = wrappedType.Name.ToLower();
-	var fieldName = "_" + variableNameName;
+	var fieldName = variableNameName;
+
+	var methods = new List<GeneratedMethod>();
+	foreach (var sourceMethod in wrappedType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+            .Where(x => !x.IsSpecialName)
+            .Where(x => x.DeclaringType != typeof(object))
+			.Where(x => !x.GetCustomAttributes(typeof(ObsoleteAttribute)).Any()))
+    {
+		var hasReturnType = sourceMethod.ReturnType != typeof(void);
+		var returnType = hasReturnType ? CSharpSourceCodeGeneration.GetSafeTypeName(sourceMethod.ReturnType) : "void";
+		var returnStatement = hasReturnType ? "return " : "";
+		var typeParameters = (sourceMethod.IsGenericMethod) ? "<" + CSharpSourceCodeGeneration.GetTypeParameters(sourceMethod) + ">" : "";
+		var methodParamters = string.Join(", ", sourceMethod.GetParameters().Select(x => CSharpSourceCodeGeneration.GetParameterType(x)).ToArray());
+		var genericContraints = CSharpSourceCodeGeneration.GetTypeParametersConstrants(sourceMethod);
+		var methodArguments = CSharpSourceCodeGeneration.GetInvokingMethodArguments(sourceMethod);
+		var methodSignature = returnType + " " + sourceMethod.Name + typeParameters + "(" + methodParamters + ")";
+		var modifier = GetMethodModifier(sourceMethod);
+		methods.Add(new GeneratedMethod 
+		{ 
+			Signature = methodSignature, 
+			Constraints = genericContraints,
+			Modifier = modifier,
+			ReturnStatement = returnStatement,
+			//FieldName = fieldName,
+			Name = sourceMethod.Name,
+			TypeParameters = typeParameters,
+			Arguments = methodArguments
+		});
+	}
+
 #>
 using <#= wrappedType.Namespace #>;
 using System;
-using System.Collections.Generic;
-using SimpleInjector.Advanced;
-using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using SimpleInjector.Advanced;
 
 namespace <#= namespace2#>
 {
+<#  if ((outputType & OutputType.Class) == OutputType.Class)
+	{ #>
 	partial class <#= className #> <#=createInterface ? ": " + interfaceName : "" #>
 	{
 		private readonly <#=wrappedType.Name#> <#=fieldName#>;
@@ -41,41 +72,31 @@ namespace <#= namespace2#>
 			<#=fieldName#> = <#= variableNameName #>;
 		}
 <#		
-		var methods = new List<GeneratedMethod>();
-		foreach (var sourceMethod in wrappedType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(x => !x.IsSpecialName)
-                .Where(x => x.DeclaringType != typeof(object))
-				.Where(x => !x.GetCustomAttributes(typeof(ObsoleteAttribute)).Any()))
-        {
-			var hasReturnType = sourceMethod.ReturnType != typeof(void);
-			var returnType = hasReturnType ? CSharpSourceCodeGeneration.GetSafeTypeName(sourceMethod.ReturnType) : "void";
-			var returnStatement = hasReturnType ? "return " : "";
-			var typeParameters = (sourceMethod.IsGenericMethod) ? "<" + CSharpSourceCodeGeneration.GetTypeParameters(sourceMethod) + ">" : "";
-			var methodParamters = string.Join(", ", sourceMethod.GetParameters().Select(x => CSharpSourceCodeGeneration.GetParameterType(x)).ToArray());
-			var genericContraints = CSharpSourceCodeGeneration.GetTypeParametersConstrants(sourceMethod);
-			var methodArguments = CSharpSourceCodeGeneration.GetInvokingMethodArguments(sourceMethod);
-			var methodSignature = returnType + " " + sourceMethod.Name + typeParameters + "(" + methodParamters + ")";
-			var modifier = GetMethodModifier(sourceMethod);
+		foreach(var method in methods)
+		{
+
+			var modifier = method.Modifier;
 			if (modifier == null)
 			{
-				methods.Add(new GeneratedMethod { Signature = methodSignature, Constraints = genericContraints });
 				modifier = createMethodsAsVirtual ? "virtual " : "";
 			}
 			else
 			{
 				modifier += " ";
 			}
+
 #>
-		public <#= modifier #><#=methodSignature#> <#
-			RenderGenericConstraints(genericContraints); #>
+		public <#= modifier #><#= method.Signature #> <#
+			RenderGenericConstraints(method.Constraints); #>
 		
 		{
-			<#=returnStatement + fieldName #>.<#=sourceMethod.Name + typeParameters#>(<#=methodArguments #>);
+			<#=method.ReturnStatement + fieldName #>.<#=method.Name + method.TypeParameters#>(<#=method.Arguments #>);
 		}
 <#
 		}
 		#>
 	}
+<#  } #>
 <#	if (createInterface)
 	{
 #>
@@ -134,12 +155,17 @@ namespace <#= namespace2#>
 	{
 		public string Signature { get;set;}
 		public IEnumerable<string> Constraints {get;set;}
+		public string Modifier { get;set; }
+		public string ReturnStatement { get;set; }
+		public string Name { get;set; }
+		public string TypeParameters { get;set; }
+		public string Arguments { get;set; }
 	}
 
 	enum OutputType
 	{
-		Interface,
-		Class
+		Interface = 1,
+		Class = 2
 	}
 
 #>

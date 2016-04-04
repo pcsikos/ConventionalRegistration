@@ -94,7 +94,7 @@ namespace Flubar
             var count = services.Count();
             if (count == 1)//one to one
             {
-                container.Register(services.First(), implementation, lifetime);
+                container.RegisterType(services.First(), implementation, lifetime);
             }
             else
             {

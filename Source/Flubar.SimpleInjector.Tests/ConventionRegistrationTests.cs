@@ -28,18 +28,19 @@ namespace Flubar.SimpleInjector.Tests
             };
             Container.RegistrationByConvention(config, builder =>
             {
+                
                 builder.ExplicitRegistration(c =>
                 {
-                    //c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
-                    //c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
-                    //c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
-                    //c.Register<DbContext1>(Lifestyle.Scoped);
-                    //c.Register<DbContext2>(Lifestyle.Scoped);
-                    //c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-                    ////c.RegisterFunc<ITransientService>();
+                    c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
+                    c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
+                    c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
+                    c.Register<DbContext1>(Lifestyle.Scoped);
+                    c.Register<DbContext2>(Lifestyle.Scoped);
+                    c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    //c.RegisterFunc<ITransientService>();
 
-                    //c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-                    //c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+                    c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
+                    c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
                 });
 
                 builder.RegisterAsCollection(typeof(IValidator<>));
