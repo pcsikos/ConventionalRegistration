@@ -19,7 +19,7 @@ namespace Flubar.SimpleInjector
             }
             
             var typeExclusionTracker = new TypeExclusionTracker();
-            var adapter = new SimpleInjectorContainerAdapterAdapter(container, typeExclusionTracker);
+            var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
             using (var builder = new SimpleInjectorConventionBuilder(adapter, configuration, typeExclusionTracker))
             {
                 convention(builder);

@@ -35,7 +35,7 @@ namespace Flubar.SimpleInjector.Tests
             Container.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
             Container.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
 
-            //Container.Verify();
+            Container.Verify();
         }
 
         public void RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifestyle)

@@ -36,15 +36,6 @@ namespace Flubar.SimpleInjector.Tests
 
         }
 
-        [TestMethod]
-        public void Run2()
-        {
-            var container = new Container();
-
-            container.Register<ITransientService, TransientService>();
-            container.GetRegistration(typeof(ITransientService));
-            container.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
-
-        }
+       
     }
 }

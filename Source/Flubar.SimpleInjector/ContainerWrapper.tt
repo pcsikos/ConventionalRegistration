@@ -17,16 +17,23 @@
 	bool createMethodsAsVirtual = false;
 	var outputType = OutputType.Interface;
 	bool createInterface = (outputType & OutputType.Interface) == OutputType.Interface;
+	var excludedMethods = new [] { "Get.+", "Equals", "ToString", "Dispose", "RegisterCollection", "Verify", "RegisterInitializer" };
 
 	var interfaceName = "I" + wrappedType.Name;
 
 	var variableNameName = wrappedType.Name.ToLower();
 	var fieldName = variableNameName;
 
+	var asmLocation = wrappedType.Assembly.Location;
+	var docFile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(asmLocation), System.IO.Path. GetFileNameWithoutExtension(asmLocation) + ".xml");
+
 	var methods = new List<GeneratedMethod>();
 	foreach (var sourceMethod in wrappedType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
             .Where(x => !x.IsSpecialName)
             .Where(x => x.DeclaringType != typeof(object))
+			.Where(x => !excludedMethods.Any(pattern => System.Text.RegularExpressions.Regex.IsMatch(x.Name, pattern)))
+			.Where(x => x.Name != "RegisterDecorator" || !x.GetParameters().Any(p => p.ParameterType == typeof(Func<DecoratorPredicateContext, Type>)))
+			.Where(x => x.Name != "Register" || !x.GetParameters().Any(p => p.ParameterType == typeof(IEnumerable<Assembly>)))
 			.Where(x => !x.GetCustomAttributes(typeof(ObsoleteAttribute)).Any()))
     {
 		var hasReturnType = sourceMethod.ReturnType != typeof(void);

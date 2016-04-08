@@ -9,9 +9,9 @@ namespace Flubar.SimpleInjector
 {
     public class SimpleInjectorConventionBuilder : ConventionBuilder<Lifestyle>
     {
-        private readonly SimpleInjectorContainerAdapterAdapter _containerAdapterAdapter;
+        private readonly SimpleInjectorContainerAdapter _containerAdapterAdapter;
 
-        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapterAdapter _containerAdapterAdapter, 
+        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapter _containerAdapterAdapter, 
             BehaviorConfiguration behaviorConfiguration, 
             ITypeExclusionTracker exclusionTracker) 
             : base(_containerAdapterAdapter, behaviorConfiguration, exclusionTracker)

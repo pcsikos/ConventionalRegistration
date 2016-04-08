@@ -31,12 +31,13 @@ namespace Flubar.SimpleInjector.Tests
                 
                 builder.ExplicitRegistration(c =>
                 {
-                    c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
+                    c.RegisterSingleton<ISingletonService, SingletonService>();
                     c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
                     c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
                     c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    c.RegisterSingleton<Func<ITransientService>>(() => Container.GetInstance<ITransientService>());
                     //c.RegisterFunc<ITransientService>();
 
                     c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
@@ -53,6 +54,7 @@ namespace Flubar.SimpleInjector.Tests
                      .UsingAllInterfacesStrategy());
             });
             Container.RegisterConditional(typeof(IRepository<>), typeof(Repository<>), context => !context.Handled);
+            Container.Verify();
         }
     }
 }

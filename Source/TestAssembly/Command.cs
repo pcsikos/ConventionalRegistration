@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TestAssembly
+﻿namespace TestAssembly
 {
     public class Command : ICommand
     {
@@ -18,18 +13,13 @@ namespace TestAssembly
         string GetString();
     }
 
-    public class TransactionCommand : ICommand, IDisposable, ITransaction
+    public class TransactionCommand : ICommand, ITransaction
     {
         readonly ICommand command;
 
         public TransactionCommand(ICommand command)
         {
             this.command = command;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
 
         public string GetString()
