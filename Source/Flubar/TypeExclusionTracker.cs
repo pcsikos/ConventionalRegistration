@@ -98,7 +98,7 @@ namespace Flubar
 
             public ExcludedImplementation(Type implementation, IEnumerable<Type> services)
             {
-                this.excludedServices = new List<Type>(services);
+                this.excludedServices = new List<Type>(services ?? new Type[0]);
                 this.implementation = implementation;
             }
 
