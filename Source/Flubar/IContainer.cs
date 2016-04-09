@@ -10,10 +10,9 @@ namespace Flubar
     public interface IContainer<TContainerLifetime>
         where TContainerLifetime : class
     {
-        void RegisterType(Type serviceType, Type implementation, TContainerLifetime lifetime = null);
-        void RegisterAll(IEnumerable<Type> serviceTypes, Type implementation, TContainerLifetime lifetime = null);
-        //void Register<TService>(Func<TService> instanceCreator, TContainerLifetime lifetime = null) where TService : class;
-        //void Register(Type serviceType, Func<object> instanceCreator, TContainerLifetime lifetime = null);
+        void RegisterService(Type serviceType, Type implementation, TContainerLifetime lifetime = null);
+        void RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, TContainerLifetime lifetime = null);
+        void RegisterMultipleImplementations(Type serviceType, IEnumerable<Type> implementations);
         TContainerLifetime GetSingletonLifetime();
         TContainerLifetime GetDefaultLifetime();
     }

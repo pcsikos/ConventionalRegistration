@@ -47,14 +47,14 @@ namespace Flubar.SimpleInjector
 
         #region IContainer<Lifestyle> Members
 
-        void IContainer<Lifestyle>.RegisterType(Type serviceType, Type implementation, Lifestyle lifetime)
+        void IContainer<Lifestyle>.RegisterService(Type serviceType, Type implementation, Lifestyle lifetime)
         {
             container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
             typeExclusionTracker.ExcludeService(serviceType, implementation);
             //container.RegisterConditional<>
         }
 
-        void IContainer<Lifestyle>.RegisterAll(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
+        void IContainer<Lifestyle>.RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
         {
             if (lifetime == null)
             {
@@ -66,6 +66,11 @@ namespace Flubar.SimpleInjector
                 container.AddRegistration(type, registration);
             }
             typeExclusionTracker.ExcludeServices(serviceTypes, implementation);
+        }
+
+        public void RegisterMultipleImplementations(Type serviceType, IEnumerable<Type> implementations)
+        {
+            container.RegisterCollection(serviceType, implementations);
         }
 
         public Lifestyle GetSingletonLifetime()
