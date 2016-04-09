@@ -56,7 +56,6 @@
     <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
     <Compile Include="ConventionBuilder.cs" />
-    <Compile Include="Diagnostic\DebugExtensions.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="IContainerRegistration.cs" />
     <Compile Include="IConventionBuilder.cs" />

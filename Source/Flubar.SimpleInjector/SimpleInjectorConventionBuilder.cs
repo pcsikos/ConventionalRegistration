@@ -1,34 +1,30 @@
 ﻿using SimpleInjector;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flubar.SimpleInjector
 {
     public class SimpleInjectorConventionBuilder : ConventionBuilder<Lifestyle>
     {
-        private readonly SimpleInjectorContainerAdapter _containerAdapterAdapter;
+        private readonly SimpleInjectorContainerAdapter containerAdapter;
 
-        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapter _containerAdapterAdapter, 
+        internal SimpleInjectorConventionBuilder(SimpleInjectorContainerAdapter containerAdapter, 
             BehaviorConfiguration behaviorConfiguration, 
             ITypeExclusionTracker exclusionTracker) 
-            : base(_containerAdapterAdapter, behaviorConfiguration, exclusionTracker)
+            : base(containerAdapter, behaviorConfiguration, exclusionTracker)
         {
-            this._containerAdapterAdapter = _containerAdapterAdapter;
+            this.containerAdapter = containerAdapter;
         }
 
         public void ExplicitRegistration(Action<ISimpleInjectorContainerAdapter> explicitRegistrations)
         {
-            explicitRegistrations(_containerAdapterAdapter);
+            explicitRegistrations(containerAdapter);
         }
 
         public void RegisterAsCollection(Type serviceType)
         {
             SearchForImplementations(serviceType, types =>
             {
-                _containerAdapterAdapter.Container.RegisterCollection(serviceType, types);
+                containerAdapter.Container.RegisterCollection(serviceType, types);
             });
         }
     }

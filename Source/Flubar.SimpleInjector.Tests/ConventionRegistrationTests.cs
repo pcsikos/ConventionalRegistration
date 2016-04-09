@@ -1,12 +1,8 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
-using System.Diagnostics;
 using System;
-using SimpleInjector.Extensions.LifetimeScoping;
-using System.Collections.Generic;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -26,9 +22,9 @@ namespace Flubar.SimpleInjector.Tests
                     TestContext.WriteLine(message);
                 }
             };
+            config.ExcludedServices = new[] { typeof(ICommand) };
             Container.RegistrationByConvention(config, builder =>
             {
-                
                 builder.ExplicitRegistration(c =>
                 {
                     c.RegisterSingleton<ISingletonService, SingletonService>();
@@ -38,13 +34,13 @@ namespace Flubar.SimpleInjector.Tests
                     c.Register<DbContext2>(Lifestyle.Scoped);
                     c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
                     c.RegisterSingleton<Func<ITransientService>>(() => Container.GetInstance<ITransientService>());
-                    //c.RegisterFunc<ITransientService>();
 
-                    c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-                    c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+                    c.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>));
+                    c.RegisterDecorator(typeof(ICommandHandler<>), typeof(LoggerCommandHandler<>));
                 });
 
                 builder.RegisterAsCollection(typeof(IValidator<>));
+                builder.RegisterAsCollection(typeof(ICommandValidator<>));
 
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()

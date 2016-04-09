@@ -38,6 +38,8 @@ namespace Flubar.RegistrationProducers
             return interfaces.Where(filter);
         }
 
+        #endregion
+
         private IEnumerable<Type> GetGenericInterfacesMatching(Type implementation)
         {
             var interfaces = implementation.GetInterfaces().ToArray();
@@ -45,7 +47,5 @@ namespace Flubar.RegistrationProducers
                 .Select(x => x.IsConstructedGenericType ? x.GetGenericTypeDefinition() : x).ToArray();
             return interfaces;
         }
-
-        #endregion
     }
 }

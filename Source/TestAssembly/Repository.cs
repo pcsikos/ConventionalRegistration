@@ -34,7 +34,7 @@ namespace TestAssembly
         public string Name { get; set; }
     }
 
-    public class Order
+    public class Order 
     {
 
     }

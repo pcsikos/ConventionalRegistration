@@ -27,13 +27,13 @@ namespace Flubar.SimpleInjector.Tests
             RegisterMultipleServices(new [] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
             RegisterFunc<ITransientService>();
             Container.Register(typeof(IRepository<>), typeof(Repository<>));
-            Container.Register<ICommand, Command>();
+            Container.Register<ICommandHandler<CustomCommand>, CustomCommandHandler>();
             Container.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
             Container.RegisterCollection(typeof(IValidator<>), new[] { typeof(CustomerLocationValidator), typeof(CustomerCreditValidator), typeof(OrderValidator) });
+            Container.RegisterCollection(typeof(ICommandValidator<>), new[] { typeof(PlaceOrderCommandValidator), typeof(CancelOrderCommandValidator) });
 
-
-            Container.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-            Container.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+            Container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>));
+            Container.RegisterDecorator(typeof(ICommandHandler<>), typeof(LoggerCommandHandler<>));
 
             Container.Verify();
         }

@@ -220,9 +220,9 @@ namespace Flubar.SimpleInjector.Tests
         [TestMethod]
         public void Resolving_Decorators_ShouldWrapInstance()
         {
-            var command = GetInstance<ICommand>();
+            var command = GetInstance<ICommandHandler<CustomCommand>>();
 
-            var result = command.GetString();
+            var result = command.Handle(new CustomCommand { });
 
             result.Should().NotBeNull().And.Be("cbabc");
         }
@@ -244,6 +244,19 @@ namespace Flubar.SimpleInjector.Tests
             productValidators.Should().BeEmpty();
         }
 
+        [TestMethod]
+        public void Resolving_ConcreteCommand_ShouldReturnDefinedValidator()
+        {
+            var customerCommandValidators = Container.GetAllInstances<ICommandValidator<PlaceOrderCommand>>();
+            customerCommandValidators.Should().NotBeNull().And.HaveCount(1);
+        }
+
+        [TestMethod]
+        public void Resolving_AbstractCommandShouldReturnEmptyList()
+        {
+            var customerCommandValidators = Container.GetAllInstances<ICommandValidator<CustomerCommand>>();
+            customerCommandValidators.Should().NotBeNull().And.BeEmpty();
+        }
 
         private TestContext testContextInstance;
         /// <summary>
