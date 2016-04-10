@@ -1,17 +1,16 @@
 ﻿using System;
 using SimpleInjector;
-using Flubar.Syntax;
 
 namespace Flubar.SimpleInjector
 {
     public static class ContainerExtensions
     {
-        public static void RegistrationByConvention(this Container container, Action<SimpleInjectorConventionBuilder> convention)
+        public static void RegistrationByConvention(this Container container, Action<ConventionBuilder<Lifestyle>> convention)
         {
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<SimpleInjectorConventionBuilder> convention)//, IEnumerable<Type> exclusions = null)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>> convention)//, IEnumerable<Type> serviceExclusions = null)
         {
             if (configuration == null)
             {
@@ -20,26 +19,16 @@ namespace Flubar.SimpleInjector
             
             var typeExclusionTracker = new TypeExclusionTracker();
             var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
-            using (var builder = new SimpleInjectorConventionBuilder(adapter, configuration, typeExclusionTracker))
+            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, typeExclusionTracker, new TypeTracker()))
             {
                 convention(builder);
             }
         }
 
-        //public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, params ISimpleInjectorBuilderPackage[] packages)
-        //{
-        //    RegistrationByConvention(container, configuration, builder =>
-        //    {
-        //        foreach (var package in packages)
-        //        {
-        //            package.RegisterByConvention(container, builder);
-        //        }
-
-        //        foreach (var package in packages)
-        //        {
-        //            package.PostRegistrations(container);
-        //        }
-        //    });
-        //}
+        public static void ExplicitRegistration(this ConventionBuilder<Lifestyle> builder, Action<ISimpleInjectorContainerAdapter> explicitRegistrations)
+        {
+            var container = (ISimpleInjectorContainerAdapter)builder.Container;
+            explicitRegistrations(container);
+        }
     }
 }

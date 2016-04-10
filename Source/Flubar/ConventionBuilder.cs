@@ -14,11 +14,12 @@ namespace Flubar
         private readonly BehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
-        private readonly IDictionary<Type, CustomRegistration> customRegistrations = new Dictionary<Type, CustomRegistration>();
+        private readonly ITypeTracker typeTracker;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
             BehaviorConfiguration behaviorConfiguration,
-            ITypeExclusionTracker exclusionTracker)
+            ITypeExclusionTracker exclusionTracker,
+            ITypeTracker typeTracker)
         {
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             this.container = container;
@@ -26,7 +27,10 @@ namespace Flubar
             this.behaviorConfiguration = behaviorConfiguration;
             logger = new DiagnosticLogger(behaviorConfiguration);
             registrationEntryValidator = new RegistrationEntryValidator(exclusionTracker, logger);
+            this.typeTracker = typeTracker;
         }
+
+        public IContainer<TLifetime> Container => container;
 
         public ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
         {
@@ -38,7 +42,7 @@ namespace Flubar
                 {
                     return;
                 }
-                if (AddToCustomRegistrationIfApplicable(services, registration.ImplementationType))
+                if (typeTracker.AddToCustomRegistrationIfApplicable(services, registration.ImplementationType))
                 {
                     return;
                 }
@@ -48,40 +52,23 @@ namespace Flubar
             }));
         }
 
-        private bool AddToCustomRegistrationIfApplicable(IEnumerable<Type> services, Type implementationType)
-        {
-            foreach (var serviceType in services)
-            {
-                if (customRegistrations.ContainsKey(serviceType))
-                {
-                    var customRegistration = customRegistrations[serviceType];
-                    customRegistration.AddImlementation(implementationType);
-                    return true;
-                }
-                var genericType = serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : null;
-                if (genericType != null && customRegistrations.ContainsKey(genericType))
-                {
-                    var customRegistration = customRegistrations[genericType];
-                    customRegistration.AddImlementation(implementationType);
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
         {
             conventions.Add(convention);
             return this;
         }
 
+        public void RegisterAsCollection(Type serviceType)
+        {
+            SearchForImplementations(serviceType, types =>
+            {
+                container.RegisterMultipleImplementations(serviceType, types);
+            });
+        }
+
         protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
         {
-            if (customRegistrations.ContainsKey(serviceType))
-            {
-                throw new ArgumentException();
-            }
-            customRegistrations.Add(serviceType, new CustomRegistration(serviceType, callback));
+            typeTracker.RegisterMonitoredType(serviceType, callback);
         }
 
         private Func<ILifetimeSyntax<TLifetime>, TLifetime> GetDefaultLifetimeWhenNull(Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection)
@@ -94,11 +81,11 @@ namespace Flubar
             var count = services.Count();
             if (count == 1)//one to one
             {
-                container.RegisterType(services.First(), implementation, lifetime);
+                container.RegisterService(services.First(), implementation, lifetime);
             }
             else
             {
-                container.RegisterAll(services, implementation, lifetime);
+                container.RegisterMultipleServices(services, implementation, lifetime);
             }
         }
 
@@ -127,44 +114,11 @@ namespace Flubar
                 convention(asmSelector);
             }
 
-            foreach (var customRegistration in customRegistrations.Values)
-            {
-                customRegistration.InvokeCallback();
-            }
+            typeTracker.Resolve();
         }
 
         #endregion
 
-        private class CustomRegistration
-        {
-            readonly Type serviceType;
-            readonly Action<IEnumerable<Type>> callback;
-            private readonly ISet<Type> implementations;
-
-            public CustomRegistration(Type serviceType, Action<IEnumerable<Type>> callback)
-            {
-                this.callback = callback;
-                this.serviceType = serviceType;
-                implementations = new HashSet<Type>();
-            }
-
-            public void AddImlementation(Type implementationType)
-            {
-                if (!implementations.Contains(implementationType))
-                {
-                    implementations.Add(implementationType);
-                }
-            }
-
-            public IEnumerable<Type> GetImplementations()
-            {
-                return implementations;
-            }
-
-            internal void InvokeCallback()
-            {
-                callback(GetImplementations());
-            }
-        }
+       
     }
 }

@@ -32,7 +32,7 @@ namespace Flubar.SimpleInjector.Tests
                     c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
-                    c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    c.RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
                     c.RegisterSingleton<Func<ITransientService>>(() => Container.GetInstance<ITransientService>());
 
                     c.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>));

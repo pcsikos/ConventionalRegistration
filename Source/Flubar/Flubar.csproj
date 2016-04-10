@@ -62,6 +62,7 @@
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="IServiceFilter.cs" />
     <Compile Include="IServiceExclusion.cs" />
+    <Compile Include="ITypeTracker.cs" />
     <Compile Include="NullServiceFilter.cs" />
     <Compile Include="RegistrationEntryValidator.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
+    <Compile Include="TypeTracker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
