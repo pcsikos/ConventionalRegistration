@@ -153,7 +153,7 @@ namespace Flubar
             }
 
             var registrations = filteredTypes.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
-            return new RegistrationHandler(registrations, null);
+            return new RegistrationHandler(registrations);
         }
 
         #endregion

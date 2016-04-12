@@ -28,14 +28,13 @@ namespace Flubar.Unity.Tests
             };
             config.ExcludedServices = new[] { typeof(ICommand) };
 
-            Container.RegistrationByConvention(config, builder =>
+            Container.RegistrationByConvention(config, (builder, exclusion) =>
             {
                 builder.Define(source => source
                           .FromAssemblyContaining<ITransientService>()
                           .Select(t => t.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>)))
-                          //.Excluding(typeof(TransactionCommandHandler<>), typeof(LoggerCommandHandler<>))
                           .UsingAllInterfacesStrategy()
-                        .RegisterEach((entry, exclusion) =>
+                        .RegisterEach(entry =>
                         {
                             if (entry.ServicesTypes.Count() == 1)
                             {
