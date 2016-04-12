@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Flubar
+﻿namespace Flubar
 {
     //public interface IConfigurationServiceExclusion
     //{

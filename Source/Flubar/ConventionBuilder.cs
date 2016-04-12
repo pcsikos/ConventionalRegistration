@@ -5,6 +5,10 @@ using Flubar.Syntax;
 
 namespace Flubar
 {
+    /// <summary>
+    /// todo: extract logging
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
     public class ConventionBuilder<TLifetime> : IDisposable
         where TLifetime : class
     {

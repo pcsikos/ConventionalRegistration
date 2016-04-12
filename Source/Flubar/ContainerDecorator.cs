@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Flubar
+﻿namespace Flubar
 {
     //class ContainerDecorator<TLifetime> : IContainer<TLifetime>
     //    where TLifetime : class

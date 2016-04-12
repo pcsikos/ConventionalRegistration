@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Flubar.Syntax;
-
-namespace Flubar
+﻿namespace Flubar
 {
     //public interface IConventionBuilder<TLifetime> : ITypeExclusion
     //    where TLifetime : class
