@@ -10,7 +10,12 @@ namespace Flubar.SimpleInjector
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>> convention)//, IEnumerable<Type> serviceExclusions = null)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>> convention)
+        {
+            RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
+        }
+
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>, ITypeExclusionTracker> convention)
         {
             if (configuration == null)
             {
@@ -21,7 +26,7 @@ namespace Flubar.SimpleInjector
             var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
             using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, typeExclusionTracker, new TypeTracker()))
             {
-                convention(builder);
+                convention(builder, typeExclusionTracker);
             }
         }
 
