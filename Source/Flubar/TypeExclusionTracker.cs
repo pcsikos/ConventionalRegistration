@@ -119,6 +119,9 @@ namespace Flubar
         }
     }
 
+    /// <summary>
+    /// todo: split query API from update
+    /// </summary>
     public interface ITypeExclusionTracker : IServiceExclusion, IImplementationExclusion
     {
         bool ContainsImplementation(Type implementation);

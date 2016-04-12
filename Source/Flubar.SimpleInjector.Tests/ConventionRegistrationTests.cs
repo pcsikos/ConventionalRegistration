@@ -27,6 +27,7 @@ namespace Flubar.SimpleInjector.Tests
             {
                 builder.ExplicitRegistration(c =>
                 {
+                    c.Register(() => new CustomerLocationValidator { Name = "abc" });
                     c.RegisterSingleton<ISingletonService, SingletonService>();
                     c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
                     c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));

@@ -6,6 +6,7 @@ using TestAssembly;
 using SimpleInjector.Extensions.LifetimeScoping;
 using TestAssembly.Data;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -233,7 +234,8 @@ namespace Flubar.SimpleInjector.Tests
             var customerValidators = Container.GetAllInstances<IValidator<Customer>>();
             var orderValidators = Container.GetAllInstances<IValidator<Order>>();
 
-            customerValidators.Should().NotBeNull().And.HaveCount(2);
+            customerValidators.Should().NotBeNull().And.HaveCount(2).And.Subject.Should().Contain(x => x is CustomerLocationValidator);
+            customerValidators.OfType<CustomerLocationValidator>().Single().Name.Should().Be("abc");
             orderValidators.Should().NotBeNull().And.HaveCount(1);
         }
 

@@ -209,7 +209,8 @@ namespace Flubar.Unity.Tests
             var customerValidators = Container.ResolveAll<IValidator<Customer>>();
             var orderValidators = Container.ResolveAll<IValidator<Order>>();
 
-            customerValidators.Should().NotBeNull().And.HaveCount(2);
+            customerValidators.Should().NotBeNull().And.HaveCount(2).And.Subject.Should().Contain(x => x is CustomerLocationValidator);
+            customerValidators.OfType<CustomerLocationValidator>().Single().Name.Should().Be("abc");
             orderValidators.Should().NotBeNull().And.HaveCount(1);
         }
 

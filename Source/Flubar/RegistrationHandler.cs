@@ -7,9 +7,9 @@ namespace Flubar
     class RegistrationHandler : IRegisterSyntax
     {
         private readonly IEnumerable<IRegistrationEntry> registrations;
-        private readonly IServiceExclusion serviceExclusion;
+        private readonly ITypeExclusionTracker serviceExclusion;
 
-        public RegistrationHandler(IEnumerable<IRegistrationEntry> registrations, IServiceExclusion serviceExclusion)
+        public RegistrationHandler(IEnumerable<IRegistrationEntry> registrations, ITypeExclusionTracker serviceExclusion)
         {
             this.registrations = registrations;
             this.serviceExclusion = serviceExclusion;
@@ -25,7 +25,7 @@ namespace Flubar
             }
         }
 
-        public void RegisterEach(Action<IRegistrationEntry, IServiceExclusion> handleRegistration)
+        public void RegisterEach(Action<IRegistrationEntry, ITypeExclusionTracker> handleRegistration)
         {
             foreach (var registration in registrations)
             {
@@ -38,7 +38,7 @@ namespace Flubar
             handleRegistration(registrations);
         }
 
-        public void RegisterAll(Action<IEnumerable<IRegistrationEntry>, IServiceExclusion> handleRegistration)
+        public void RegisterAll(Action<IEnumerable<IRegistrationEntry>, ITypeExclusionTracker> handleRegistration)
         {
             handleRegistration(registrations, serviceExclusion);
         }

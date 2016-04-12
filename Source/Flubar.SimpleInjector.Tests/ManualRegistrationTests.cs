@@ -29,6 +29,7 @@ namespace Flubar.SimpleInjector.Tests
             Container.Register(typeof(IRepository<>), typeof(Repository<>));
             Container.Register<ICommandHandler<CustomCommand>, CustomCommandHandler>();
             Container.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
+            Container.Register(() => new CustomerLocationValidator { Name = "abc" });
             Container.RegisterCollection(typeof(IValidator<>), new[] { typeof(CustomerLocationValidator), typeof(CustomerCreditValidator), typeof(OrderValidator) });
             Container.RegisterCollection(typeof(ICommandValidator<>), new[] { typeof(PlaceOrderCommandValidator), typeof(CancelOrderCommandValidator) });
 

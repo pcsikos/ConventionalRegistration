@@ -86,6 +86,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Flubar.Unity\Flubar.Unity.csproj">
+      <Project>{f3075e2b-a39d-4a97-9b51-241bf5b3dd5f}</Project>
+      <Name>Flubar.Unity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Flubar\Flubar.csproj">
       <Project>{ed8574b0-ca3a-45d9-83da-1f269b00551d}</Project>
       <Name>Flubar</Name>

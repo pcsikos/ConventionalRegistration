@@ -28,7 +28,7 @@ namespace Flubar.Unity.Tests
             Container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             Container.RegisterType<ICommandHandler<CustomCommand>, CustomCommandHandler>("CommandHandler");
             Container.RegisterType<IDataProvider>(new InjectionFactory(c => new XmlDataProvider("flubar:\\path")));
-            Container.RegisterType<IValidator<Customer>, CustomerLocationValidator>("CustomerLocationValidator");
+            Container.RegisterType<IValidator<Customer>, CustomerLocationValidator>("CustomerLocationValidator", new InjectionFactory(c => new CustomerLocationValidator { Name = "abc" }));
             Container.RegisterType<IValidator<Customer>, CustomerCreditValidator>("CustomerCreditValidator");
             Container.RegisterType<IValidator<Order>, OrderValidator>("OrderValidator");
             Container.RegisterType<ICommandValidator<PlaceOrderCommand>, PlaceOrderCommandValidator>("PlaceOrderCommandValidator");
