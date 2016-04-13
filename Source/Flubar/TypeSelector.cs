@@ -171,11 +171,6 @@ namespace Flubar
             return Select(x => x.IsClass && !x.IsAbstract);
         }
 
-        public IFilterSyntax SelectAllInterfaces()
-        {
-            return Select(x => x.IsInterface);
-        }
-
         #endregion
     }
 }
