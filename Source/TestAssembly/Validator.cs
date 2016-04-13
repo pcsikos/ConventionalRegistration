@@ -11,7 +11,6 @@ namespace TestAssembly
 
     public interface IValidator<TEntity>
     {
-
     }
 
     public class CustomerLocationValidator : IValidator<Customer>

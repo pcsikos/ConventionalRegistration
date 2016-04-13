@@ -127,4 +127,36 @@ namespace TestAssembly
             return base.ValidateCommand(command);
         }
     }
+
+
+    public class ChangeDeliveryAddressCommand : ICommand
+    {
+        public string GetString()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ChangeInvoiceAddressCommand : ICommand
+    {
+        public string GetString()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class AddressCommandValidator : ICommandValidator<ChangeDeliveryAddressCommand>, ICommandValidator<ChangeInvoiceAddressCommand>
+    {
+        public bool Validate(ChangeInvoiceAddressCommand command)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Validate(ChangeDeliveryAddressCommand command)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 }
