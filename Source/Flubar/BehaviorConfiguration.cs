@@ -8,7 +8,7 @@ namespace Flubar
     public class BehaviorConfiguration : IBehaviorConfiguration
     {
         private IEnumerable<Type> excludedServices;
-        private IEnumerable<Type> excludedBaseTypes;
+        //private IEnumerable<Type> excludedBaseTypes;
         private Func<Type, bool> filter;
 
         public BehaviorConfiguration()

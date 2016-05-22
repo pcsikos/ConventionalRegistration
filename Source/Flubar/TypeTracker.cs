@@ -13,19 +13,23 @@ namespace Flubar
             {
                 if (customRegistrations.ContainsKey(serviceType))
                 {
-                    var customRegistration = customRegistrations[serviceType];
-                    customRegistration.AddImlementation(implementationType);
+                    AddImplementation(implementationType, serviceType);
                     continue;
                 }
                 var genericType = serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : null;
                 if (genericType != null && customRegistrations.ContainsKey(genericType))
                 {
-                    var customRegistration = customRegistrations[genericType];
-                    customRegistration.AddImlementation(implementationType);
+                    AddImplementation(implementationType, genericType);
                     continue;
                 }
                 yield return serviceType;
             }
+        }
+
+        private void AddImplementation(Type implementationType, Type serviceType)
+        {
+            var customRegistration = customRegistrations[serviceType];
+            customRegistration.AddImlementation(implementationType);
         }
 
         public void RegisterMonitoredType(Type serviceType, Action<IEnumerable<Type>> callback)

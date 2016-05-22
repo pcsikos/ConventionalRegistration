@@ -11,13 +11,13 @@ namespace Flubar
         private readonly IContainer<TLifetime> container;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
-        private readonly BehaviorConfiguration behaviorConfiguration;
+        private readonly IBehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
         private readonly IServiceMappingTracker serviceMappingTracker;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
-            BehaviorConfiguration behaviorConfiguration,
+            IBehaviorConfiguration behaviorConfiguration,
             ITypeExclusionTracker exclusionTracker,
             IServiceMappingTracker serviceMappingTracker)
         {
