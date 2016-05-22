@@ -44,7 +44,7 @@ namespace Flubar
                     return;
                 }
                 var filteredServices = FilterServices(services, registration.ImplementationType);
-                if (filteredServices.Any())
+                if (!filteredServices.Any())
                 {
                     return;
                 }
