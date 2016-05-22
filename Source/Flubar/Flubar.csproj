@@ -62,6 +62,7 @@
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="IServiceFilter.cs" />
     <Compile Include="IServiceExclusion.cs" />
+    <Compile Include="ITypeExclusionTracker.cs" />
     <Compile Include="ITypeTracker.cs" />
     <Compile Include="NullServiceFilter.cs" />
     <Compile Include="RegistrationEntryValidator.cs" />

@@ -14,20 +14,21 @@ namespace Flubar
         private readonly BehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
-        private readonly ITypeTracker typeTracker;
+        private readonly IServiceMappingTracker serviceMappingTracker;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
             BehaviorConfiguration behaviorConfiguration,
             ITypeExclusionTracker exclusionTracker,
-            ITypeTracker typeTracker)
+            IServiceMappingTracker serviceMappingTracker)
         {
-            lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             this.container = container;
-            conventions = new List<Action<ISourceSyntax>>();
             this.behaviorConfiguration = behaviorConfiguration;
+            this.serviceMappingTracker = serviceMappingTracker;
+
+            lifetimeSelector = new LifetimeSelector<TLifetime>(container);
+            conventions = new List<Action<ISourceSyntax>>();
             logger = new DiagnosticLogger(behaviorConfiguration);
             registrationEntryValidator = new RegistrationEntryValidator(exclusionTracker, logger);
-            this.typeTracker = typeTracker;
         }
 
         public IContainer<TLifetime> Container => container;
@@ -42,7 +43,8 @@ namespace Flubar
                 {
                     return;
                 }
-                if (typeTracker.AddToCustomRegistrationIfApplicable(services, registration.ImplementationType))
+                var filteredServices = FilterServices(services, registration.ImplementationType);
+                if (filteredServices.Any())
                 {
                     return;
                 }
@@ -50,6 +52,11 @@ namespace Flubar
                 AutomaticRegistration(registration.ImplementationType, services, lifetimeSelection(lifetimeSelector));
                 WriteAboutRegistration(registration.ImplementationType, services);
             }));
+        }
+
+        protected virtual IEnumerable<Type> FilterServices(IEnumerable<Type> services, Type implementationType)
+        {
+            return serviceMappingTracker.RegisterMapping(services, implementationType);
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -68,7 +75,19 @@ namespace Flubar
 
         protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
         {
-            typeTracker.RegisterMonitoredType(serviceType, callback);
+            serviceMappingTracker.RegisterMonitoredType(serviceType, callback);
+        }
+
+        protected virtual void ApplyConventions()
+        {
+            IServiceFilter serviceFilter = GetServiceFilterFromConfiguration();
+            var asmSelector = new AssemblySelector(serviceFilter);
+            foreach (var convention in conventions)
+            {
+                convention(asmSelector);
+            }
+
+            serviceMappingTracker.Resolve();
         }
 
         private Func<ILifetimeSyntax<TLifetime>, TLifetime> GetDefaultLifetimeWhenNull(Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection)
@@ -107,18 +126,11 @@ namespace Flubar
 
         public void Dispose()
         {
-            IServiceFilter serviceFilter = GetServiceFilterFromConfiguration();
-            var asmSelector = new AssemblySelector(serviceFilter);
-            foreach (var convention in conventions)
-            {
-                convention(asmSelector);
-            }
-
-            typeTracker.Resolve();
+            ApplyConventions();
         }
 
         #endregion
 
-       
+
     }
 }

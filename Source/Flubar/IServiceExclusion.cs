@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides methods for excluding registered services
+    /// </summary>
     public interface IServiceExclusion
     {
         void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation);

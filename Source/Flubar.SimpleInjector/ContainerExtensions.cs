@@ -24,7 +24,7 @@ namespace Flubar.SimpleInjector
             
             var typeExclusionTracker = new TypeExclusionTracker();
             var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
-            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, typeExclusionTracker, new TypeTracker()))
+            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, typeExclusionTracker, new ServiceMappingTracker()))
             {
                 convention(builder, typeExclusionTracker);
             }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Flubar
 {
-    public class TypeTracker : ITypeTracker
+    public class ServiceMappingTracker : IServiceMappingTracker
     {
         private readonly IDictionary<Type, CustomRegistration> customRegistrations = new Dictionary<Type, CustomRegistration>();
 
-        public bool AddToCustomRegistrationIfApplicable(IEnumerable<Type> services, Type implementationType)
+        public IEnumerable<Type> RegisterMapping(IEnumerable<Type> services, Type implementationType)
         {
             foreach (var serviceType in services)
             {
@@ -15,17 +15,17 @@ namespace Flubar
                 {
                     var customRegistration = customRegistrations[serviceType];
                     customRegistration.AddImlementation(implementationType);
-                    return true;
+                    continue;
                 }
                 var genericType = serviceType.IsGenericType ? serviceType.GetGenericTypeDefinition() : null;
                 if (genericType != null && customRegistrations.ContainsKey(genericType))
                 {
                     var customRegistration = customRegistrations[genericType];
                     customRegistration.AddImlementation(implementationType);
-                    return true;
+                    continue;
                 }
+                yield return serviceType;
             }
-            return false;
         }
 
         public void RegisterMonitoredType(Type serviceType, Action<IEnumerable<Type>> callback)
