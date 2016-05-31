@@ -4,8 +4,9 @@ namespace Flubar.RegistrationProducers
 {
     public class DefaultInterfaceRegistrationProducer : AbstractRegistrationProducer
     {
-        public DefaultInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector)
-            : base(registrationServiceSelector)
+        public DefaultInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector,
+            IServiceFilter serviceFilter)
+            : base(registrationServiceSelector, serviceFilter)
         {
         }
 

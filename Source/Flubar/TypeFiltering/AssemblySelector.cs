@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Flubar.Syntax;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public class AssemblySelector : ISourceSyntax
     {

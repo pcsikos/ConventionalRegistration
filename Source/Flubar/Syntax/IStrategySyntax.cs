@@ -12,7 +12,7 @@ namespace Flubar.Syntax
         IRegisterSyntax UsingDefaultInterfaceStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding);
-        IRegisterSyntax UsingStrategy<T>() where T : IRegistrationProducer, new();
+        IRegisterSyntax UsingStrategy(Func<IServiceFilter, IRegistrationProducer> producerFactory);
         IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer);
     }
 }

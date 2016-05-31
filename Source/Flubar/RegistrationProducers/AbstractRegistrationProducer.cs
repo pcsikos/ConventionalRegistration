@@ -3,32 +3,22 @@ using System.Linq;
 
 namespace Flubar.RegistrationProducers
 {
-    public abstract class AbstractRegistrationProducer : IRegistrationProducer, IConfigurable
+    public abstract class AbstractRegistrationProducer : IRegistrationProducer
     {
         private readonly IRegistrationServiceSelector implementationServiceSelector;
         private IServiceFilter serviceFilter;
 
-        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
+        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector,
+            IServiceFilter serviceFilter)
         {
             this.implementationServiceSelector = implementationServiceSelector;
-            serviceFilter = new NullServiceFilter();
+            this.serviceFilter = serviceFilter;
         }
 
-        IServiceFilter IConfigurable.ServiceFilter
-        {
-            get
-            {
-                return serviceFilter;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    serviceFilter = value;
-                }
-            }
-        }
+        //protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
+        //    : this(implementationServiceSelector, new NullServiceFilter())
+        //{
+        //}
 
         protected abstract bool IsApplicable(Type service, Type implementation);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Flubar.Syntax;
+using Flubar.TypeFiltering;
 
 namespace Flubar
 {
@@ -130,7 +131,5 @@ namespace Flubar
         }
 
         #endregion
-
-
     }
 }

@@ -43,13 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateServiceFilter.cs" />
-    <Compile Include="AssemblySelector.cs" />
+    <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="DiagnosticLevel.cs" />
     <Compile Include="DiagnosticLogger.cs" />
     <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
-    <Compile Include="IConfigurable.cs" />
     <Compile Include="IImplementationExclusion.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="RegistrationEventArgs.cs" />
     <Compile Include="Syntax\IBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
-    <Compile Include="IConfigurationServiceExclusion.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />
     <Compile Include="Syntax\ISourceSyntax.cs" />
     <Compile Include="Syntax\IStrategySyntax.cs" />
@@ -87,7 +85,7 @@
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
     <Compile Include="ImplementationExcludedEventArgs.cs" />
     <Compile Include="TypeExclusionTracker.cs" />
-    <Compile Include="TypeSelector.cs" />
+    <Compile Include="TypeFiltering\TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
     <Compile Include="Syntax\IExcludeSyntax.cs" />
