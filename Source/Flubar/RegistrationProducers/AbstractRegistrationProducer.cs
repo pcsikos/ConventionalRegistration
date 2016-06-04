@@ -6,13 +6,13 @@ namespace Flubar.RegistrationProducers
     public abstract class AbstractRegistrationProducer : IRegistrationProducer
     {
         private readonly IRegistrationServiceSelector implementationServiceSelector;
-        private IServiceFilter serviceFilter;
+        private ITypeFilter typeFilter;
 
         protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector,
-            IServiceFilter serviceFilter)
+            ITypeFilter typeFilter)
         {
             this.implementationServiceSelector = implementationServiceSelector;
-            this.serviceFilter = serviceFilter;
+            this.typeFilter = typeFilter;
         }
 
         //protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
@@ -24,7 +24,7 @@ namespace Flubar.RegistrationProducers
 
         protected virtual bool IsServiceAllowed(Type service)
         {
-            return !serviceFilter.IsServiceExcluded(service);
+            return !typeFilter.Contains(service);
         }
 
         #region IImplementationRegistrationProducer Members

@@ -42,14 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AggregateServiceFilter.cs" />
+    <Compile Include="TypeFilter.cs" />
     <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
     <Compile Include="DiagnosticLevel.cs" />
     <Compile Include="DiagnosticLogger.cs" />
-    <Compile Include="ExcludedServiceFilter.cs" />
     <Compile Include="IBehaviorConfiguration.cs" />
-    <Compile Include="IImplementationExclusion.cs" />
+    <Compile Include="IImplementationFilter.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
     <Compile Include="ContainerDecorator.cs" />
@@ -59,11 +58,10 @@
     <Compile Include="IContainerRegistration.cs" />
     <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
-    <Compile Include="IServiceFilter.cs" />
-    <Compile Include="IServiceExclusion.cs" />
-    <Compile Include="ITypeExclusionTracker.cs" />
-    <Compile Include="ITypeTracker.cs" />
-    <Compile Include="NullServiceFilter.cs" />
+    <Compile Include="ITypeFilter.cs" />
+    <Compile Include="IServiceMappingTracker.cs" />
+    <Compile Include="IServiceExtractor.cs" />
+    <Compile Include="NullTypeFilter.cs" />
     <Compile Include="RegistrationEntryValidator.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
@@ -83,8 +81,7 @@
     <Compile Include="Syntax\IStrategySyntax.cs" />
     <Compile Include="Syntax\ITypeSourceSyntax.cs" />
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
-    <Compile Include="ImplementationExcludedEventArgs.cs" />
-    <Compile Include="TypeExclusionTracker.cs" />
+    <Compile Include="ServiceMappingTracker.cs" />
     <Compile Include="TypeFiltering\TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
@@ -93,7 +90,7 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
-    <Compile Include="TypeTracker.cs" />
+    <Compile Include="ServiceExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

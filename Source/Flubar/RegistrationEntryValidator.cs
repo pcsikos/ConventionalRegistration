@@ -6,10 +6,10 @@ namespace Flubar
 {
     class RegistrationEntryValidator
     {
-        readonly ITypeExclusionTracker exclusionTracker;
+        readonly IServiceMappingTracker exclusionTracker;
         readonly ILog logger;
 
-        public RegistrationEntryValidator(ITypeExclusionTracker exclusionTracker,
+        public RegistrationEntryValidator(IServiceMappingTracker exclusionTracker,
             ILog logger)
         {
             this.logger = logger;
@@ -18,21 +18,21 @@ namespace Flubar
 
         public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
-            var allowedServices = GetAllowedServicesForImplementation(implementation, services);
-            var excludedServices = GetExcludedServices(services, allowedServices);
-            if (excludedServices.Any())
-            {
-                WriteAboutExcludedImplementation(implementation, excludedServices);
-            }
-            if (!allowedServices.Any())
+            //var allowedServices = GetAllowedServicesForImplementation(implementation, services);
+            //var excludedServices = GetExcludedServices(services, allowedServices);
+            //if (excludedServices.Any())
+            //{
+            //    WriteAboutExcludedImplementation(implementation, excludedServices);
+            //}
+            if (!services.Any())
             {
                 return Enumerable.Empty<Type>();
             }
 
-            var filteredServices = FilterUsedServices(allowedServices);
-            if (filteredServices.Count() != allowedServices.Count())
+            var filteredServices = FilterUsedServices(services);
+            if (filteredServices.Count() != services.Count())
             {
-                WriteAboutExcludedServices(implementation, allowedServices, filteredServices);
+                WriteAboutExcludedServices(implementation, services, filteredServices);
             }
             return filteredServices;
         }
@@ -52,42 +52,42 @@ namespace Flubar
             return allowedServices;
         }
 
-        private IEnumerable<Type> GetAllowedServicesForImplementation(Type implementation, IEnumerable<Type> services)
-        {
-            if (exclusionTracker.ContainsImplementation(implementation))
-            {
-                var implementationServices = exclusionTracker.GetImplemetationServices(implementation);
-                bool hasServices = implementationServices.Any();
-                if (hasServices && implementationServices.Any(excludedService => services.Any(service => service == excludedService)))
-                {
-                    var allowedServices = services.Where(service => !implementationServices.Any(excludedService => excludedService == service));
-                    hasServices = allowedServices.Any();
-                    if (hasServices)
-                    {
-                        return allowedServices;
-                    }
-                }
-                if (!hasServices)//exclude every service
-                {
-                    return Enumerable.Empty<Type>();
-                }
-            }
+        //private IEnumerable<Type> GetAllowedServicesForImplementation(Type implementation, IEnumerable<Type> services)
+        //{
+        //    if (exclusionTracker.ContainsImplementation(implementation))
+        //    {
+        //        var implementationServices = exclusionTracker.GetImplemetationServices(implementation);
+        //        bool hasServices = implementationServices.Any();
+        //        if (hasServices && implementationServices.Any(excludedService => services.Any(service => service == excludedService)))
+        //        {
+        //            var allowedServices = services.Where(service => !implementationServices.Any(excludedService => excludedService == service));
+        //            hasServices = allowedServices.Any();
+        //            if (hasServices)
+        //            {
+        //                return allowedServices;
+        //            }
+        //        }
+        //        if (!hasServices)//exclude every service
+        //        {
+        //            return Enumerable.Empty<Type>();
+        //        }
+        //    }
 
-            return services;
-        }
+        //    return services;
+        //}
 
-        private void WriteAboutExcludedImplementation(Type implementation, IEnumerable<Type> excludedServices)
-        {
-            if (excludedServices == null || !excludedServices.Any())
-            {
-                logger.Info("Excluded Implementation {0}.", implementation.FullName);
-            }
+        //private void WriteAboutExcludedImplementation(Type implementation, IEnumerable<Type> excludedServices)
+        //{
+        //    if (excludedServices == null || !excludedServices.Any())
+        //    {
+        //        logger.Info("Excluded Implementation {0}.", implementation.FullName);
+        //    }
 
-            foreach (var serviceType in excludedServices)
-            {
-                logger.Info("Excluded Implementation {0} for service {1}.", implementation.FullName, serviceType.FullName);
-            }
-        }
+        //    foreach (var serviceType in excludedServices)
+        //    {
+        //        logger.Info("Excluded Implementation {0} for service {1}.", implementation.FullName, serviceType.FullName);
+        //    }
+        //}
 
         private void WriteAboutExcludedServices(Type implementation, IEnumerable<Type> originalServices, IEnumerable<Type> filteredServices)
         {

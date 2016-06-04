@@ -8,15 +8,17 @@ namespace Flubar.TypeFiltering
 {
     public class AssemblySelector : ISourceSyntax
     {
-        readonly IServiceFilter serviceFilter;
+        private readonly ITypeFilter typeFilter;
+        private readonly IImplementationFilter implementationFilter;
 
-        public AssemblySelector() : this(new NullServiceFilter())
+        public AssemblySelector() : this(new NullTypeFilter(), null)
         {
         }
 
-        public AssemblySelector(IServiceFilter serviceFilter)
+        public AssemblySelector(ITypeFilter typeFilter, IImplementationFilter implementationFilter)
         {
-            this.serviceFilter = serviceFilter;
+            this.typeFilter = typeFilter;
+            this.implementationFilter = implementationFilter;
         }
 
         #region IFromSyntax Members
@@ -38,7 +40,7 @@ namespace Flubar.TypeFiltering
 
         public ISelectSyntax From(params string[] assemblies)
         {
-            return From(assemblies);
+            return From((IEnumerable<string>)assemblies);
         }
 
         public ISelectSyntax FromThisAssembly()
@@ -68,7 +70,7 @@ namespace Flubar.TypeFiltering
 
         public IStrategySyntax ExplicitlySpecifyTypes(params Type[] types)
         {
-            return new TypeSelector(types, serviceFilter);
+            return new TypeSelector(types, typeFilter);
         }
 
         #endregion
@@ -80,7 +82,7 @@ namespace Flubar.TypeFiltering
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), serviceFilter);
+            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()).Where(x => !implementationFilter.Contains(x)), typeFilter);
         }
     }
 }

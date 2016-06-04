@@ -15,18 +15,19 @@ namespace Flubar.SimpleInjector
             RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>, ITypeExclusionTracker> convention)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>, IServiceMappingTracker> convention)
         {
             if (configuration == null)
             {
                 configuration = BehaviorConfiguration.Default;
             }
             
-            var typeExclusionTracker = new TypeExclusionTracker();
-            var adapter = new SimpleInjectorContainerAdapter(container, typeExclusionTracker);
-            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, typeExclusionTracker, new ServiceMappingTracker()))
+            var serviceMappingTracker = new ServiceMappingTracker();
+            var implementationFilter = new TypeFilter();
+            var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
+            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, serviceMappingTracker, new ServiceExtractor(), implementationFilter))
             {
-                convention(builder, typeExclusionTracker);
+                convention(builder, serviceMappingTracker);
             }
         }
 

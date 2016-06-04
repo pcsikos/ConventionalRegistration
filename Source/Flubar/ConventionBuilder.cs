@@ -15,21 +15,24 @@ namespace Flubar
         private readonly IBehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
-        private readonly IServiceMappingTracker serviceMappingTracker;
+        private readonly IServiceExtractor serviceExtractor;
+        readonly IImplementationFilter implementationFilter;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
             IBehaviorConfiguration behaviorConfiguration,
-            ITypeExclusionTracker exclusionTracker,
-            IServiceMappingTracker serviceMappingTracker)
+            IServiceMappingTracker serviceMappings,
+            IServiceExtractor serviceExtractor,
+            IImplementationFilter implementationFilter)
         {
+            this.implementationFilter = implementationFilter;
             this.container = container;
             this.behaviorConfiguration = behaviorConfiguration;
-            this.serviceMappingTracker = serviceMappingTracker;
+            this.serviceExtractor = serviceExtractor;
 
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             conventions = new List<Action<ISourceSyntax>>();
             logger = new DiagnosticLogger(behaviorConfiguration);
-            registrationEntryValidator = new RegistrationEntryValidator(exclusionTracker, logger);
+            registrationEntryValidator = new RegistrationEntryValidator(serviceMappings, logger);
         }
 
         public IContainer<TLifetime> Container => container;
@@ -57,7 +60,7 @@ namespace Flubar
 
         protected virtual IEnumerable<Type> FilterServices(IEnumerable<Type> services, Type implementationType)
         {
-            return serviceMappingTracker.RegisterMapping(services, implementationType);
+            return serviceExtractor.RegisterMapping(services, implementationType);
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -76,19 +79,20 @@ namespace Flubar
 
         protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
         {
-            serviceMappingTracker.RegisterMonitoredType(serviceType, callback);
+            serviceExtractor.RegisterMonitoredType(serviceType, callback);
         }
 
         protected virtual void ApplyConventions()
         {
-            IServiceFilter serviceFilter = GetServiceFilterFromConfiguration();
-            var asmSelector = new AssemblySelector(serviceFilter);
+            ITypeFilter serviceFilter = GetServiceFilterFromConfiguration();
+            //var implementationFilter = new TypeFilter();
+            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
             foreach (var convention in conventions)
             {
                 convention(asmSelector);
             }
 
-            serviceMappingTracker.Resolve();
+            serviceExtractor.Resolve();
         }
 
         private Func<ILifetimeSyntax<TLifetime>, TLifetime> GetDefaultLifetimeWhenNull(Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection)
@@ -109,7 +113,7 @@ namespace Flubar
             }
         }
 
-        private IServiceFilter GetServiceFilterFromConfiguration()
+        private ITypeFilter GetServiceFilterFromConfiguration()
         {
             var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
             return configurationServiceFilter;
