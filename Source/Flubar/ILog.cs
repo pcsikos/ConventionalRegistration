@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Flubar
+﻿namespace Flubar
 {
-    interface ILog
+    public interface ILog
     {
         void Info(string message);
         void Info(string format, params object[] args);

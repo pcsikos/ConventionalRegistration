@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtendedConventionBuilder.cs" />
     <Compile Include="TypeFilter.cs" />
     <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />

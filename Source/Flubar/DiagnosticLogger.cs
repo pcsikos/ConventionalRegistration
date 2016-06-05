@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Flubar
 {
     //todo: move to separate namespace
-    class DiagnosticLogger : ILog
+    public class DiagnosticLogger : ILog
     {
         readonly IBehaviorConfiguration behaviorConfiguration;
 

@@ -12,26 +12,31 @@ namespace Flubar
         private readonly IContainer<TLifetime> container;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
-        private readonly IBehaviorConfiguration behaviorConfiguration;
+        //private readonly IBehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
         private readonly ILog logger;
-        private readonly IServiceExtractor serviceExtractor;
-        readonly IImplementationFilter implementationFilter;
+        //private readonly IServiceExtractor serviceExtractor;
+        //readonly IImplementationFilter implementationFilter;
+        readonly AssemblySelector assemblySelector;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
-            IBehaviorConfiguration behaviorConfiguration,
+            //IBehaviorConfiguration behaviorConfiguration,
             IServiceMappingTracker serviceMappings,
-            IServiceExtractor serviceExtractor,
-            IImplementationFilter implementationFilter)
+            //IServiceExtractor serviceExtractor,
+            //IImplementationFilter implementationFilter,
+            AssemblySelector assemblySelector,
+            ILog logger)
         {
-            this.implementationFilter = implementationFilter;
+            this.assemblySelector = assemblySelector;
+            //this.implementationFilter = implementationFilter;
             this.container = container;
-            this.behaviorConfiguration = behaviorConfiguration;
-            this.serviceExtractor = serviceExtractor;
+            this.logger = logger;
+            //this.behaviorConfiguration = behaviorConfiguration;
+           // this.serviceExtractor = serviceExtractor;
 
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             conventions = new List<Action<ISourceSyntax>>();
-            logger = new DiagnosticLogger(behaviorConfiguration);
+            //logger = new DiagnosticLogger(behaviorConfiguration);
             registrationEntryValidator = new RegistrationEntryValidator(serviceMappings, logger);
         }
 
@@ -60,7 +65,8 @@ namespace Flubar
 
         protected virtual IEnumerable<Type> FilterServices(IEnumerable<Type> services, Type implementationType)
         {
-            return serviceExtractor.RegisterMapping(services, implementationType);
+            return services;
+            //return serviceExtractor.RegisterMapping(services, implementationType);
         }
 
         public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
@@ -69,30 +75,30 @@ namespace Flubar
             return this;
         }
 
-        public void RegisterAsCollection(Type serviceType)
-        {
-            SearchForImplementations(serviceType, types =>
-            {
-                container.RegisterMultipleImplementations(serviceType, types);
-            });
-        }
+        //public void RegisterAsCollection(Type serviceType)
+        //{
+        //    SearchForImplementations(serviceType, types =>
+        //    {
+        //        container.RegisterMultipleImplementations(serviceType, types);
+        //    });
+        //}
 
-        protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
-        {
-            serviceExtractor.RegisterMonitoredType(serviceType, callback);
-        }
+        //protected void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
+        //{
+        //    serviceExtractor.RegisterMonitoredType(serviceType, callback);
+        //}
 
         protected virtual void ApplyConventions()
         {
-            ITypeFilter serviceFilter = GetServiceFilterFromConfiguration();
+            //ITypeFilter serviceFilter = GetServiceFilterFromConfiguration();
             //var implementationFilter = new TypeFilter();
-            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
+            //var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
             foreach (var convention in conventions)
             {
-                convention(asmSelector);
+                convention(assemblySelector);
             }
 
-            serviceExtractor.Resolve();
+            //serviceExtractor.Resolve();
         }
 
         private Func<ILifetimeSyntax<TLifetime>, TLifetime> GetDefaultLifetimeWhenNull(Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection)
@@ -113,11 +119,11 @@ namespace Flubar
             }
         }
 
-        private ITypeFilter GetServiceFilterFromConfiguration()
-        {
-            var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
-            return configurationServiceFilter;
-        }
+        //private ITypeFilter GetServiceFilterFromConfiguration()
+        //{
+        //    var configurationServiceFilter = ((IBehaviorConfiguration)behaviorConfiguration).GetServiceFilter();
+        //    return configurationServiceFilter;
+        //}
 
         private void WriteAboutRegistration(Type implementation, IEnumerable<Type> services)
         {

@@ -1,21 +1,22 @@
 ﻿using System;
 using SimpleInjector;
+using Flubar.TypeFiltering;
 
 namespace Flubar.SimpleInjector
 {
     public static class ContainerExtensions
     {
-        public static void RegistrationByConvention(this Container container, Action<ConventionBuilder<Lifestyle>> convention)
+        public static void RegistrationByConvention(this Container container, Action<ExtendedConventionBuilder<Lifestyle>> convention)
         {
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>> convention)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<Lifestyle>> convention)
         {
             RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ConventionBuilder<Lifestyle>, IServiceMappingTracker> convention)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<Lifestyle>, IServiceMappingTracker> convention)
         {
             if (configuration == null)
             {
@@ -25,7 +26,18 @@ namespace Flubar.SimpleInjector
             var serviceMappingTracker = new ServiceMappingTracker();
             var implementationFilter = new TypeFilter();
             var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
-            using (var builder = new ConventionBuilder<Lifestyle>(adapter, configuration, serviceMappingTracker, new ServiceExtractor(), implementationFilter))
+            var serviceFilter = ((IBehaviorConfiguration)configuration).GetServiceFilter();
+            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
+            var logger = new DiagnosticLogger(configuration);
+            var serviceExtractor = new ServiceExtractor();
+
+            using (var builder = new ExtendedConventionBuilder<Lifestyle>(adapter, 
+                //configuration, 
+                serviceMappingTracker, 
+                //new ServiceExtractor(), 
+                asmSelector,
+                logger,
+                serviceExtractor))
             {
                 convention(builder, serviceMappingTracker);
             }
