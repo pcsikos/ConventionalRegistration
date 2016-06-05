@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Flubar
 {
-    public class TypeFilter : IImplementationFilter, ITypeFilter
+    public class TypeFilter : ITypeFilter
     {
         private ISet<Type> types;
         private IList<Func<Type, bool>> filters = new List<Func<Type, bool>>();
@@ -21,9 +21,9 @@ namespace Flubar
             types = new HashSet<Type>();
         }
 
-        public void ExcludeImplementation(Type implementation)//, IEnumerable<Type> services = null)
+        public void ExcludeType(Type type)//, IEnumerable<Type> services = null)
         {
-            types.Add(implementation);
+            types.Add(type);
         }
 
         public bool Contains(Type type)
@@ -31,7 +31,7 @@ namespace Flubar
             return types.Contains(type) || filters.Any(filter => filter(type));
         }
 
-        internal void AddFilter(Func<Type, bool> filter)
+        public void AddFilter(Func<Type, bool> filter)
         {
             filters.Add(filter);
         }

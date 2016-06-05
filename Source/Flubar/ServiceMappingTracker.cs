@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Flubar
 {
-    public class ServiceMappingTracker : IServiceMappingTracker
+    public class ServiceMappingTracker : IServiceMappingTracker, IServiceFilter
     {
         private readonly IDictionary<Type, RegisteredService> registeredServices;
-        private readonly IDictionary<Type, ExcludedImplementation> excludedImplementations;
+        private readonly ILog logger;
 
-        public ServiceMappingTracker()
+        public ServiceMappingTracker(ILog logger)
         {
+            this.logger = logger;
             registeredServices = new Dictionary<Type, RegisteredService>();
-            excludedImplementations = new Dictionary<Type, ExcludedImplementation>();
-        }
-
-        public void ExcludeImplementation(Type implementation, IEnumerable<Type> services = null)
-        {
-            if (!excludedImplementations.ContainsKey(implementation))
-            {
-                excludedImplementations.Add(implementation, new ExcludedImplementation(implementation, services));
-                return;
-            }
-            var excluded = excludedImplementations[implementation];
-            excluded.AddServices(services);
         }
 
         public void ExcludeRegistration(IRegistrationEntry registration)
@@ -52,24 +42,57 @@ namespace Flubar
             }
         }
 
-        public bool ContainsImplementation(Type implementation)
+        public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
-            return excludedImplementations.ContainsKey(implementation);
+            var notUsedServices = FilterUsedServices(services);
+            if (notUsedServices.Count() != services.Count())
+            {
+                WriteAboutExcludedServices(implementation, services, notUsedServices);
+            }
+            return notUsedServices;
         }
 
-        public IEnumerable<Type> GetImplemetationServices(Type implementation)
+        private IEnumerable<Type> FilterUsedServices(IEnumerable<Type> services)
         {
-            return excludedImplementations[implementation].Services;
+            var allowedServices = services.Where(serviceType => !registeredServices.ContainsKey(serviceType)).ToArray();
+            if (!allowedServices.Any())
+            {
+                return Enumerable.Empty<Type>();
+            }
+            return allowedServices;
         }
 
-        public bool ContainsService(Type serviceType)
+        private void WriteAboutExcludedServices(Type implementation, IEnumerable<Type> originalServices, IEnumerable<Type> filteredServices)
         {
-            return registeredServices.ContainsKey(serviceType);
+            foreach (var serviceType in originalServices)
+            {
+                if (filteredServices.Any(type => type == serviceType))
+                {
+                    continue;
+                }
+                var implementationType = GetServiceImplementation(serviceType);
+                var registeredImplementationName = GetRegisteredServiceImplementationName(implementationType);
+                var skippingMessage = string.Format("Skipping {0} to {1}, because {2} is already registered to this service.",
+                        serviceType.FullName, implementation.FullName, registeredImplementationName);
+                if (implementation == implementationType)
+                {
+                    logger.Info(skippingMessage);
+                }
+                else
+                {
+                    logger.Warning(skippingMessage);
+                }
+            }
         }
 
-        public Type GetServiceImplementation(Type serviceType)
+        private Type GetServiceImplementation(Type serviceType)
         {
             return registeredServices[serviceType].Implementation;
+        }
+
+        private static string GetRegisteredServiceImplementationName(Type implementationType)
+        {
+            return implementationType == null ? "[Unknown]" : implementationType.FullName;
         }
 
         class RegisteredService
@@ -87,34 +110,5 @@ namespace Flubar
 
             public Type ServiceType => serviceType;
         }
-
-        class ExcludedImplementation
-        {
-            readonly Type implementation;
-            readonly IList<Type> excludedServices;
-
-            public ExcludedImplementation(Type implementation, IEnumerable<Type> services)
-            {
-                this.excludedServices = new List<Type>(services);
-                this.implementation = implementation;
-            }
-
-            public Type Implementation => implementation;
-
-            public IEnumerable<Type> Services => excludedServices;
-
-            public void AddServices(IEnumerable<Type> services)
-            {
-                foreach (var service in services)
-                {
-                    if (!excludedServices.Contains(service))
-                    {
-                        excludedServices.Add(service);
-                    }
-                }
-            }
-        }
     }
-
-    
 }

@@ -12,12 +12,12 @@ namespace Flubar
         private readonly IContainer<TLifetime> container;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
-        private readonly RegistrationEntryValidator registrationEntryValidator;
+        private readonly IServiceFilter registrationEntryValidator;
         private readonly AssemblySelector assemblySelector;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
             AssemblySelector assemblySelector,
-            RegistrationEntryValidator registrationEntryValidator)
+            IServiceFilter registrationEntryValidator)
         {
             this.assemblySelector = assemblySelector;
             this.container = container;

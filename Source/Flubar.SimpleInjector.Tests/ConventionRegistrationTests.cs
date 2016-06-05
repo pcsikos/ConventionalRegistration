@@ -17,7 +17,7 @@ namespace Flubar.SimpleInjector.Tests
             var config = BehaviorConfiguration.Default;
             config.Log = (mode, message) =>
             {
-                if (mode == DiagnosticLevel.Warning)
+                //if (mode == DiagnosticLevel.Warning)
                 {
                     TestContext.WriteLine(message);
                 }
@@ -46,7 +46,7 @@ namespace Flubar.SimpleInjector.Tests
                      .FromAssemblyContaining<ITransientService>()
                      .SelectAllClasses()
                      .WithoutAttribute<ExcludeFromRegistrationAttribute>()
-                     .Excluding(typeof(TransientService2), typeof(Repository<>), typeof(XmlDataProvider))
+                     .Excluding(/*typeof(TransientService2),*/ typeof(Repository<>)/*, typeof(XmlDataProvider)*/)
                      .UsingAllInterfacesStrategy());
             });
             Container.RegisterConditional(typeof(IRepository<>), typeof(Repository<>), context => !context.Handled);

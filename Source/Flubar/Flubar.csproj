@@ -43,6 +43,9 @@
     <Compile Include="ContainerLogger.cs" />
     <Compile Include="ExtendedConventionBuilder.cs" />
     <Compile Include="IDecorator.cs" />
+    <Compile Include="ImplementationFilter.cs" />
+    <Compile Include="IServiceFilter.cs" />
+    <Compile Include="ServiceFilterAggregator.cs" />
     <Compile Include="TypeFilter.cs" />
     <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
@@ -63,7 +66,6 @@
     <Compile Include="IServiceMappingTracker.cs" />
     <Compile Include="IServiceExtractor.cs" />
     <Compile Include="NullTypeFilter.cs" />
-    <Compile Include="RegistrationEntryValidator.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
     <Compile Include="Infrastructure\Strings.cs" />

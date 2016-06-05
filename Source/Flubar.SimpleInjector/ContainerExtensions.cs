@@ -22,21 +22,21 @@ namespace Flubar.SimpleInjector
             {
                 configuration = BehaviorConfiguration.Default;
             }
-            
-            var serviceMappingTracker = new ServiceMappingTracker();
-            var implementationFilter = new TypeFilter();
-            var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
-            var serviceFilter = ((IBehaviorConfiguration)configuration).GetServiceFilter();
-            var logger = new DiagnosticLogger(configuration);
 
-            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
-            var registrationEntryValidator = new RegistrationEntryValidator(serviceMappingTracker, logger);
+            var logger = new DiagnosticLogger(configuration);
+            var serviceMappingTracker = new ServiceMappingTracker(logger);
+            var implementationFilter = new ImplementationFilter();
+            var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
+            var typeFilter = ((IBehaviorConfiguration)configuration).GetTypeFilter();
+
+            var asmSelector = new AssemblySelector(typeFilter);
             var serviceExtractor = new ServiceExtractor();
             var containerDecorator = new ContainerLogger<Lifestyle>(adapter, logger);
+            var serviceFilter = new ServiceFilterAggregator(new IServiceFilter[] { implementationFilter, serviceExtractor, serviceMappingTracker });
 
             using (var builder = new ExtendedConventionBuilder<Lifestyle>(containerDecorator, 
                 asmSelector,
-                registrationEntryValidator,
+                serviceFilter,
                 serviceExtractor))
             {
                 convention(builder, implementationFilter);

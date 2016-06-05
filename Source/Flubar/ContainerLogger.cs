@@ -1,55 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flubar
 {
     public class ContainerLogger<TLifetime> : IContainer<TLifetime>, IDecorator
         where TLifetime : class
     {
-        private readonly IContainer<TLifetime> decorated;
+        private readonly IContainer<TLifetime> decoratee;
         private readonly ILog logger;
 
-        public ContainerLogger(IContainer<TLifetime> decorated, ILog logger)
+        public ContainerLogger(IContainer<TLifetime> decoratee, ILog logger)
         {
             this.logger = logger;
-            this.decorated = decorated;
+            this.decoratee = decoratee;
         }
 
         public object Decoratee
         {
             get
             {
-                return decorated;
+                if (decoratee is IDecorator)
+                {
+                    return ((IDecorator)decoratee).Decoratee;
+                }
+                return decoratee;
             }
         }
 
         public TLifetime GetDefaultLifetime()
         {
-            return decorated.GetDefaultLifetime();
+            return decoratee.GetDefaultLifetime();
         }
 
         public TLifetime GetSingletonLifetime()
         {
-            return decorated.GetSingletonLifetime();
+            return decoratee.GetSingletonLifetime();
         }
 
         public void RegisterMultipleImplementations(Type serviceType, IEnumerable<Type> implementations)
         {
-            decorated.RegisterMultipleImplementations(serviceType, implementations);
+            decoratee.RegisterMultipleImplementations(serviceType, implementations);
         }
 
         public void RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, TLifetime lifetime = null)
         {
-            decorated.RegisterMultipleServices(serviceTypes, implementation, lifetime);
+            decoratee.RegisterMultipleServices(serviceTypes, implementation, lifetime);
             LogRegistration(implementation, serviceTypes);
         }
 
         public void RegisterService(Type serviceType, Type implementation, TLifetime lifetime = null)
         {
-            decorated.RegisterService(serviceType, implementation, lifetime);
+            decoratee.RegisterService(serviceType, implementation, lifetime);
             LogRegistration(implementation, serviceType);
         }
 

@@ -9,16 +9,14 @@ namespace Flubar.TypeFiltering
     public class AssemblySelector : ISourceSyntax
     {
         private readonly ITypeFilter typeFilter;
-        private readonly IImplementationFilter implementationFilter;
 
-        public AssemblySelector() : this(new NullTypeFilter(), null)
+        public AssemblySelector() : this(new NullTypeFilter())
         {
         }
 
-        public AssemblySelector(ITypeFilter typeFilter, IImplementationFilter implementationFilter)
+        public AssemblySelector(ITypeFilter typeFilter)
         {
             this.typeFilter = typeFilter;
-            this.implementationFilter = implementationFilter;
         }
 
         #region IFromSyntax Members
@@ -82,7 +80,7 @@ namespace Flubar.TypeFiltering
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()).Where(x => !implementationFilter.Contains(x)), typeFilter);
+            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), typeFilter);
         }
     }
 }

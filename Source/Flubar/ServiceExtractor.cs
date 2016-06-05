@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Flubar
 {
-    public class ServiceExtractor : IServiceExtractor
+    public class ServiceExtractor : IServiceExtractor, IServiceFilter
     {
         private readonly IDictionary<Type, CustomRegistration> customRegistrations = new Dictionary<Type, CustomRegistration>();
 
-        public IEnumerable<Type> RegisterMapping(IEnumerable<Type> services, Type implementationType)
+        public IEnumerable<Type> GetAllowedServices(Type implementationType, IEnumerable<Type> services)
         {
             foreach (var serviceType in services)
             {
@@ -25,7 +25,7 @@ namespace Flubar
                 yield return serviceType;
             }
         }
-
+      
         private void AddImplementation(Type implementationType, Type serviceType)
         {
             var customRegistration = customRegistrations[serviceType];

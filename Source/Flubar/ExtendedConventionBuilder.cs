@@ -11,9 +11,9 @@ namespace Flubar
 
         public ExtendedConventionBuilder(IContainer<TLifetime> container,
             AssemblySelector assemblySelector,
-            RegistrationEntryValidator registrationEntryValidator,
+            IServiceFilter serviceFilter,
             IServiceExtractor serviceExtractor) 
-            : base(container, assemblySelector, registrationEntryValidator)
+            : base(container, assemblySelector, serviceFilter)
         {
             this.serviceExtractor = serviceExtractor;
         }
@@ -24,11 +24,6 @@ namespace Flubar
             {
                 Container.RegisterMultipleImplementations(serviceType, types);
             });
-        }
-
-        protected override IEnumerable<Type> FilterServices(IEnumerable<Type> services, Type implementationType)
-        {
-            return serviceExtractor.RegisterMapping(services, implementationType);
         }
 
         protected override void ApplyConventions()
