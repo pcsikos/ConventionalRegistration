@@ -20,21 +20,16 @@ namespace Flubar
 
         public void RegisterAsCollection(Type serviceType)
         {
-            SearchForImplementations(serviceType, types =>
-            {
-                Container.RegisterMultipleImplementations(serviceType, types);
-            });
+            serviceExtractor.RegisterMonitoredType(serviceType);
         }
 
         protected override void ApplyConventions()
         {
             base.ApplyConventions();
-            serviceExtractor.Resolve();
-        }
-
-        private void SearchForImplementations(Type serviceType, Action<IEnumerable<Type>> callback)
-        {
-            serviceExtractor.RegisterMonitoredType(serviceType, callback);
+            foreach (var service in serviceExtractor.GetServiceImplementations())
+            {
+                Container.RegisterMultipleImplementations(service.ServiceType, service.GetImplementations());
+            }
         }
     }
 }

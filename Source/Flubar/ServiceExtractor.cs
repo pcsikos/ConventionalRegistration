@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Flubar
 {
     public class ServiceExtractor : IServiceExtractor, IServiceFilter
     {
-        private readonly IDictionary<Type, CustomRegistration> customRegistrations = new Dictionary<Type, CustomRegistration>();
+        private readonly IDictionary<Type, ServiceImplementation> customRegistrations = new Dictionary<Type, ServiceImplementation>();
 
         public IEnumerable<Type> GetAllowedServices(Type implementationType, IEnumerable<Type> services)
         {
@@ -32,53 +33,65 @@ namespace Flubar
             customRegistration.AddImlementation(implementationType);
         }
 
-        public void RegisterMonitoredType(Type serviceType, Action<IEnumerable<Type>> callback)
+        public void RegisterMonitoredType(Type serviceType)
         {
             if (customRegistrations.ContainsKey(serviceType))
             {
                 throw new ArgumentException();
             }
-            customRegistrations.Add(serviceType, new CustomRegistration(serviceType, callback));
+            customRegistrations.Add(serviceType, new ServiceImplementation(serviceType));
         }
 
-        public void Resolve()
+        public IEnumerable<ServiceImplementation> GetServiceImplementations()
         {
-            foreach (var customRegistration in customRegistrations.Values)
+            return customRegistrations.Values;
+        }
+    }
+
+    public class ServiceImplementation
+    {
+        private readonly Type serviceType;
+        private readonly ISet<Type> implementations;
+
+        public ServiceImplementation(Type serviceType)
+        {
+            this.serviceType = serviceType;
+            implementations = new HashSet<Type>();
+        }
+
+        public Type ServiceType
+        {
+            get
             {
-                customRegistration.InvokeCallback();
+                return serviceType;
             }
         }
 
-        private class CustomRegistration
+        public void AddImlementation(Type implementationType)
         {
-            readonly Type serviceType;
-            readonly Action<IEnumerable<Type>> callback;
-            private readonly ISet<Type> implementations;
-
-            public CustomRegistration(Type serviceType, Action<IEnumerable<Type>> callback)
+            if (!Validate(implementationType))
             {
-                this.callback = callback;
-                this.serviceType = serviceType;
-                implementations = new HashSet<Type>();
+                throw new Exception();
             }
 
-            public void AddImlementation(Type implementationType)
+            if (!implementations.Contains(implementationType))
             {
-                if (!implementations.Contains(implementationType))
-                {
-                    implementations.Add(implementationType);
-                }
+                implementations.Add(implementationType);
             }
+        }
 
-            public IEnumerable<Type> GetImplementations()
+        private bool Validate(Type implementationType)
+        {
+            if (serviceType.IsInterface)
             {
-                return implementations;
+                return implementationType.GetInterfaces().Any(face => face == serviceType || (face.IsGenericType && face.GetGenericTypeDefinition() == serviceType));
             }
+            throw new NotImplementedException();
+        }
 
-            internal void InvokeCallback()
-            {
-                callback(GetImplementations());
-            }
+        public IEnumerable<Type> GetImplementations()
+        {
+            return implementations;
         }
     }
 }

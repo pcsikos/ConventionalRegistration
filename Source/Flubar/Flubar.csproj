@@ -55,12 +55,10 @@
     <Compile Include="IImplementationFilter.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
-    <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
     <Compile Include="ConventionBuilder.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="IContainerRegistration.cs" />
-    <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
     <Compile Include="ITypeFilter.cs" />
     <Compile Include="IServiceMappingTracker.cs" />
@@ -76,7 +74,6 @@
     <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
     <Compile Include="RegistrationHandler.cs" />
     <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
-    <Compile Include="RegistrationEventArgs.cs" />
     <Compile Include="Syntax\IBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />
