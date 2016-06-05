@@ -35,7 +35,6 @@ namespace Flubar.SimpleInjector
             var containerDecorator = new ContainerLogger<Lifestyle>(adapter, logger);
 
             using (var builder = new ExtendedConventionBuilder<Lifestyle>(containerDecorator, 
-                serviceMappingTracker, 
                 asmSelector,
                 registrationEntryValidator,
                 serviceExtractor))

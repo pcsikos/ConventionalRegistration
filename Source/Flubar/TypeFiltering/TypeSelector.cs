@@ -34,7 +34,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax Including(params Type[] types)
         {
-            return Including(types);
+            return Including((IEnumerable<Type>)types);
         }
 
         #endregion

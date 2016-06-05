@@ -10,11 +10,10 @@ namespace Flubar
         private readonly IServiceExtractor serviceExtractor;
 
         public ExtendedConventionBuilder(IContainer<TLifetime> container,
-            IServiceMappingTracker serviceMappings,
             AssemblySelector assemblySelector,
             RegistrationEntryValidator registrationEntryValidator,
             IServiceExtractor serviceExtractor) 
-            : base(container, serviceMappings, assemblySelector, registrationEntryValidator)
+            : base(container, assemblySelector, registrationEntryValidator)
         {
             this.serviceExtractor = serviceExtractor;
         }
