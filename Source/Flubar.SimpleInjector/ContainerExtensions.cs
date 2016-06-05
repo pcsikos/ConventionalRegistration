@@ -13,10 +13,10 @@ namespace Flubar.SimpleInjector
 
         public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<Lifestyle>> convention)
         {
-            RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
+            RegistrationByConvention(container, configuration, (builder, filter) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<Lifestyle>, IServiceMappingTracker> convention)
+        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<Lifestyle>, IImplementationFilter> convention)
         {
             if (configuration == null)
             {
@@ -27,25 +27,39 @@ namespace Flubar.SimpleInjector
             var implementationFilter = new TypeFilter();
             var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
             var serviceFilter = ((IBehaviorConfiguration)configuration).GetServiceFilter();
-            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
             var logger = new DiagnosticLogger(configuration);
-            var serviceExtractor = new ServiceExtractor();
 
-            using (var builder = new ExtendedConventionBuilder<Lifestyle>(adapter, 
-                //configuration, 
+            var asmSelector = new AssemblySelector(serviceFilter, implementationFilter);
+            var registrationEntryValidator = new RegistrationEntryValidator(serviceMappingTracker, logger);
+            var serviceExtractor = new ServiceExtractor();
+            var containerDecorator = new ContainerLogger<Lifestyle>(adapter, logger);
+
+            using (var builder = new ExtendedConventionBuilder<Lifestyle>(containerDecorator, 
                 serviceMappingTracker, 
-                //new ServiceExtractor(), 
                 asmSelector,
-                logger,
+                registrationEntryValidator,
                 serviceExtractor))
             {
-                convention(builder, serviceMappingTracker);
+                convention(builder, implementationFilter);
             }
         }
 
         public static void ExplicitRegistration(this ConventionBuilder<Lifestyle> builder, Action<ISimpleInjectorContainerAdapter> explicitRegistrations)
         {
-            var container = (ISimpleInjectorContainerAdapter)builder.Container;
+            var container = builder.Container as ISimpleInjectorContainerAdapter;
+            if (container == null)
+            {
+                var decorator = builder.Container as IDecorator;
+                if (decorator == null)
+                {
+                    throw new Exception();
+                }
+                container = decorator.Decoratee as ISimpleInjectorContainerAdapter;
+                if (container == null)
+                {
+                    throw new Exception();//todo: replace with appropriate exception
+                }
+            }
             explicitRegistrations(container);
         }
     }

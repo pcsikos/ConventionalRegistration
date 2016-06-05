@@ -14,7 +14,7 @@ namespace Flubar
         private readonly IList<Action<ISourceSyntax>> conventions;
         //private readonly IBehaviorConfiguration behaviorConfiguration;
         private readonly RegistrationEntryValidator registrationEntryValidator;
-        private readonly ILog logger;
+        //private readonly ILog logger;
         //private readonly IServiceExtractor serviceExtractor;
         //readonly IImplementationFilter implementationFilter;
         readonly AssemblySelector assemblySelector;
@@ -25,19 +25,22 @@ namespace Flubar
             //IServiceExtractor serviceExtractor,
             //IImplementationFilter implementationFilter,
             AssemblySelector assemblySelector,
-            ILog logger)
+            RegistrationEntryValidator registrationEntryValidator
+            //ILog logger
+            )
         {
             this.assemblySelector = assemblySelector;
             //this.implementationFilter = implementationFilter;
             this.container = container;
-            this.logger = logger;
+            //this.logger = logger;
             //this.behaviorConfiguration = behaviorConfiguration;
-           // this.serviceExtractor = serviceExtractor;
+            // this.serviceExtractor = serviceExtractor;
+            this.registrationEntryValidator = registrationEntryValidator;
 
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             conventions = new List<Action<ISourceSyntax>>();
             //logger = new DiagnosticLogger(behaviorConfiguration);
-            registrationEntryValidator = new RegistrationEntryValidator(serviceMappings, logger);
+            //registrationEntryValidator = new RegistrationEntryValidator(serviceMappings, logger);
         }
 
         public IContainer<TLifetime> Container => container;
@@ -59,7 +62,7 @@ namespace Flubar
                 }
 
                 AutomaticRegistration(registration.ImplementationType, services, lifetimeSelection(lifetimeSelector));
-                WriteAboutRegistration(registration.ImplementationType, services);
+                //WriteAboutRegistration(registration.ImplementationType, services);
             }));
         }
 
@@ -125,13 +128,7 @@ namespace Flubar
         //    return configurationServiceFilter;
         //}
 
-        private void WriteAboutRegistration(Type implementation, IEnumerable<Type> services)
-        {
-            foreach (var serviceType in services)
-            {
-                logger.Info("Registration {0} to {1}.", serviceType.FullName, implementation.FullName);
-            }
-        }
+       
 
         #region IDispose Members
 

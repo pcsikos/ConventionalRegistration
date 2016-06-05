@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Flubar
 {
-    class RegistrationEntryValidator
+    public class RegistrationEntryValidator
     {
         readonly IServiceMappingTracker exclusionTracker;
         readonly ILog logger;

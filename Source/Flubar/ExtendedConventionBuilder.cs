@@ -12,9 +12,9 @@ namespace Flubar
         public ExtendedConventionBuilder(IContainer<TLifetime> container,
             IServiceMappingTracker serviceMappings,
             AssemblySelector assemblySelector,
-            ILog logger,
+            RegistrationEntryValidator registrationEntryValidator,
             IServiceExtractor serviceExtractor) 
-            : base(container, serviceMappings, assemblySelector, logger)
+            : base(container, serviceMappings, assemblySelector, registrationEntryValidator)
         {
             this.serviceExtractor = serviceExtractor;
         }
