@@ -45,8 +45,8 @@
     <Compile Include="IDecorator.cs" />
     <Compile Include="TypeFiltering\ImplementationFilter.cs" />
     <Compile Include="TypeFiltering\IServiceFilter.cs" />
-    <Compile Include="ServiceFilterAggregator.cs" />
-    <Compile Include="ServiceImplementation.cs" />
+    <Compile Include="TypeFiltering\ServiceFilterAggregator.cs" />
+    <Compile Include="TypeFiltering\ServiceImplementation.cs" />
     <Compile Include="TypeFiltering\TypeFilter.cs" />
     <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="Configuration\BehaviorConfiguration.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
-    <Compile Include="ServiceExtractor.cs" />
+    <Compile Include="TypeFiltering\ServiceExtractor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Flubar.ruleset" />

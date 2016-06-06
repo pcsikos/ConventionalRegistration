@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flubar.TypeFiltering;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public class ServiceFilterAggregator : IServiceFilter
     {
