@@ -1,6 +1,5 @@
 ﻿using Flubar.TypeFiltering;
 using System;
-using System.Collections.Generic;
 
 namespace Flubar
 {
