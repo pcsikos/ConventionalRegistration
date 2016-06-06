@@ -29,14 +29,8 @@ namespace Flubar
             this.implementationType = implementationType;
         }
 
-        public IEnumerable<Type> ServicesTypes
-        {
-            get { return serviceTypes; }
-        }
+        public IEnumerable<Type> ServicesTypes => serviceTypes;
 
-        public Type ImplementationType
-        {
-            get { return implementationType; }
-        }
+        public Type ImplementationType => implementationType;
     }
 }

@@ -14,15 +14,9 @@ namespace Flubar
 
         #region ILifetimeSyntax<TLifetime> Members
 
-        public TLifetime Singleton
-        {
-            get { return container.GetSingletonLifetime(); }
-        }
+        public TLifetime Singleton => container.GetSingletonLifetime();
 
-        public TLifetime Transient
-        {
-            get { return container.GetDefaultLifetime(); }
-        }
+        public TLifetime Transient => container.GetDefaultLifetime();
 
         #endregion
     }

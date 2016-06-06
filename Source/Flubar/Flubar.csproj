@@ -46,6 +46,7 @@
     <Compile Include="ImplementationFilter.cs" />
     <Compile Include="IServiceFilter.cs" />
     <Compile Include="ServiceFilterAggregator.cs" />
+    <Compile Include="ServiceImplementation.cs" />
     <Compile Include="TypeFilter.cs" />
     <Compile Include="TypeFiltering\AssemblySelector.cs" />
     <Compile Include="BehaviorConfiguration.cs" />
