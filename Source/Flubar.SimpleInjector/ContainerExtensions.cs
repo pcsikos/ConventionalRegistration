@@ -1,4 +1,6 @@
 ﻿using System;
+using Flubar.Configuration;
+using Flubar.Diagnostics;
 using SimpleInjector;
 using Flubar.TypeFiltering;
 

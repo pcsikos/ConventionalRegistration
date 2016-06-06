@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     //todo: rename
     public interface IServiceFilter

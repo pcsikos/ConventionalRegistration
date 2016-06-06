@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Flubar.TypeFiltering;
 
 namespace Flubar.RegistrationProducers
 {

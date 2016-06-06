@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     /// <summary>
     /// Particularly used to exclude implementations which should not be used as for example decorators.

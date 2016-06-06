@@ -1,6 +1,8 @@
 ﻿using System;
+using Flubar.Diagnostics;
+using Flubar.TypeFiltering;
 
-namespace Flubar
+namespace Flubar.Configuration
 {
     public interface IBehaviorConfiguration
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public class ImplementationFilter : TypeFilter, IImplementationFilter, IServiceFilter
     {

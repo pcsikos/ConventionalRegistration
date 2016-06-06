@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public sealed class NullTypeFilter : ITypeFilter
     {

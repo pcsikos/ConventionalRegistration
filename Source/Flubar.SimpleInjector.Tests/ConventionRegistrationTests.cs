@@ -3,6 +3,7 @@ using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
 using System;
+using Flubar.Configuration;
 
 namespace Flubar.SimpleInjector.Tests
 {

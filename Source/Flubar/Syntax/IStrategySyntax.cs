@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Flubar.RegistrationProducers;
+using Flubar.TypeFiltering;
 
 namespace Flubar.Syntax
 {

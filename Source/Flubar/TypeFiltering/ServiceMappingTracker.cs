@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flubar.Diagnostics;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public class ServiceMappingTracker : IServiceMappingTracker, IServiceFilter
     {
