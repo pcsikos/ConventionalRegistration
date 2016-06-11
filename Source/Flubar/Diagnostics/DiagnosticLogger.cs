@@ -1,6 +1,9 @@
-﻿namespace Flubar
+﻿using Flubar.Configuration;
+
+namespace Flubar.Diagnostics
 {
-    class DiagnosticLogger : ILog
+    //todo: move to separate namespace
+    public class DiagnosticLogger : ILog
     {
         readonly IBehaviorConfiguration behaviorConfiguration;
 

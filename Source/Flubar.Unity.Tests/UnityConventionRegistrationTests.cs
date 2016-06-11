@@ -1,4 +1,6 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Flubar.Configuration;
+using Flubar.Diagnostics;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -47,7 +49,7 @@ namespace Flubar.Unity.Tests
                                     Container.RegisterType(serviceType, entry.ImplementationType, "Decoratable");
                                 }
                             }
-                            exclusion.ExcludeImplementation(entry.ImplementationType, entry.ServicesTypes);
+                            exclusion.ExcludeImplementation(entry.ImplementationType);//, entry.ServicesTypes);
                         }));
 
                 builder.Define(source => source

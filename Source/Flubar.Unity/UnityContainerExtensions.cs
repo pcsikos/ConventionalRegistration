@@ -1,4 +1,7 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Flubar.Configuration;
+using Flubar.Diagnostics;
+using Flubar.TypeFiltering;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,23 +17,32 @@ namespace Flubar.Unity
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>> convention)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<LifetimeManager>> convention)
         {
             RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>, ITypeExclusionTracker> convention)//, IEnumerable<Type> serviceExclusions = null)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<LifetimeManager>, IImplementationFilter> convention)//, IEnumerable<Type> serviceExclusions = null)
         {
             if (configuration == null)
             {
                 configuration = BehaviorConfiguration.Default;
             }
 
-            var typeExclusionTracker = new TypeExclusionTracker();
-            var adapter = new UnityContainerAdapter(container, typeExclusionTracker);
-            using (var builder = new ConventionBuilder<LifetimeManager>(adapter, configuration, typeExclusionTracker, new TypeTracker()))
+            var logger = new DiagnosticLogger(configuration);
+            var serviceMappingTracker = new ServiceMappingTracker(logger);
+            var implementationFilter = new ImplementationFilter();
+            var typeFilter = ((IBehaviorConfiguration)configuration).GetTypeFilter();
+
+            var adapter = new UnityContainerAdapter(container, serviceMappingTracker);
+            var asmSelector = new AssemblySelector(typeFilter);
+            var serviceExtractor = new ServiceExtractor();
+            var serviceFilter = new ServiceFilterAggregator(new IServiceFilter[] { implementationFilter, serviceExtractor, serviceMappingTracker });
+
+
+            using (var builder = new ExtendedConventionBuilder<LifetimeManager>(adapter, asmSelector, serviceFilter, serviceExtractor))
             {
-                convention(builder, typeExclusionTracker);
+                convention(builder, implementationFilter);
             }
         }
     }

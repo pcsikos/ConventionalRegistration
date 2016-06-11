@@ -37,36 +37,33 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AggregateServiceFilter.cs" />
-    <Compile Include="AssemblySelector.cs" />
-    <Compile Include="BehaviorConfiguration.cs" />
-    <Compile Include="DiagnosticLevel.cs" />
-    <Compile Include="DiagnosticLogger.cs" />
-    <Compile Include="ExcludedServiceFilter.cs" />
-    <Compile Include="IBehaviorConfiguration.cs" />
-    <Compile Include="IConfigurable.cs" />
-    <Compile Include="IImplementationExclusion.cs" />
-    <Compile Include="ILog.cs" />
+    <Compile Include="ContainerLogger.cs" />
+    <Compile Include="ExtendedConventionBuilder.cs" />
+    <Compile Include="IDecorator.cs" />
+    <Compile Include="TypeFiltering\ImplementationFilter.cs" />
+    <Compile Include="TypeFiltering\IServiceFilter.cs" />
+    <Compile Include="TypeFiltering\ServiceFilterAggregator.cs" />
+    <Compile Include="TypeFiltering\ServiceImplementation.cs" />
+    <Compile Include="TypeFiltering\TypeFilter.cs" />
+    <Compile Include="TypeFiltering\AssemblySelector.cs" />
+    <Compile Include="Configuration\BehaviorConfiguration.cs" />
+    <Compile Include="Diagnostics\DiagnosticLevel.cs" />
+    <Compile Include="Diagnostics\DiagnosticLogger.cs" />
+    <Compile Include="Configuration\IBehaviorConfiguration.cs" />
+    <Compile Include="TypeFiltering\IImplementationFilter.cs" />
+    <Compile Include="Diagnostics\ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
-    <Compile Include="ContainerDecorator.cs" />
     <Compile Include="ConventioException.cs" />
     <Compile Include="ConventionBuilder.cs" />
     <Compile Include="IContainer.cs" />
-    <Compile Include="IContainerRegistration.cs" />
-    <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IRegistrationEntry.cs" />
-    <Compile Include="IServiceFilter.cs" />
-    <Compile Include="IServiceExclusion.cs" />
-    <Compile Include="ITypeTracker.cs" />
-    <Compile Include="NullServiceFilter.cs" />
-    <Compile Include="RegistrationEntryValidator.cs" />
+    <Compile Include="TypeFiltering\ITypeFilter.cs" />
+    <Compile Include="IServiceMappingTracker.cs" />
+    <Compile Include="IServiceExtractor.cs" />
+    <Compile Include="TypeFiltering\NullTypeFilter.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
     <Compile Include="Infrastructure\Strings.cs" />
@@ -77,18 +74,15 @@
     <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
     <Compile Include="RegistrationHandler.cs" />
     <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
-    <Compile Include="RegistrationEventArgs.cs" />
     <Compile Include="Syntax\IBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
-    <Compile Include="IConfigurationServiceExclusion.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />
     <Compile Include="Syntax\ISourceSyntax.cs" />
     <Compile Include="Syntax\IStrategySyntax.cs" />
     <Compile Include="Syntax\ITypeSourceSyntax.cs" />
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
-    <Compile Include="ImplementationExcludedEventArgs.cs" />
-    <Compile Include="TypeExclusionTracker.cs" />
-    <Compile Include="TypeSelector.cs" />
+    <Compile Include="TypeFiltering\ServiceMappingTracker.cs" />
+    <Compile Include="TypeFiltering\TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
     <Compile Include="Syntax\IExcludeSyntax.cs" />
@@ -96,7 +90,10 @@
     <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
-    <Compile Include="TypeTracker.cs" />
+    <Compile Include="TypeFiltering\ServiceExtractor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Flubar.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Flubar.ruleset" />

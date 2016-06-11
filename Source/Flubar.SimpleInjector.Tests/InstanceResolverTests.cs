@@ -254,6 +254,15 @@ namespace Flubar.SimpleInjector.Tests
         }
 
         [TestMethod]
+        public void Resolving_WhenTypeImplementsMoreThanOneServiceAndBothAreMarkedForCollection_BothShouldBeResolvable()
+        {
+            var deliveryAddressValidators = Container.GetAllInstances<ICommandValidator<ChangeDeliveryAddressCommand>>();
+            deliveryAddressValidators.Should().NotBeNull().And.HaveCount(1);
+            var shippingAddressValidators = Container.GetAllInstances<ICommandValidator<ChangeInvoiceAddressCommand>>();
+            shippingAddressValidators.Should().NotBeNull().And.HaveCount(1);
+        }
+
+        [TestMethod]
         public void Resolving_AbstractCommandShouldReturnEmptyList()
         {
             var customerCommandValidators = Container.GetAllInstances<ICommandValidator<CustomerCommand>>();

@@ -23,23 +23,10 @@ namespace Flubar
             }
         }
 
-        //public void RegisterEach(Action<IRegistrationEntry, IServiceExclusion> handleRegistration)
-        //{
-        //    foreach (var registration in registrations)
-        //    {
-        //        handleRegistration(registration, serviceExclusion);
-        //    }
-        //}
-
         public void RegisterAll(Action<IEnumerable<IRegistrationEntry>> handleRegistration)
         {
             handleRegistration(registrations);
         }
-
-        //public void RegisterAll(Action<IEnumerable<IRegistrationEntry>, IServiceExclusion> handleRegistration)
-        //{
-        //    handleRegistration(registrations, serviceExclusion);
-        //}
 
         #endregion
     }

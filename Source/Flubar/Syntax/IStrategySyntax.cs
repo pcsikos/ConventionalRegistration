@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Flubar.RegistrationProducers;
+using Flubar.TypeFiltering;
 
 namespace Flubar.Syntax
 {
@@ -12,7 +13,7 @@ namespace Flubar.Syntax
         IRegisterSyntax UsingDefaultInterfaceStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy();
         IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding);
-        IRegisterSyntax UsingStrategy<T>() where T : IRegistrationProducer, new();
+        IRegisterSyntax UsingStrategy(Func<ITypeFilter, IRegistrationProducer> producerFactory);
         IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer);
     }
 }

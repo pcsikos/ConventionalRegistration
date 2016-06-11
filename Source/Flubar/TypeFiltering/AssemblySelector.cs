@@ -4,19 +4,19 @@ using System.Linq;
 using System.Reflection;
 using Flubar.Syntax;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     public class AssemblySelector : ISourceSyntax
     {
-        readonly IServiceFilter serviceFilter;
+        private readonly ITypeFilter typeFilter;
 
-        public AssemblySelector() : this(new NullServiceFilter())
+        public AssemblySelector() : this(new NullTypeFilter())
         {
         }
 
-        public AssemblySelector(IServiceFilter serviceFilter)
+        public AssemblySelector(ITypeFilter typeFilter)
         {
-            this.serviceFilter = serviceFilter;
+            this.typeFilter = typeFilter;
         }
 
         #region IFromSyntax Members
@@ -38,7 +38,7 @@ namespace Flubar
 
         public ISelectSyntax From(params string[] assemblies)
         {
-            return From(assemblies);
+            return From((IEnumerable<string>)assemblies);
         }
 
         public ISelectSyntax FromThisAssembly()
@@ -68,7 +68,7 @@ namespace Flubar
 
         public IStrategySyntax ExplicitlySpecifyTypes(params Type[] types)
         {
-            return new TypeSelector(types, serviceFilter);
+            return new TypeSelector(types, typeFilter);
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace Flubar
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), serviceFilter);
+            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), typeFilter);
         }
     }
 }

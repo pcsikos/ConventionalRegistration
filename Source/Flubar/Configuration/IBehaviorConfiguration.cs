@@ -1,10 +1,12 @@
 ﻿using System;
+using Flubar.Diagnostics;
+using Flubar.TypeFiltering;
 
-namespace Flubar
+namespace Flubar.Configuration
 {
     public interface IBehaviorConfiguration
     {
-        IServiceFilter GetServiceFilter();
+        ITypeFilter GetTypeFilter();
         Action<DiagnosticLevel, string> Log { get; }
     }
 }

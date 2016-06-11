@@ -5,18 +5,18 @@ using Flubar.Infrastructure;
 using Flubar.RegistrationProducers;
 using Flubar.Syntax;
 
-namespace Flubar
+namespace Flubar.TypeFiltering
 {
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {
         private IEnumerable<Type> filteredTypes;
-        readonly IServiceFilter serviceFilter;
+        readonly ITypeFilter typeFilter;
 
-        public TypeSelector(IEnumerable<Type> types, IServiceFilter serviceFilter)
+        public TypeSelector(IEnumerable<Type> types, ITypeFilter typeFilter)
         {
             Check.NotNull(types, "types");
             filteredTypes = types;
-            this.serviceFilter = serviceFilter;
+            this.typeFilter = typeFilter;
         }
 
         #region IIncludeSyntax Members
@@ -34,7 +34,7 @@ namespace Flubar
 
         public IFilterSyntax Including(params Type[] types)
         {
-            return Including(types);
+            return Including((IEnumerable<Type>)types);
         }
 
         #endregion
@@ -125,12 +125,12 @@ namespace Flubar
 
         public IRegisterSyntax UsingDefaultInterfaceStrategy()
         {
-            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup()));
+            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup(), typeFilter));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy()
         {
-            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup()));
+            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup(), typeFilter));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding)
@@ -138,19 +138,13 @@ namespace Flubar
             throw new NotImplementedException();
         }
 
-        public IRegisterSyntax UsingStrategy<T>() where T : IRegistrationProducer, new()
+        public IRegisterSyntax UsingStrategy(Func<ITypeFilter, IRegistrationProducer> producerFactory)
         {
-            return UsingStrategy(new T());
+            return UsingStrategy(producerFactory(typeFilter));
         }
 
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
         {
-            var configurable = registrationProducer as IConfigurable;
-            if (configurable != null)
-            {
-                configurable.ServiceFilter = serviceFilter;
-            }
-
             var registrations = filteredTypes.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
             return new RegistrationHandler(registrations);
         }
@@ -168,11 +162,6 @@ namespace Flubar
         public IFilterSyntax SelectAllClasses()
         {
             return Select(x => x.IsClass && !x.IsAbstract);
-        }
-
-        public IFilterSyntax SelectAllInterfaces()
-        {
-            return Select(x => x.IsInterface);
         }
 
         #endregion

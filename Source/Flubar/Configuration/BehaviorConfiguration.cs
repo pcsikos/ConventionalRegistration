@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Flubar.Diagnostics;
+using Flubar.TypeFiltering;
 
-namespace Flubar
+namespace Flubar.Configuration
 {
     public class BehaviorConfiguration : IBehaviorConfiguration
     {
         private IEnumerable<Type> excludedServices;
-        private IEnumerable<Type> excludedBaseTypes;
+        //private IEnumerable<Type> excludedBaseTypes;
         private Func<Type, bool> filter;
 
         public BehaviorConfiguration()
@@ -93,9 +95,11 @@ namespace Flubar
 
         #region IBehaviorConfiguration Members
 
-        IServiceFilter IBehaviorConfiguration.GetServiceFilter()
+        ITypeFilter IBehaviorConfiguration.GetTypeFilter()
         {
-            return new ExcludedServiceFilter(excludedServices, filter);
+            var typeFilter = new TypeFilter(excludedServices);
+            typeFilter.AddFilter(filter);
+            return typeFilter;
         }
 
         #endregion

@@ -2,17 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flubar.Unity
 {
     public class UnityContainerAdapter : IContainer<LifetimeManager>
     {
         private readonly UnityContainer container;
-        readonly ITypeExclusionTracker typeExclusionTracker;
+        readonly IServiceMappingTracker typeExclusionTracker;
 
-        public UnityContainerAdapter(UnityContainer container, ITypeExclusionTracker typeExclusionTracker)
+        public UnityContainerAdapter(UnityContainer container, IServiceMappingTracker typeExclusionTracker)
         {
             this.typeExclusionTracker = typeExclusionTracker;
             this.container = container;
@@ -33,11 +31,16 @@ namespace Flubar.Unity
             foreach (var impl in implementations)
             {
                 var concreteServiceType = serviceType;
-                if (serviceType.IsGenericTypeDefinition)
+                if (!serviceType.IsGenericTypeDefinition)
                 {
-                    concreteServiceType = impl.GetInterfaces().Single(iface => iface.IsGenericType && iface.GetGenericTypeDefinition() == serviceType);
+                    container.RegisterType(concreteServiceType, impl, impl.Name);
+                    continue;
                 }
-                container.RegisterType(concreteServiceType, impl, impl.Name);
+
+                foreach(var genericServiceType in impl.GetInterfaces().Where(iface => iface.IsGenericType && iface.GetGenericTypeDefinition() == serviceType))
+                {
+                    container.RegisterType(genericServiceType, impl, impl.Name);
+                }
             }
         }
 

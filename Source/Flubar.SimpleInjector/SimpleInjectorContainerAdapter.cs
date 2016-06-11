@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Flubar.TypeFiltering;
 using SimpleInjector;
 
 namespace Flubar.SimpleInjector
@@ -8,13 +9,14 @@ namespace Flubar.SimpleInjector
     partial class SimpleInjectorContainerAdapter : ISimpleInjectorContainerAdapter
     {
         private readonly Container container;
-        private readonly ITypeExclusionTracker typeExclusionTracker;
+        private readonly IServiceMappingTracker serviceMappingTracker;
+        private readonly IImplementationFilter implementationFilter;
 
-        public SimpleInjectorContainerAdapter(Container container, ITypeExclusionTracker typeExclusionTracker)
+        public SimpleInjectorContainerAdapter(Container container, IServiceMappingTracker serviceMappingTracker, IImplementationFilter implementationFilter)
         {
             this.container = container;
-            this.typeExclusionTracker = typeExclusionTracker;
-
+            this.serviceMappingTracker = serviceMappingTracker;
+            this.implementationFilter = implementationFilter;
         }
 
         internal Container Container
@@ -27,7 +29,7 @@ namespace Flubar.SimpleInjector
 
         private void ExcludeService(Type serviceType, Type implementation = null)
         {
-            typeExclusionTracker.ExcludeService(serviceType, implementation);
+            serviceMappingTracker.ExcludeService(serviceType, implementation);
         }
 
         private void ExcludeService<TService>()
@@ -37,7 +39,7 @@ namespace Flubar.SimpleInjector
 
         private void ExcludeImplementation(Type implementationType, Type serviceType = null)
         {
-            typeExclusionTracker.ExcludeImplementation(implementationType, new[] { serviceType });
+            implementationFilter.ExcludeImplementation(implementationType);//, new[] { serviceType });
         }
 
         private void ExcludeImplementation<TImplementation>()
@@ -50,7 +52,7 @@ namespace Flubar.SimpleInjector
         void IContainer<Lifestyle>.RegisterService(Type serviceType, Type implementation, Lifestyle lifetime)
         {
             container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
-            typeExclusionTracker.ExcludeService(serviceType, implementation);
+            serviceMappingTracker.ExcludeService(serviceType, implementation);
             //container.RegisterConditional<>
         }
 
@@ -65,7 +67,7 @@ namespace Flubar.SimpleInjector
             {
                 container.AddRegistration(type, registration);
             }
-            typeExclusionTracker.ExcludeServices(serviceTypes, implementation);
+            serviceMappingTracker.ExcludeServices(serviceTypes, implementation);
         }
 
         public void RegisterMultipleImplementations(Type serviceType, IEnumerable<Type> implementations)
