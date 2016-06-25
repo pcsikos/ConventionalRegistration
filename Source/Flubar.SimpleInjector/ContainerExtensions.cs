@@ -47,21 +47,6 @@ namespace Flubar.SimpleInjector
             }
         }
 
-
-        public class ExtendedConventionBuilderComposer<TLifetime>
-        {
-            public ExtendedConventionBuilderComposer()
-            {
-
-            }
-
-            public ExtendedConventionBuilder<TLifetime> Compose<TLifetime>(IContainer<TLifetime> container)
-                where TLifetime:class
-            {
-                return new ExtendedConventionBuilder<TLifetime>(container, );
-            }
-        }
-
         public static void ExplicitRegistration(this ConventionBuilder<Lifestyle> builder, Action<ISimpleInjectorContainerAdapter> explicitRegistrations)
         {
             var container = builder.Container as ISimpleInjectorContainerAdapter;
