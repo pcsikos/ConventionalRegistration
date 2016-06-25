@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TestAssembly
 {
-    public interface ISingletonService
+    public interface ISingletonService : IDisposable
     {
 
     }
 
     public class SingletonService : ISingletonService
     {
+        public void Dispose()
+        {
+            
+        }
     }
 }

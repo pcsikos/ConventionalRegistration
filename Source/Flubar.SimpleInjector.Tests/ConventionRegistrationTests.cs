@@ -1,12 +1,10 @@
-﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
-using System.Diagnostics;
 using System;
-using SimpleInjector.Extensions.LifetimeScoping;
-using System.Collections.Generic;
+using Flubar.Configuration;
+using Flubar.Diagnostics;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -26,23 +24,26 @@ namespace Flubar.SimpleInjector.Tests
                     TestContext.WriteLine(message);
                 }
             };
+            config.ExcludedServices = new[] { typeof(ICommand) };
             Container.RegistrationByConvention(config, builder =>
             {
                 builder.ExplicitRegistration(c =>
                 {
-                    c.Register<ISingletonService, SingletonService>(Lifestyle.Singleton);
+                    c.Register(() => new CustomerLocationValidator { Name = "abc" });
+                    c.RegisterSingleton<ISingletonService, SingletonService>();
                     c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
                     c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
-                    c.RegisterAll(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
-                    c.RegisterFunc<ITransientService>();
+                    c.RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);
+                    c.RegisterSingleton<Func<ITransientService>>(() => Container.GetInstance<ITransientService>());
 
-                    c.RegisterDecorator(typeof(ICommand), typeof(TransactionCommand));
-                    c.RegisterDecorator(typeof(ICommand), typeof(LoggerCommand));
+                    c.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>));
+                    c.RegisterDecorator(typeof(ICommandHandler<>), typeof(LoggerCommandHandler<>));
                 });
 
                 builder.RegisterAsCollection(typeof(IValidator<>));
+                builder.RegisterAsCollection(typeof(ICommandValidator<>));
 
                 builder.Define(source => source
                      .FromAssemblyContaining<ITransientService>()
@@ -52,6 +53,7 @@ namespace Flubar.SimpleInjector.Tests
                      .UsingAllInterfacesStrategy());
             });
             Container.RegisterConditional(typeof(IRepository<>), typeof(Repository<>), context => !context.Handled);
+            Container.Verify();
         }
     }
 }

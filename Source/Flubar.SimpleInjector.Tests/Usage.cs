@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
+using TestAssembly;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -34,5 +35,7 @@ namespace Flubar.SimpleInjector.Tests
             );
 
         }
+
+       
     }
 }

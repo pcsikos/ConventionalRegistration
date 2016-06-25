@@ -1,40 +1,31 @@
 ﻿using System;
 using System.Linq;
+using Flubar.TypeFiltering;
 
 namespace Flubar.RegistrationProducers
 {
-    public abstract class AbstractRegistrationProducer : IRegistrationProducer, IConfigurable
+    public abstract class AbstractRegistrationProducer : IRegistrationProducer
     {
         private readonly IRegistrationServiceSelector implementationServiceSelector;
-        private IServiceFilter serviceFilter;
+        private ITypeFilter typeFilter;
 
-        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
+        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector,
+            ITypeFilter typeFilter)
         {
             this.implementationServiceSelector = implementationServiceSelector;
-            serviceFilter = new NullServiceFilter();
+            this.typeFilter = typeFilter;
         }
 
-        IServiceFilter IConfigurable.ServiceFilter
-        {
-            get
-            {
-                return serviceFilter;
-            }
-
-            set
-            {
-                if (value != null)
-                {
-                    serviceFilter = value;
-                }
-            }
-        }
+        //protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
+        //    : this(implementationServiceSelector, new NullServiceFilter())
+        //{
+        //}
 
         protected abstract bool IsApplicable(Type service, Type implementation);
 
         protected virtual bool IsServiceAllowed(Type service)
         {
-            return !serviceFilter.IsServiceExcluded(service);
+            return !typeFilter.Contains(service);
         }
 
         #region IImplementationRegistrationProducer Members

@@ -1,11 +1,13 @@
 ﻿using System;
+using Flubar.TypeFiltering;
 
 namespace Flubar.RegistrationProducers
 {
     public class DefaultInterfaceRegistrationProducer : AbstractRegistrationProducer
     {
-        public DefaultInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector)
-            : base(registrationServiceSelector)
+        public DefaultInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector,
+            ITypeFilter typeFilter)
+            : base(registrationServiceSelector, typeFilter)
         {
         }
 

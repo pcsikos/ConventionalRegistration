@@ -11,12 +11,11 @@ namespace TestAssembly
 
     public interface IValidator<TEntity>
     {
-
     }
 
     public class CustomerLocationValidator : IValidator<Customer>
     {
-
+        public string Name { get; set; }
     }
 
     public class CustomerCreditValidator : IValidator<Customer>

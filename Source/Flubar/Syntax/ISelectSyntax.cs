@@ -6,6 +6,5 @@ namespace Flubar.Syntax
     {
         IFilterSyntax Select(Func<Type, bool> filter);
         IFilterSyntax SelectAllClasses();
-        IFilterSyntax SelectAllInterfaces();
     }
 }

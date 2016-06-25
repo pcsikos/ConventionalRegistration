@@ -1,27 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace TestAssembly
+﻿namespace TestAssembly
 {
-    public interface ITransientService : IDisposable
+    public interface ITransientService
     {
     }
 
     public class TransientService : ITransientService
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 
     public class TransientService2 : ITransientService
     {
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
