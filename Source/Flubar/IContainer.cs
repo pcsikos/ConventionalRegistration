@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Flubar
 {
     /// <summary>
-    /// Container adapter
+    /// Provides basic functionality to register implementations to services using an IoC container.
     /// </summary>
     /// <typeparam name="TContainerLifetime"></typeparam>
     public interface IContainer<TContainerLifetime>

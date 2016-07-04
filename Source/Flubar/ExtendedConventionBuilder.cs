@@ -3,6 +3,10 @@ using System;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Extends the basic functionality of <see cref="ConventionBuilder{TLifetime}"/>. Provides a method to register collection of implementation.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
     public class ExtendedConventionBuilder<TLifetime> : ConventionBuilder<TLifetime>
         where TLifetime : class
     {

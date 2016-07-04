@@ -4,6 +4,10 @@ using Flubar.Diagnostics;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides a decorator over <see cref="IContainer{TLifetime}"/> to log the key parts of the process of registration.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
     public class ContainerLogger<TLifetime> : IContainer<TLifetime>, IDecorator
         where TLifetime : class
     {

@@ -7,6 +7,9 @@ using Flubar.Syntax;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// //Provides methods for manipulating with the collection of types.
+    /// </summary>
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {
         private IEnumerable<Type> filteredTypes;
@@ -146,7 +149,7 @@ namespace Flubar.TypeFiltering
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
         {
             var registrations = filteredTypes.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
-            return new RegistrationHandler(registrations);
+            return new RegistrationPerformer(registrations);
         }
 
         #endregion

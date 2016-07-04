@@ -2,6 +2,10 @@
 
 namespace Flubar
 {
+    /// <summary>
+    /// Exposes lifetime members of <see cref="IContainer{TLifetime}" /> using <see cref="ILifetimeSyntax{TLifetime}"/>.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
     internal class LifetimeSelector<TLifetime> : ILifetimeSyntax<TLifetime>
         where TLifetime : class
     {

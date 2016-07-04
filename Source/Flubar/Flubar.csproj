@@ -22,7 +22,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>Flubar.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +33,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>Flubar.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,6 +45,7 @@
     <Compile Include="ContainerLogger.cs" />
     <Compile Include="ExtendedConventionBuilder.cs" />
     <Compile Include="IDecorator.cs" />
+    <Compile Include="RegistrationProducers\TypeExtensions.cs" />
     <Compile Include="TypeFiltering\ImplementationFilter.cs" />
     <Compile Include="TypeFiltering\IServiceFilter.cs" />
     <Compile Include="TypeFiltering\ServiceFilterAggregator.cs" />
@@ -56,7 +59,6 @@
     <Compile Include="TypeFiltering\IImplementationFilter.cs" />
     <Compile Include="Diagnostics\ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
-    <Compile Include="ConventioException.cs" />
     <Compile Include="ConventionBuilder.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="IRegistrationEntry.cs" />
@@ -91,9 +93,6 @@
     <Compile Include="Syntax\ISelectSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
     <Compile Include="TypeFiltering\ServiceExtractor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Flubar.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Flubar.ruleset" />

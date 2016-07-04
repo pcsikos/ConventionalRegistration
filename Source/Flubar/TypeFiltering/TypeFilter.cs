@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Provides methods for filtering.
+    /// </summary>
     public class TypeFilter : ITypeFilter
     {
         private ISet<Type> types;
@@ -19,7 +22,7 @@ namespace Flubar.TypeFiltering
             types = new HashSet<Type>();
         }
 
-        public void ExcludeType(Type type)//, IEnumerable<Type> services = null)
+        public void ExcludeType(Type type)
         {
             types.Add(type);
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Flubar
 {
     /// <summary>
-    /// Provides methods for excluding registered services
+    /// Provides methods to exclude already registered services.
     /// </summary>
     public interface IServiceMappingTracker
     {

@@ -5,6 +5,9 @@ using Flubar.Infrastructure;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Represents a registration entry with implementation and related service or services.
+    /// </summary>
     public class RegistrationEntry : IRegistrationEntry
     {
         private readonly Type[] serviceTypes;

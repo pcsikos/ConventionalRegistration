@@ -7,7 +7,7 @@ using Flubar.TypeFiltering;
 namespace Flubar
 {
     /// <summary>
-    /// todo: extract logging
+    /// Provides the basic functionality for convention based registration.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
     public class ConventionBuilder<TLifetime> : IDisposable

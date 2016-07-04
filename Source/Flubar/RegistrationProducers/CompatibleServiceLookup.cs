@@ -40,7 +40,7 @@ namespace Flubar.RegistrationProducers
 
         #endregion
 
-        private IEnumerable<Type> GetGenericInterfacesMatching(Type implementation)
+        private static IEnumerable<Type> GetGenericInterfacesMatching(Type implementation)
         {
             var interfaces = implementation.GetInterfaces().ToArray();
             interfaces = interfaces.Where(x => x.IsConstructedGenericType && x.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()))
