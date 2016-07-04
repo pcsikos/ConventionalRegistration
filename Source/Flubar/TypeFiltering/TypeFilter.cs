@@ -7,7 +7,7 @@ namespace Flubar.TypeFiltering
     /// <summary>
     /// Provides methods for filtering.
     /// </summary>
-    public class TypeFilter : ITypeFilter
+    public class TypeFilter : ITypeFilter, IServiceFilter
     {
         private ISet<Type> types;
         private IList<Func<Type, bool>> filters = new List<Func<Type, bool>>();
@@ -35,6 +35,11 @@ namespace Flubar.TypeFiltering
         public void AddFilter(Func<Type, bool> filter)
         {
             filters.Add(filter);
+        }
+
+        public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
+        {
+            return services.Where(service => !Contains(service));
         }
     }
 }

@@ -1,31 +1,22 @@
 ﻿using System;
 using System.Linq;
-using Flubar.TypeFiltering;
 
 namespace Flubar.RegistrationProducers
 {
     public abstract class AbstractRegistrationProducer : IRegistrationProducer
     {
         private readonly IRegistrationServiceSelector implementationServiceSelector;
-        private ITypeFilter typeFilter;
 
-        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector,
-            ITypeFilter typeFilter)
+        protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
         {
             this.implementationServiceSelector = implementationServiceSelector;
-            this.typeFilter = typeFilter;
         }
-
-        //protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
-        //    : this(implementationServiceSelector, new NullServiceFilter())
-        //{
-        //}
 
         protected abstract bool IsApplicable(Type service, Type implementation);
 
         protected virtual bool IsServiceAllowed(Type service)
         {
-            return !typeFilter.Contains(service);
+            return true;
         }
 
         #region IImplementationRegistrationProducer Members

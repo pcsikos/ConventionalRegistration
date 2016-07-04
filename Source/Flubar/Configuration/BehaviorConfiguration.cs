@@ -95,7 +95,7 @@ namespace Flubar.Configuration
 
         #region IBehaviorConfiguration Members
 
-        ITypeFilter IBehaviorConfiguration.GetTypeFilter()
+        IServiceFilter IBehaviorConfiguration.GetServiceFilter()
         {
             var typeFilter = new TypeFilter(excludedServices);
             typeFilter.AddFilter(filter);

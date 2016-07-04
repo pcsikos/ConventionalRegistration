@@ -32,15 +32,15 @@ namespace Flubar.Unity
             var logger = new DiagnosticLogger(configuration);
             var serviceMappingTracker = new ServiceMappingTracker(logger);
             var implementationFilter = new ImplementationFilter();
-            var typeFilter = ((IBehaviorConfiguration)configuration).GetTypeFilter();
+            var configServiceFilter = ((IBehaviorConfiguration)configuration).GetServiceFilter();
 
             var adapter = new UnityContainerAdapter(container, serviceMappingTracker);
-            var asmSelector = new AssemblySelector(typeFilter);
+            var asmSelector = new AssemblySelector();
             var serviceExtractor = new ServiceExtractor();
-            var serviceFilter = new ServiceFilterAggregator(new IServiceFilter[] { implementationFilter, serviceExtractor, serviceMappingTracker });
+            var serviceFilterAggregator = new ServiceFilterAggregator(new IServiceFilter[] { configServiceFilter, implementationFilter, serviceExtractor, serviceMappingTracker });
 
 
-            using (var builder = new ExtendedConventionBuilder<LifetimeManager>(adapter, asmSelector, serviceFilter, serviceExtractor))
+            using (var builder = new ExtendedConventionBuilder<LifetimeManager>(adapter, asmSelector, serviceFilterAggregator, serviceExtractor))
             {
                 convention(builder, implementationFilter);
             }

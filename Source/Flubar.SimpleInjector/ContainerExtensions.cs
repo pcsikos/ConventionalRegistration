@@ -31,16 +31,16 @@ namespace Flubar.SimpleInjector
             var serviceMappingTracker = new ServiceMappingTracker(logger);
             var implementationFilter = new ImplementationFilter();
             var adapter = new SimpleInjectorContainerAdapter(container, serviceMappingTracker, implementationFilter);
-            var typeFilter = ((IBehaviorConfiguration)configuration).GetTypeFilter();
+            var configServiceFilter = ((IBehaviorConfiguration)configuration).GetServiceFilter();
 
-            var asmSelector = new AssemblySelector(typeFilter);
+            var asmSelector = new AssemblySelector();
             var serviceExtractor = new ServiceExtractor();
             var containerDecorator = new ContainerLogger<Lifestyle>(adapter, logger);
-            var serviceFilter = new ServiceFilterAggregator(new IServiceFilter[] { implementationFilter, serviceExtractor, serviceMappingTracker });
+            var serviceFilterAggregator = new ServiceFilterAggregator(new IServiceFilter[] { configServiceFilter, implementationFilter, serviceExtractor, serviceMappingTracker });
 
             using (var builder = new ExtendedConventionBuilder<Lifestyle>(containerDecorator, 
                 asmSelector,
-                serviceFilter,
+                serviceFilterAggregator,
                 serviceExtractor))
             {
                 convention(builder, implementationFilter);

@@ -8,16 +8,16 @@ namespace Flubar.TypeFiltering
 {
     public class AssemblySelector : ISourceSyntax
     {
-        private readonly ITypeFilter typeFilter;
+        //private readonly ITypeFilter typeFilter;
 
-        public AssemblySelector() : this(new NullTypeFilter())
+        public AssemblySelector() 
         {
         }
 
-        public AssemblySelector(ITypeFilter typeFilter)
-        {
-            this.typeFilter = typeFilter;
-        }
+        //public AssemblySelector(ITypeFilter typeFilter)
+        //{
+        //    this.typeFilter = typeFilter;
+        //}
 
         #region IFromSyntax Members
 
@@ -68,7 +68,7 @@ namespace Flubar.TypeFiltering
 
         public IStrategySyntax ExplicitlySpecifyTypes(params Type[] types)
         {
-            return new TypeSelector(types, typeFilter);
+            return new TypeSelector(types);
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace Flubar.TypeFiltering
 
         private ISelectSyntax GetTypeSelector(IEnumerable<Assembly> assemblies)
         {
-            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()), typeFilter);
+            return new TypeSelector(assemblies.SelectMany(x => x.GetExportedTypes()));
         }
     }
 }

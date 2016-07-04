@@ -6,7 +6,7 @@ namespace Flubar.Configuration
 {
     public interface IBehaviorConfiguration
     {
-        ITypeFilter GetTypeFilter();
+        IServiceFilter GetServiceFilter();
         Action<DiagnosticLevel, string> Log { get; }
     }
 }

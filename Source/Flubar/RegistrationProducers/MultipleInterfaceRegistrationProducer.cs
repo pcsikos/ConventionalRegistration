@@ -5,9 +5,8 @@ namespace Flubar.RegistrationProducers
 {
     public class MultipleInterfaceRegistrationProducer : AbstractRegistrationProducer
     {
-        public MultipleInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector,
-            ITypeFilter typeFilter)
-            : base(registrationServiceSelector, typeFilter)
+        public MultipleInterfaceRegistrationProducer(IRegistrationServiceSelector registrationServiceSelector)
+            : base(registrationServiceSelector)
         {
         }
 

@@ -13,13 +13,11 @@ namespace Flubar.TypeFiltering
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {
         private IEnumerable<Type> filteredTypes;
-        readonly ITypeFilter typeFilter;
 
-        public TypeSelector(IEnumerable<Type> types, ITypeFilter typeFilter)
+        public TypeSelector(IEnumerable<Type> types)
         {
             Check.NotNull(types, "types");
             filteredTypes = types;
-            this.typeFilter = typeFilter;
         }
 
         #region IIncludeSyntax Members
@@ -128,22 +126,17 @@ namespace Flubar.TypeFiltering
 
         public IRegisterSyntax UsingDefaultInterfaceStrategy()
         {
-            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup(), typeFilter));
+            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup()));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy()
         {
-            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup(), typeFilter));
+            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup()));
         }
 
         public IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding)
         {
             throw new NotImplementedException();
-        }
-
-        public IRegisterSyntax UsingStrategy(Func<ITypeFilter, IRegistrationProducer> producerFactory)
-        {
-            return UsingStrategy(producerFactory(typeFilter));
         }
 
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
