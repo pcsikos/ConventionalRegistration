@@ -46,6 +46,8 @@
     <Compile Include="ExtendedConventionBuilder.cs" />
     <Compile Include="IDecorator.cs" />
     <Compile Include="RegistrationProducers\TypeExtensions.cs" />
+    <Compile Include="StrategySelector.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeFiltering\ImplementationFilter.cs" />
     <Compile Include="TypeFiltering\IServiceFilter.cs" />
     <Compile Include="TypeFiltering\ServiceFilterAggregator.cs" />
@@ -81,12 +83,11 @@
     <Compile Include="Syntax\IRegisterSyntax.cs" />
     <Compile Include="Syntax\ISourceSyntax.cs" />
     <Compile Include="Syntax\IStrategySyntax.cs" />
-    <Compile Include="Syntax\ITypeSourceSyntax.cs" />
     <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
     <Compile Include="TypeFiltering\ServiceMappingTracker.cs" />
     <Compile Include="TypeFiltering\TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Syntax\IExcludeIncludeWhereSyntax.cs" />
+    <Compile Include="Syntax\IFilterSyntax.cs" />
     <Compile Include="Syntax\IExcludeSyntax.cs" />
     <Compile Include="Syntax\IWhereSyntax.cs" />
     <Compile Include="Syntax\IIncludeSyntax.cs" />

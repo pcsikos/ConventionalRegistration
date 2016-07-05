@@ -8,17 +8,6 @@ namespace Flubar.TypeFiltering
 {
     public class AssemblySelector : ISourceSyntax
     {
-        //private readonly ITypeFilter typeFilter;
-
-        public AssemblySelector() 
-        {
-        }
-
-        //public AssemblySelector(ITypeFilter typeFilter)
-        //{
-        //    this.typeFilter = typeFilter;
-        //}
-
         #region IFromSyntax Members
 
         public ISelectSyntax From(IEnumerable<Assembly> assemblies)
@@ -64,11 +53,6 @@ namespace Flubar.TypeFiltering
         public ISelectSyntax FromAssembliesMatching(params string[] regexPatterns)
         {
             return From(GetAssemblies().Where(asm => regexPatterns.Any(pattern => System.Text.RegularExpressions.Regex.IsMatch(asm.FullName, pattern))));
-        }
-
-        public IStrategySyntax ExplicitlySpecifyTypes(params Type[] types)
-        {
-            return new TypeSelector(types);
         }
 
         #endregion

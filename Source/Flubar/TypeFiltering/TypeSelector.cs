@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Flubar.Infrastructure;
-using Flubar.RegistrationProducers;
 using Flubar.Syntax;
 
 namespace Flubar.TypeFiltering
 {
     /// <summary>
-    /// //Provides methods for manipulating with the collection of types.
+    /// Provides methods for manipulating with a collection of types.
     /// </summary>
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {
@@ -107,45 +107,7 @@ namespace Flubar.TypeFiltering
 
         #endregion
 
-        #region IStrategySyntax Members
-
-        public IRegisterSyntax UsingSelfRegistrationStrategy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegisterSyntax UsingSingleInterfaceStrategy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegisterSyntax UsingSingleInterfaceStrategy(IEnumerable<Type> excluding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegisterSyntax UsingDefaultInterfaceStrategy()
-        {
-            return UsingStrategy(new DefaultInterfaceRegistrationProducer(new CompatibleServiceLookup()));
-        }
-
-        public IRegisterSyntax UsingAllInterfacesStrategy()
-        {
-            return UsingStrategy(new MultipleInterfaceRegistrationProducer(new CompatibleServiceLookup()));
-        }
-
-        public IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
-        {
-            var registrations = filteredTypes.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
-            return new RegistrationPerformer(registrations);
-        }
-
-        #endregion
+       
 
         #region ISelectSyntax Members
 
@@ -161,5 +123,16 @@ namespace Flubar.TypeFiltering
         }
 
         #endregion
+
+        public IEnumerator<Type> GetEnumerator()
+        {
+            return filteredTypes.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return filteredTypes.GetEnumerator();
+        }
+
     }
 }

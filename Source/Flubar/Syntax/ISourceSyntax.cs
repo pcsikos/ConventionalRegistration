@@ -1,6 +1,6 @@
 ﻿namespace Flubar.Syntax
 {
-    public interface ISourceSyntax : ITypeSourceSyntax, IAssemblySourceSyntax
+    public interface ISourceSyntax : IAssemblySourceSyntax
     {
     }
 }

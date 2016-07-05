@@ -30,7 +30,7 @@ namespace Flubar.Unity.Tests
             };
             config.ExcludedServices = new[] { typeof(ICommand) };
 
-            Container.RegistrationByConvention(config, (builder, exclusion) =>
+            Container.RegistrationByConvention(config, (builder, implementaionFilter) =>
             {
                 builder.Define(source => source
                           .FromAssemblyContaining<ITransientService>()
@@ -49,7 +49,7 @@ namespace Flubar.Unity.Tests
                                     Container.RegisterType(serviceType, entry.ImplementationType, "Decoratable");
                                 }
                             }
-                            exclusion.ExcludeImplementation(entry.ImplementationType);//, entry.ServicesTypes);
+                            implementaionFilter.ExcludeImplementation(entry.ImplementationType);//, entry.ServicesTypes);
                         }));
 
                 builder.Define(source => source

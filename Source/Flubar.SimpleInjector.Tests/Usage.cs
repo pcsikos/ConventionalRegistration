@@ -30,7 +30,7 @@ namespace Flubar.SimpleInjector.Tests
             });
 
             container.RegistrationByConvention(builder =>
-                builder.Define(x => x.ExplicitlySpecifyTypes(typeof(Usage))
+                builder.Define(x => new[] { typeof(Usage) }
                             .UsingDefaultInterfaceStrategy(), x => x.Singleton)
             );
 
