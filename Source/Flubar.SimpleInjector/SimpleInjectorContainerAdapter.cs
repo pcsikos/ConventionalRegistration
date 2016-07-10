@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Flubar.TypeFiltering;
 using SimpleInjector;
 
@@ -49,14 +48,14 @@ namespace Flubar.SimpleInjector
 
         #region IContainer<Lifestyle> Members
 
-        void IContainer<Lifestyle>.RegisterService(Type serviceType, Type implementation, Lifestyle lifetime)
+        void IContainerAdapter<Lifestyle>.RegisterService(Type serviceType, Type implementation, Lifestyle lifetime)
         {
             container.Register(serviceType, implementation, lifetime ?? GetDefaultLifetime());
             serviceMappingTracker.ExcludeService(serviceType, implementation);
             //container.RegisterConditional<>
         }
 
-        void IContainer<Lifestyle>.RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
+        void IContainerAdapter<Lifestyle>.RegisterMultipleServices(IEnumerable<Type> serviceTypes, Type implementation, Lifestyle lifetime)
         {
             if (lifetime == null)
             {

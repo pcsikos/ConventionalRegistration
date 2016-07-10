@@ -1,12 +1,10 @@
-﻿using System;
-using Flubar;
-using Flubar.Syntax;
+﻿using Flubar.Syntax;
 using Flubar.TypeFiltering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
-using Flubar.Configuration;
 using FluentAssertions;
+using System;
 
 namespace Flubar.SimpleInjector.Tests
 {
@@ -17,7 +15,7 @@ namespace Flubar.SimpleInjector.Tests
         public void ImportPackagesTest()
         {
             var container = new Container();
-            container.RegistrationByConvention(BehaviorConfiguration.Default, (builder, filter) =>
+            container.RegistrationByConvention(builder =>
             {
                 builder.ImportPackages(new PackageA(), new PackageB());
             });
@@ -28,7 +26,7 @@ namespace Flubar.SimpleInjector.Tests
 
         private class PackageA : IConventionBuilderPackage<Container, Lifestyle>
         {
-            public void RegisterByConvention(Container container, IConventionBuilder<Lifestyle> builder, IImplementationFilter implementationFilter)
+            public void RegisterByConvention(IConventionBuilderSyntax<Lifestyle, Container> builder)
             {
                 builder.Define(x => new[] { typeof(TransientService2) }
                     .UsingAllInterfacesStrategy());
@@ -37,7 +35,7 @@ namespace Flubar.SimpleInjector.Tests
 
         private class PackageB : IConventionBuilderPackage<Container, Lifestyle>
         {
-            public void RegisterByConvention(Container container, IConventionBuilder<Lifestyle> builder, IImplementationFilter implementationFilter)
+            public void RegisterByConvention(IConventionBuilderSyntax<Lifestyle, Container> builder)
             {
                 builder.Define(x => new[] { typeof(SingletonService) }
                     .UsingAllInterfacesStrategy());

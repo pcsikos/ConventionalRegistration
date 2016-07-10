@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Flubar.Unity
 {
-    public class UnityContainerAdapter : IContainer<LifetimeManager>
+    public class UnityContainerAdapter : IContainerAdapter<LifetimeManager>
     {
         private readonly UnityContainer container;
         readonly IServiceMappingTracker typeExclusionTracker;

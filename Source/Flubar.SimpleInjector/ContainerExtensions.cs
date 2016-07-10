@@ -3,25 +3,19 @@ using Flubar.Configuration;
 using Flubar.Diagnostics;
 using SimpleInjector;
 using Flubar.TypeFiltering;
-using Flubar.Syntax;
 
 namespace Flubar.SimpleInjector
 {
     public static class ContainerExtensions
     {
-        public static void RegistrationByConvention(this Container container, Action<IConventionBuilder<Lifestyle>> convention)
+        public static void RegistrationByConvention(this Container container, Action<IConventionBuilderSyntax<Lifestyle, Container>> convention)
         {
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this Container container, BehaviorConfiguration configuration, Action<IConventionBuilder<Lifestyle>> convention)
-        {
-            RegistrationByConvention(container, configuration, (builder, filter) => convention(builder));
-        }
-
         public static void RegistrationByConvention(this Container container, 
             BehaviorConfiguration configuration, 
-            Action<IConventionBuilder<Lifestyle>, IImplementationFilter> convention)
+            Action<IConventionBuilderSyntax<Lifestyle, Container>> convention)
         {
             if (configuration == null)
             {
@@ -43,8 +37,8 @@ namespace Flubar.SimpleInjector
                 serviceFilterAggregator,
                 serviceExtractor))
             {
-                var importer = new ConventionBuilderImportDecorator<Lifestyle, Container>(builder, container, implementationFilter, asmSelector);
-                convention(importer, implementationFilter);
+                var importer = new ConventionBuilderSyntaxDecorator<Lifestyle, Container>(builder, container, implementationFilter, asmSelector);
+                convention(importer);
             }
         }
 
@@ -54,46 +48,21 @@ namespace Flubar.SimpleInjector
             explicitRegistrations(container);
         }
 
-        public static void ImportPackages<TLifetime>(this IConventionBuilder<TLifetime> builder,
-           params IConventionBuilderPackage<Container, TLifetime>[] packages)
-            where TLifetime : class
-        {
-            IPackageImporter<TLifetime, Container> importer = GetPackageImporter(builder);
-            importer.ImportPackages(packages);
-        }
-
-        public static void ImportPackages<TLifetime>(this IConventionBuilder<TLifetime> builder,
-            Func<ISourceSyntax, ISelectSyntax> assemblySelector)
-            where TLifetime : class
-        {
-            IPackageImporter<TLifetime, Container> importer = GetPackageImporter(builder);
-            importer.ImportPackages(assemblySelector);
-        }
-
-        private static IPackageImporter<TLifetime, Container> GetPackageImporter<TLifetime>(IConventionBuilder<TLifetime> builder) where TLifetime : class
-        {
-            var importer = builder as IPackageImporter<TLifetime, Container>;
-            if (importer == null)
-            {
-                throw new Exception("Package import not supported");
-            }
-            return importer;
-        }
-
         private static ISimpleInjectorContainerAdapter GetContainerAdapter(IConventionBuilder<Lifestyle> builder)
         {
-            var container = builder.Container as ISimpleInjectorContainerAdapter;
+            var container = builder.ContainerAdapter as ISimpleInjectorContainerAdapter;
             if (container == null)
             {
-                var decorator = builder.Container as IDecorator;
+                var decorator = builder.ContainerAdapter as IDecorator;
                 if (decorator == null)
                 {
-                    throw new Exception();
+                    throw new Exception("ConventionBuilder with SimpleInjectorContainerAdapter was expected");
                 }
                 container = decorator.Decoratee as ISimpleInjectorContainerAdapter;
                 if (container == null)
                 {
-                    throw new Exception();//todo: replace with appropriate exception
+                    throw new Exception("Not a compatible convention builder");
+                    //todo: replace with appropriate exception
                 }
             }
 

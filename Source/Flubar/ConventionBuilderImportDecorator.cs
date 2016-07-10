@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Flubar.Syntax;
 using Flubar.TypeFiltering;
 
 namespace Flubar
 {
-    public class ConventionBuilderImportDecorator<TLifetime, TContainer> : IConventionBuilder<TLifetime>, IPackageImporter<TLifetime, TContainer>
+    public class ConventionBuilderSyntaxDecorator<TLifetime, TContainer> : IConventionBuilderSyntax<TLifetime, TContainer>
         where TLifetime : class
     {
         readonly IConventionBuilder<TLifetime> conventionBuilder;
@@ -16,7 +13,7 @@ namespace Flubar
         readonly IImplementationFilter implementationFilter;
         readonly ISourceSyntax sourceSyntax;
 
-        public ConventionBuilderImportDecorator(IConventionBuilder<TLifetime> conventionBuilder,
+        public ConventionBuilderSyntaxDecorator(IConventionBuilder<TLifetime> conventionBuilder,
             TContainer container,
             IImplementationFilter implementationFilter,
             ISourceSyntax sourceSyntax)
@@ -27,20 +24,28 @@ namespace Flubar
             this.conventionBuilder = conventionBuilder;
         }
 
-        public IContainer<TLifetime> Container
+        public IContainerAdapter<TLifetime> ContainerAdapter
         {
             get
             {
-                return conventionBuilder.Container;
+                return conventionBuilder.ContainerAdapter;
             }
         }
 
-        public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
+        public TContainer Container
+        {
+            get
+            {
+                return container;
+            }
+        }
+
+        public IConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
         {
             return conventionBuilder.Define(convention);
         }
 
-        public ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
+        public IConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
         {
             return conventionBuilder.Define(rules, lifetimeSelection);
         }
@@ -54,7 +59,7 @@ namespace Flubar
         {
             foreach (var package in packages)
             {
-                package.RegisterByConvention(container, this, implementationFilter);
+                package.RegisterByConvention(this);
             }
         }
 
@@ -66,6 +71,11 @@ namespace Flubar
                 .Select(type => Activator.CreateInstance<IConventionBuilderPackage<TContainer, TLifetime>>())
                 .ToArray();
             ImportPackages(packages);
+        }
+
+        public void ExcludeImplementation(Type implementation)
+        {
+            implementationFilter.ExcludeImplementation(implementation);
         }
     }
 }

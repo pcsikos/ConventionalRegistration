@@ -3,15 +3,15 @@
 namespace Flubar
 {
     /// <summary>
-    /// Exposes lifetime members of <see cref="IContainer{TLifetime}" /> using <see cref="ILifetimeSyntax{TLifetime}"/>.
+    /// Exposes lifetime members of <see cref="IContainerAdapter{TLifetime}" /> using <see cref="ILifetimeSyntax{TLifetime}"/>.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
     internal class LifetimeSelector<TLifetime> : ILifetimeSyntax<TLifetime>
         where TLifetime : class
     {
-        private readonly IContainer<TLifetime> container;
+        private readonly IContainerAdapter<TLifetime> container;
         
-        public LifetimeSelector(IContainer<TLifetime> container)
+        public LifetimeSelector(IContainerAdapter<TLifetime> container)
         {
             this.container = container;
         }

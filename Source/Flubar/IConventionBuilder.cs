@@ -5,10 +5,10 @@ namespace Flubar
 {
     public interface IConventionBuilder<TLifetime> where TLifetime : class
     {
-        IContainer<TLifetime> Container { get; }
+        IContainerAdapter<TLifetime> ContainerAdapter { get; }
 
-        ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention);
-        ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null);
+        IConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention);
+        IConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null);
 
         void RegisterAsCollection(Type serviceType);
     }

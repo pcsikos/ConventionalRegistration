@@ -5,16 +5,16 @@ using Flubar.Diagnostics;
 namespace Flubar
 {
     /// <summary>
-    /// Provides a decorator over <see cref="IContainer{TLifetime}"/> to log the key parts of the process of registration.
+    /// Provides a decorator over <see cref="IContainerAdapter{TLifetime}"/> to log the key parts of the process of registration.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
-    public class ContainerLogger<TLifetime> : IContainer<TLifetime>, IDecorator
+    public class ContainerLogger<TLifetime> : IContainerAdapter<TLifetime>, IDecorator
         where TLifetime : class
     {
-        private readonly IContainer<TLifetime> decoratee;
+        private readonly IContainerAdapter<TLifetime> decoratee;
         private readonly ILog logger;
 
-        public ContainerLogger(IContainer<TLifetime> decoratee, ILog logger)
+        public ContainerLogger(IContainerAdapter<TLifetime> decoratee, ILog logger)
         {
             this.logger = logger;
             this.decoratee = decoratee;

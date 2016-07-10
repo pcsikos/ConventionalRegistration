@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ContainerLogger.cs" />
     <Compile Include="IConventionBuilder.cs" />
+    <Compile Include="IConventionBuilderSyntax.cs" />
     <Compile Include="IDecorator.cs" />
     <Compile Include="ConventionBuilderImportDecorator.cs" />
     <Compile Include="IPackageImporter.cs" />

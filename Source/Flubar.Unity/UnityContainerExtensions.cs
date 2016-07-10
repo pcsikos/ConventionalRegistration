@@ -12,17 +12,17 @@ namespace Flubar.Unity
 {
     public static class UnityContainerExtensions
     {
-        public static void RegistrationByConvention(this UnityContainer container, Action<ConventionBuilder<LifetimeManager>> convention)
+        public static void RegistrationByConvention(this UnityContainer container, Action<IConventionBuilder<LifetimeManager>> convention)
         {
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>> convention)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<IConventionBuilder<LifetimeManager>> convention)
         {
             RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>, IImplementationFilter> convention)//, IEnumerable<Type> serviceExclusions = null)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<IConventionBuilder<LifetimeManager>, IImplementationFilter> convention)//, IEnumerable<Type> serviceExclusions = null)
         {
             if (configuration == null)
             {

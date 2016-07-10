@@ -2,7 +2,7 @@
 
 namespace Flubar.SimpleInjector
 {
-    public interface ISimpleInjectorContainerAdapter : IContainer<Lifestyle>, IContainer
+    public interface ISimpleInjectorContainerAdapter : IContainerAdapter<Lifestyle>, IContainer
     {
     }
 }

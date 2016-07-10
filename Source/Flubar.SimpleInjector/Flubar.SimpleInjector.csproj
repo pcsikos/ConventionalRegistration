@@ -51,7 +51,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ContainerWrapper.tt</DependentUpon>
     </Compile>
-    <Compile Include="ISimpleInjectorBuilderPackage.cs" />
     <Compile Include="ISimpleInjectorContainerAdapter.cs" />
     <Compile Include="SimpleInjectorContainerAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

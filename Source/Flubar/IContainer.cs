@@ -7,7 +7,7 @@ namespace Flubar
     /// Provides basic functionality to register implementations to services using an IoC container.
     /// </summary>
     /// <typeparam name="TContainerLifetime"></typeparam>
-    public interface IContainer<TContainerLifetime>
+    public interface IContainerAdapter<TContainerLifetime>
         where TContainerLifetime : class
     {
         void RegisterService(Type serviceType, Type implementation, TContainerLifetime lifetime = null);

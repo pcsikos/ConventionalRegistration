@@ -15,14 +15,14 @@ namespace Flubar
     public class ConventionBuilder<TLifetime> : IDisposable, IConventionBuilder<TLifetime> 
         where TLifetime : class
     {
-        private readonly IContainer<TLifetime> container;
+        private readonly IContainerAdapter<TLifetime> container;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly IServiceFilter registrationEntryValidator;
         private readonly ISourceSyntax sourceSyntax;
         private readonly IServiceExtractor serviceExtractor;
 
-        public ConventionBuilder(IContainer<TLifetime> container, 
+        public ConventionBuilder(IContainerAdapter<TLifetime> container, 
             ISourceSyntax sourceSyntax,
             IServiceFilter registrationEntryValidator,
             IServiceExtractor serviceExtractor)
@@ -36,9 +36,9 @@ namespace Flubar
             conventions = new List<Action<ISourceSyntax>>();
         }
 
-        public IContainer<TLifetime> Container => container;
+        public IContainerAdapter<TLifetime> ContainerAdapter => container;
 
-        public ConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
+        public IConventionBuilder<TLifetime> Define(Func<ISourceSyntax, IRegisterSyntax> rules, Func<ILifetimeSyntax<TLifetime>, TLifetime> lifetimeSelection = null)
         {
             lifetimeSelection = lifetimeSelection ?? (x => x.Transient);
             return Define(syntax => rules(syntax).RegisterEach((registration) =>
@@ -63,7 +63,7 @@ namespace Flubar
             return services;
         }
 
-        public ConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
+        public IConventionBuilder<TLifetime> Define(Action<ISourceSyntax> convention)
         {
             conventions.Add(convention);
             return this;
@@ -83,7 +83,7 @@ namespace Flubar
 
             foreach (var service in serviceExtractor.GetServiceImplementations())
             {
-                Container.RegisterMultipleImplementations(service.ServiceType, service.GetImplementations());
+                ContainerAdapter.RegisterMultipleImplementations(service.ServiceType, service.GetImplementations());
             }
         }
     
