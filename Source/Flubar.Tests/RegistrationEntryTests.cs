@@ -2,8 +2,7 @@
 
 namespace Flubar.Tests
 {
-    [TestClass()]
-    public class RegistrationEntryTests
+    public partial class RegistrationEntryTests
     {
         //[TestMethod()]
         //public void RegistrationEntryTest()
