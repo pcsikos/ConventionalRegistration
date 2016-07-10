@@ -43,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerLogger.cs" />
-    <Compile Include="ExtendedConventionBuilder.cs" />
+    <Compile Include="IConventionBuilder.cs" />
     <Compile Include="IDecorator.cs" />
+    <Compile Include="ConventionBuilderImportDecorator.cs" />
+    <Compile Include="IPackageImporter.cs" />
     <Compile Include="RegistrationProducers\TypeExtensions.cs" />
     <Compile Include="StrategySelector.cs" />
     <Compile Include="TypeExtensions.cs" />

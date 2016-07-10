@@ -1,8 +1,10 @@
-﻿namespace Flubar.Syntax
+﻿using Flubar.TypeFiltering;
+
+namespace Flubar.Syntax
 {
-    public interface IBuilderPackage<TContainer, TBuilder>
+    public interface IConventionBuilderPackage<TContainer, TLifetime>
+        where TLifetime : class
     {
-        void RegisterByConvention(TContainer container, TBuilder builder);
-        void PostRegistrations(TContainer container);
+        void RegisterByConvention(TContainer container, IConventionBuilder<TLifetime> builder, IImplementationFilter implementationFilter);
     }
 }

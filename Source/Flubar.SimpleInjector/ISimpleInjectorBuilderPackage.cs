@@ -1,7 +1,10 @@
-﻿namespace Flubar.SimpleInjector
+﻿using Flubar;
+using Flubar.Syntax;
+using SimpleInjector;
+
+namespace Flubar.SimpleInjector
 {
-    //todo: create package like configuration
-    //public interface ISimpleInjectorBuilderPackage : IBuilderPackage<Container, SimpleInjectorConventionBuilder>
-    //{
-    //}
+    public interface ISimpleInjectorBuilderPackage : IConventionBuilderPackage<Container, ConventionBuilder<Lifestyle>>
+    {
+    }
 }

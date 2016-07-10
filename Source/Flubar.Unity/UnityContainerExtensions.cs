@@ -17,12 +17,12 @@ namespace Flubar.Unity
             RegistrationByConvention(container, null, convention);
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<LifetimeManager>> convention)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>> convention)
         {
             RegistrationByConvention(container, configuration, (builder, tracker) => convention(builder));
         }
 
-        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ExtendedConventionBuilder<LifetimeManager>, IImplementationFilter> convention)//, IEnumerable<Type> serviceExclusions = null)
+        public static void RegistrationByConvention(this UnityContainer container, BehaviorConfiguration configuration, Action<ConventionBuilder<LifetimeManager>, IImplementationFilter> convention)//, IEnumerable<Type> serviceExclusions = null)
         {
             if (configuration == null)
             {
@@ -40,7 +40,7 @@ namespace Flubar.Unity
             var serviceFilterAggregator = new ServiceFilterAggregator(new IServiceFilter[] { configServiceFilter, implementationFilter, serviceExtractor, serviceMappingTracker });
 
 
-            using (var builder = new ExtendedConventionBuilder<LifetimeManager>(adapter, asmSelector, serviceFilterAggregator, serviceExtractor))
+            using (var builder = new ConventionBuilder<LifetimeManager>(adapter, asmSelector, serviceFilterAggregator, serviceExtractor))
             {
                 convention(builder, implementationFilter);
             }

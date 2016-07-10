@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Flubar.Syntax;
 using Flubar.TypeFiltering;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Flubar
 {
@@ -10,22 +12,25 @@ namespace Flubar
     /// Provides the basic functionality for convention based registration.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
-    public class ConventionBuilder<TLifetime> : IDisposable
+    public class ConventionBuilder<TLifetime> : IDisposable, IConventionBuilder<TLifetime> 
         where TLifetime : class
     {
         private readonly IContainer<TLifetime> container;
         private readonly LifetimeSelector<TLifetime> lifetimeSelector;
         private readonly IList<Action<ISourceSyntax>> conventions;
         private readonly IServiceFilter registrationEntryValidator;
-        private readonly AssemblySelector assemblySelector;
+        private readonly ISourceSyntax sourceSyntax;
+        private readonly IServiceExtractor serviceExtractor;
 
         public ConventionBuilder(IContainer<TLifetime> container, 
-            AssemblySelector assemblySelector,
-            IServiceFilter registrationEntryValidator)
+            ISourceSyntax sourceSyntax,
+            IServiceFilter registrationEntryValidator,
+            IServiceExtractor serviceExtractor)
         {
-            this.assemblySelector = assemblySelector;
+            this.sourceSyntax = sourceSyntax;
             this.container = container;
             this.registrationEntryValidator = registrationEntryValidator;
+            this.serviceExtractor = serviceExtractor;
 
             lifetimeSelector = new LifetimeSelector<TLifetime>(container);
             conventions = new List<Action<ISourceSyntax>>();
@@ -64,13 +69,24 @@ namespace Flubar
             return this;
         }
 
+        public void RegisterAsCollection(Type serviceType)
+        {
+            serviceExtractor.RegisterMonitoredType(serviceType);
+        }
+
         protected virtual void ApplyConventions()
         {
             foreach (var convention in conventions)
             {
-                convention(assemblySelector);
+                convention(sourceSyntax);
+            }
+
+            foreach (var service in serviceExtractor.GetServiceImplementations())
+            {
+                Container.RegisterMultipleImplementations(service.ServiceType, service.GetImplementations());
             }
         }
+    
       
         private void AutomaticRegistration(Type implementation, IEnumerable<Type> services, TLifetime lifetime)
         {
@@ -85,6 +101,8 @@ namespace Flubar
             }
         }
 
+      
+           
         #region IDispose Members
 
         public void Dispose()
