@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Represents a collection of excluded <see cref="Type"/>. 
+    /// </summary>
     public class ServiceExtractor : IServiceExtractor, IServiceFilter
     {
         private readonly IDictionary<Type, ServiceImplementation> customRegistrations = new Dictionary<Type, ServiceImplementation>();

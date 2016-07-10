@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides a set of extension method over <see cref="IEnumerable{Type}"/>
+    /// </summary>
     public static class TypeExtensions
     {
         public static IRegisterSyntax UsingSelfRegistrationStrategy(this IEnumerable<Type> types)

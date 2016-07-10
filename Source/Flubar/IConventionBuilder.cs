@@ -3,6 +3,10 @@ using Flubar.Syntax;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides methods to define conventions to map services to implementations.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
     public interface IConventionBuilder<TLifetime> where TLifetime : class
     {
         IContainerAdapter<TLifetime> ContainerAdapter { get; }

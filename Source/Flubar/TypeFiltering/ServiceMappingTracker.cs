@@ -5,6 +5,9 @@ using Flubar.Diagnostics;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Represents a collection of registered services and methods to query them.
+    /// </summary>
     public class ServiceMappingTracker : IServiceMappingTracker, IServiceFilter
     {
         private readonly IDictionary<Type, RegisteredService> registeredServices;

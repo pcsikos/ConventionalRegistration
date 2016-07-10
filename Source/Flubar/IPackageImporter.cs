@@ -3,6 +3,11 @@ using System;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides methods to register conventions as a package or a module.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
+    /// <typeparam name="TContainer"></typeparam>
     public interface IPackageImporter<TLifetime, TContainer> 
         where TLifetime : class
     {

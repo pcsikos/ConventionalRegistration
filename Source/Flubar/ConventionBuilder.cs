@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Flubar.Syntax;
 using Flubar.TypeFiltering;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace Flubar
 {
     /// <summary>
-    /// Provides the basic functionality for convention based registration.
+    /// Provides the functionality for convention based registration.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
     public class ConventionBuilder<TLifetime> : IDisposable, IConventionBuilder<TLifetime> 

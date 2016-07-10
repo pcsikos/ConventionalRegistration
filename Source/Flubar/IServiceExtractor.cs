@@ -5,7 +5,7 @@ using Flubar.TypeFiltering;
 namespace Flubar
 {
     /// <summary>
-    /// Provides methods to extract specific services from registration.
+    /// Provides methods to extract specific services and exclude them from registration.
     /// </summary>
     public interface IServiceExtractor
     {

@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Chains a collection of <see cref="IServiceFilter"/> and hides them as an <see cref="IServiceFilter"/>.
+    /// </summary>
     public class ServiceFilterAggregator : IServiceFilter
     {
         readonly IEnumerable<IServiceFilter> filters;

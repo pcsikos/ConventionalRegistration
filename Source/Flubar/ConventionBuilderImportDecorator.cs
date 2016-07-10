@@ -5,6 +5,11 @@ using Flubar.TypeFiltering;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides a decorator over <see cref="IConventionBuilder{TLifetime}"/> to expose builder syntax in one place.
+    /// </summary>
+    /// <typeparam name="TLifetime"></typeparam>
+    /// <typeparam name="TContainer"></typeparam>
     public class ConventionBuilderSyntaxDecorator<TLifetime, TContainer> : IConventionBuilderSyntax<TLifetime, TContainer>
         where TLifetime : class
     {

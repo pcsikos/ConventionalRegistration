@@ -65,12 +65,10 @@
     <Compile Include="Diagnostics\ILog.cs" />
     <Compile Include="Infrastructure\Check.cs" />
     <Compile Include="ConventionBuilder.cs" />
-    <Compile Include="IContainer.cs" />
+    <Compile Include="IContainerAdapter.cs" />
     <Compile Include="IRegistrationEntry.cs" />
-    <Compile Include="TypeFiltering\ITypeFilter.cs" />
     <Compile Include="IServiceMappingTracker.cs" />
     <Compile Include="IServiceExtractor.cs" />
-    <Compile Include="TypeFiltering\NullTypeFilter.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
     <Compile Include="Infrastructure\Strings.cs" />
@@ -79,7 +77,7 @@
     <Compile Include="RegistrationProducers\CompatibleServiceLookup.cs" />
     <Compile Include="RegistrationProducers\IRegistrationProducer.cs" />
     <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
-    <Compile Include="RegistrationHandler.cs" />
+    <Compile Include="RegistrationPerformer.cs" />
     <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
     <Compile Include="Syntax\IBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />

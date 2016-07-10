@@ -5,9 +5,9 @@ using System.Linq;
 namespace Flubar.TypeFiltering
 {
     /// <summary>
-    /// Provides methods for filtering.
+    /// Represents conditions and types to filter given types.
     /// </summary>
-    public class TypeFilter : ITypeFilter, IServiceFilter
+    public class TypeFilter : IServiceFilter
     {
         private ISet<Type> types;
         private IList<Func<Type, bool>> filters = new List<Func<Type, bool>>();

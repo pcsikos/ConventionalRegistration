@@ -3,7 +3,7 @@
 namespace Flubar
 {
     /// <summary>
-    /// Exposes lifetime members of <see cref="IContainerAdapter{TLifetime}" /> using <see cref="ILifetimeSyntax{TLifetime}"/>.
+    /// Exposes lifetime members of <see cref="IContainerAdapter{TLifetime}" /> as a facade over <see cref="ILifetimeSyntax{TLifetime}"/>.
     /// </summary>
     /// <typeparam name="TLifetime"></typeparam>
     internal class LifetimeSelector<TLifetime> : ILifetimeSyntax<TLifetime>

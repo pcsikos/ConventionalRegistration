@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Represents a service with available implementations.
+    /// </summary>
     public class ServiceImplementation
     {
         private readonly Type serviceType;

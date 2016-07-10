@@ -8,7 +8,7 @@ using Flubar.Syntax;
 namespace Flubar.TypeFiltering
 {
     /// <summary>
-    /// Provides methods for manipulating with a collection of types.
+    /// Represents a collection of <see cref="Type"/> and provides methods to manipulate with it.
     /// </summary>
     class TypeSelector : IFilterSyntax, ISelectSyntax
     {

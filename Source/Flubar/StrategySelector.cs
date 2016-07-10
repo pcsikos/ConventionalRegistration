@@ -3,11 +3,12 @@ using Flubar.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flubar
 {
+    /// <summary>
+    /// Provides methods to select a strategy how to create the service/implementation registrations.
+    /// </summary>
     public class StrategySelector : IStrategySyntax
     {
         public readonly IEnumerable<Type> types;

@@ -6,7 +6,7 @@ using Flubar.Infrastructure;
 namespace Flubar
 {
     /// <summary>
-    /// Represents a registration entry with implementation and related service or services.
+    /// Represents a registration entry with implementation and related services.
     /// </summary>
     public class RegistrationEntry : IRegistrationEntry
     {
