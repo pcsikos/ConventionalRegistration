@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flubar.Infrastructure;
 
 namespace Flubar.TypeFiltering
 {
@@ -14,6 +15,7 @@ namespace Flubar.TypeFiltering
 
         public ServiceImplementation(Type serviceType)
         {
+            Check.NotNull(serviceType, nameof(serviceType));
             this.serviceType = serviceType;
             implementations = new HashSet<Type>();
         }
@@ -22,6 +24,7 @@ namespace Flubar.TypeFiltering
 
         public void AddImlementation(Type implementationType)
         {
+            Check.NotNull(implementationType, nameof(implementationType));
             if (!Validate(implementationType))
             {
                 throw new Exception();

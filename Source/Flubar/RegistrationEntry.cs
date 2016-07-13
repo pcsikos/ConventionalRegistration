@@ -21,6 +21,8 @@ namespace Flubar
         public RegistrationEntry(Type implementationType, Type serviceType)
             : this(implementationType, new[] { serviceType })
         {
+            Check.NotNull(implementationType, nameof(implementationType));
+            Check.NotNull(serviceType, nameof(serviceType));
         }
 
         public RegistrationEntry(Type implementationType, IEnumerable<Type> serviceTypes)

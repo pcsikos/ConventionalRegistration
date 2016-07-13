@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Flubar.Syntax;
+using Flubar.Infrastructure;
 
 namespace Flubar
 {
@@ -13,6 +14,7 @@ namespace Flubar
 
         public RegistrationPerformer(IEnumerable<IRegistrationEntry> registrations)
         {
+            Check.NotNull(registrations, nameof(registrations));
             this.registrations = registrations;
         }
 

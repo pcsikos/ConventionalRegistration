@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flubar.Infrastructure;
+using System;
 using System.Linq;
 
 namespace Flubar.RegistrationProducers
@@ -9,6 +10,7 @@ namespace Flubar.RegistrationProducers
 
         protected AbstractRegistrationProducer(IRegistrationServiceSelector implementationServiceSelector)
         {
+            Check.NotNull(implementationServiceSelector, nameof(implementationServiceSelector));
             this.implementationServiceSelector = implementationServiceSelector;
         }
 

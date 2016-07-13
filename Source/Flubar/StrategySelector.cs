@@ -3,6 +3,7 @@ using Flubar.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flubar.Infrastructure;
 
 namespace Flubar
 {
@@ -15,6 +16,7 @@ namespace Flubar
 
         public StrategySelector(IEnumerable<Type> types)
         {
+            Check.NotNull(types, nameof(types));
             this.types = types;
         }
 

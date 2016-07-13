@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Flubar.Infrastructure;
 
 namespace Flubar.TypeFiltering
 {
@@ -14,6 +15,7 @@ namespace Flubar.TypeFiltering
 
         public TypeFilter(IEnumerable<Type> types)
         {
+            Check.NotNull(types, nameof(types));
             this.types = new HashSet<Type>(types);
         }
 
@@ -24,16 +26,19 @@ namespace Flubar.TypeFiltering
 
         public void ExcludeType(Type type)
         {
+            Check.NotNull(type, nameof(type));
             types.Add(type);
         }
 
         public bool Contains(Type type)
         {
+            Check.NotNull(type, nameof(type));
             return types.Contains(type) || filters.Any(filter => filter(type));
         }
 
         public void AddFilter(Func<Type, bool> filter)
         {
+            Check.NotNull(filter, nameof(filter));
             filters.Add(filter);
         }
 

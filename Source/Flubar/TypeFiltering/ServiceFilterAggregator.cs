@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flubar.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,11 +14,13 @@ namespace Flubar.TypeFiltering
 
         public ServiceFilterAggregator(IEnumerable<IServiceFilter> filters)
         {
+            Check.NotEmpty(filters, nameof(filters));
             this.filters = filters;
         }
 
         public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
+            Check.NotNull(implementation, nameof(implementation));
             var allowedServices = services;
             foreach (var filter in filters)
             {

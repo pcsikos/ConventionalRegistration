@@ -89,6 +89,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax Where(Func<Type, bool> filter)
         {
+            Check.NotNull(filter, nameof(filter));
             filteredTypes = filteredTypes.Where(filter);
             return this;
         }
@@ -101,6 +102,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax IsImplementingGenericType(Type genericTypeDefinition)
         {
+            Check.NotNull(genericTypeDefinition, nameof(genericTypeDefinition));
             filteredTypes = filteredTypes.Where(x => x.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericTypeDefinition));
             return this;
         }

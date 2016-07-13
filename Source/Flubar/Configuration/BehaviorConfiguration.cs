@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Flubar.Diagnostics;
 using Flubar.TypeFiltering;
+using Flubar.Infrastructure;
 
 namespace Flubar.Configuration
 {
@@ -18,6 +19,7 @@ namespace Flubar.Configuration
 
         public BehaviorConfiguration(Func<Type, bool> filter)
         {
+            Check.NotNull(filter, nameof(filter));
             this.filter = filter;
             excludedServices = new Type[0];
             log = (level, message) => { };

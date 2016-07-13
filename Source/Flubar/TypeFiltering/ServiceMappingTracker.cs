@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Flubar.Diagnostics;
+using Flubar.Infrastructure;
 
 namespace Flubar.TypeFiltering
 {
@@ -15,17 +16,22 @@ namespace Flubar.TypeFiltering
 
         public ServiceMappingTracker(ILog logger)
         {
+            Check.NotNull(logger, nameof(logger));
             this.logger = logger;
             registeredServices = new Dictionary<Type, RegisteredService>();
         }
 
         public void ExcludeRegistration(IRegistrationEntry registration)
         {
+            Check.NotNull(registration, nameof(registration));
             ExcludeServices(registration.ServicesTypes, registration.ImplementationType);
         }
 
         public void ExcludeService(Type serviceType, Type implementation)
         {
+            Check.NotNull(serviceType, nameof(serviceType));
+            Check.NotNull(implementation, nameof(implementation));
+
             if (!serviceType.IsInterface)
             {
                 return;
@@ -40,6 +46,9 @@ namespace Flubar.TypeFiltering
 
         public void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation)
         {
+            Check.NotEmpty(serviceTypes, nameof(serviceTypes));
+            Check.NotNull(implementation, nameof(implementation));
+
             foreach (var serviceType in serviceTypes)
             {
                 ExcludeService(serviceType, implementation);
@@ -48,6 +57,9 @@ namespace Flubar.TypeFiltering
 
         public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
+            Check.NotNull(implementation, nameof(implementation));
+            Check.NotNull(services, nameof(services));
+
             var notUsedServices = FilterUsedServices(services);
             if (notUsedServices.Count() != services.Count())
             {
