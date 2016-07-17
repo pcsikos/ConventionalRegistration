@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Flubar.Infrastructure;
 using Flubar.Syntax;
 
 namespace Flubar.TypeFiltering
 {
+    /// <summary>
+    /// Provides methods to select specific assemblies from the current AppDomain.
+    /// </summary>
     public class AssemblySelector : ISourceSyntax
     {
         #region IFromSyntax Members

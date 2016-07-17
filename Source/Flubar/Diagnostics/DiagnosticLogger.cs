@@ -1,5 +1,4 @@
 ﻿using Flubar.Configuration;
-using Flubar.Infrastructure;
 
 namespace Flubar.Diagnostics
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Flubar.Syntax
 {
     /// <summary>
-    /// Provides an interface for registration execution.
+    /// Provides methods to execute a registration.
     /// </summary>
     public interface IRegisterSyntax
     {

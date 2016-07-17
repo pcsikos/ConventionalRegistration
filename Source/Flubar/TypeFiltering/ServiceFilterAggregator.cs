@@ -1,12 +1,11 @@
-﻿using Flubar.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Flubar.TypeFiltering
 {
     /// <summary>
-    /// Chains a collection of <see cref="IServiceFilter"/> and hides them as an <see cref="IServiceFilter"/>.
+    /// Chains a collection of <see cref="IServiceFilter"/> and hides them behind one <see cref="IServiceFilter"/>.
     /// </summary>
     public class ServiceFilterAggregator : IServiceFilter
     {

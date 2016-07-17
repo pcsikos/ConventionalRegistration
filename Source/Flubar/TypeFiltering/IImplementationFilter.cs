@@ -3,10 +3,10 @@
 namespace Flubar.TypeFiltering
 {
     /// <summary>
-    /// Particularly used to exclude implementations which should not be used as for example decorators.
+    /// Provides methods to exclude specific implementations.
     /// </summary>
-    public interface IImplementationFilter //: ITypeFilter
+    public interface IImplementationFilter
     {
-        void ExcludeImplementation(Type implementation);//, IEnumerable<Type> services = null);
+        void ExcludeImplementation(Type implementation);
     }
 }

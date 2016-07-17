@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Flubar.Diagnostics;
-using Flubar.Infrastructure;
 
 namespace Flubar.TypeFiltering
 {

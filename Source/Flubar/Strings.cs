@@ -1,4 +1,4 @@
-﻿namespace Flubar.Infrastructure
+﻿namespace Flubar
 {
     public static class Strings
     {

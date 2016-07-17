@@ -63,7 +63,7 @@
     <Compile Include="Configuration\IBehaviorConfiguration.cs" />
     <Compile Include="TypeFiltering\IImplementationFilter.cs" />
     <Compile Include="Diagnostics\ILog.cs" />
-    <Compile Include="Infrastructure\Check.cs" />
+    <Compile Include="Check.cs" />
     <Compile Include="ConventionBuilder.cs" />
     <Compile Include="IContainerAdapter.cs" />
     <Compile Include="IRegistrationEntry.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="IServiceExtractor.cs" />
     <Compile Include="RegistrationProducers\DefaultInterfaceRegistrationProducer.cs" />
     <Compile Include="RegistrationEntry.cs" />
-    <Compile Include="Infrastructure\Strings.cs" />
+    <Compile Include="Strings.cs" />
     <Compile Include="LifetimeSelector.cs" />
     <Compile Include="RegistrationProducers\AbstractRegistrationProducer.cs" />
     <Compile Include="RegistrationProducers\CompatibleServiceLookup.cs" />
@@ -79,20 +79,19 @@
     <Compile Include="RegistrationProducers\IRegistrationServiceSelector.cs" />
     <Compile Include="RegistrationPerformer.cs" />
     <Compile Include="RegistrationProducers\MultipleInterfaceRegistrationProducer.cs" />
-    <Compile Include="Syntax\IBuilderPackage.cs" />
+    <Compile Include="IConventionBuilderPackage.cs" />
     <Compile Include="Syntax\ILifetimeSyntax.cs" />
     <Compile Include="Syntax\IRegisterSyntax.cs" />
     <Compile Include="Syntax\ISourceSyntax.cs" />
     <Compile Include="Syntax\IStrategySyntax.cs" />
-    <Compile Include="Syntax\WhereSyntaxExtensions.cs" />
+    <Compile Include="Syntax\SelectSyntaxExtensions.cs" />
     <Compile Include="TypeFiltering\ServiceMappingTracker.cs" />
     <Compile Include="TypeFiltering\TypeSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Syntax\IFilterSyntax.cs" />
+    <Compile Include="Syntax\ITypeSelector.cs" />
     <Compile Include="Syntax\IExcludeSyntax.cs" />
-    <Compile Include="Syntax\IWhereSyntax.cs" />
-    <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\ISelectSyntax.cs" />
+    <Compile Include="Syntax\IIncludeSyntax.cs" />
     <Compile Include="Syntax\IAssemblySourceSyntax.cs" />
     <Compile Include="TypeFiltering\ServiceExtractor.cs" />
   </ItemGroup>

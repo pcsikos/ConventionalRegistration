@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace Flubar.Syntax
 {
+    /// <summary>
+    /// Syntax to select assemblies.
+    /// </summary>
     public interface IAssemblySourceSyntax
     {
         ISelectSyntax From(IEnumerable<Assembly> assemblies);

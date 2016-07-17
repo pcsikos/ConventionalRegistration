@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Flubar.RegistrationProducers;
-using Flubar.TypeFiltering;
 
 namespace Flubar.Syntax
 {
+    /// <summary>
+    /// Provides methods to select the interface selection strategy.
+    /// </summary>
     public interface IStrategySyntax
     {
         IRegisterSyntax UsingSelfRegistrationStrategy();

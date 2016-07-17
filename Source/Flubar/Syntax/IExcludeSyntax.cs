@@ -3,11 +3,14 @@ using System.Collections.Generic;
 
 namespace Flubar.Syntax
 {
+    /// <summary>
+    /// Syntax to exclude types.
+    /// </summary>
     public interface IExcludeSyntax
     {
-        IFilterSyntax Excluding<T>();
-        IFilterSyntax Excluding(IEnumerable<Type> types);
-        IFilterSyntax Excluding(params Type[] types);
-        IFilterSyntax ExcludingGenericTypes();
+        ITypeSelector Excluding<T>();
+        ITypeSelector Excluding(IEnumerable<Type> types);
+        ITypeSelector Excluding(params Type[] types);
+        ITypeSelector ExcludingGenericTypes();
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Flubar.Infrastructure;
 using Flubar.Syntax;
 
 namespace Flubar.TypeFiltering
@@ -10,7 +9,7 @@ namespace Flubar.TypeFiltering
     /// <summary>
     /// Represents a collection of <see cref="Type"/> and provides methods to manipulate with it.
     /// </summary>
-    public class TypeSelector : IFilterSyntax, ISelectSyntax
+    public class TypeSelector : ITypeSelector
     {
         private IEnumerable<Type> filteredTypes;
 
@@ -22,18 +21,18 @@ namespace Flubar.TypeFiltering
 
         #region IIncludeSyntax Members
 
-        public IFilterSyntax Including<T>()
+        public ITypeSelector Including<T>()
         {
             return Including(typeof(T));
         }
 
-        public IFilterSyntax Including(IEnumerable<Type> types)
+        public ITypeSelector Including(IEnumerable<Type> types)
         {
             filteredTypes = filteredTypes.Concat(types);
             return this;
         }
 
-        public IFilterSyntax Including(params Type[] types)
+        public ITypeSelector Including(params Type[] types)
         {
             return Including((IEnumerable<Type>)types);
         }
@@ -42,24 +41,24 @@ namespace Flubar.TypeFiltering
 
         #region IExcludeSyntax Members
 
-        public IFilterSyntax Excluding<T>()
+        public ITypeSelector Excluding<T>()
         {
             return Excluding(typeof(T));
         }
 
-        public IFilterSyntax Excluding(IEnumerable<Type> types)
+        public ITypeSelector Excluding(IEnumerable<Type> types)
         {
             Check.NotNull(types, nameof(types));
             filteredTypes = filteredTypes.Where(t => !types.Contains(t));
             return this;
         }
 
-        public IFilterSyntax Excluding(params Type[] types)
+        public ITypeSelector Excluding(params Type[] types)
         {
             return Excluding((IEnumerable<Type>)types);
         }
 
-        public IFilterSyntax ExcludingGenericTypes()
+        public ITypeSelector ExcludingGenericTypes()
         {
             throw new NotImplementedException();
         }
@@ -68,42 +67,42 @@ namespace Flubar.TypeFiltering
 
         #region IWhereSyntax Members
 
-        public IFilterSyntax WithoutAttribute<T>() where T : Attribute
+        public ITypeSelector WithoutAttribute<T>() where T : Attribute
         {
             return WithoutAttribute(typeof(T));
         }
 
-        public IFilterSyntax WithoutAttribute(Type attributeType)
+        public ITypeSelector WithoutAttribute(Type attributeType)
         {
             Check.NotNull(attributeType, nameof(attributeType));
             return Where(t => !t.GetCustomAttributes(attributeType, true).Any());
         }
 
-        public IFilterSyntax WithAttribute<T>() where T : Attribute
+        public ITypeSelector WithAttribute<T>() where T : Attribute
         {
             return WithAttribute(typeof(T));
         }
 
-        public IFilterSyntax WithAttribute(Type attributeType)
+        public ITypeSelector WithAttribute(Type attributeType)
         {
             Check.NotNull(attributeType, nameof(attributeType));
             return Where(t => t.GetCustomAttributes(attributeType, true).Any());
         }
 
-        public IFilterSyntax Where(Func<Type, bool> filter)
+        public ITypeSelector Where(Func<Type, bool> filter)
         {
             Check.NotNull(filter, nameof(filter));
             filteredTypes = filteredTypes.Where(filter);
             return this;
         }
 
-        public IFilterSyntax IsImplementing<T>()
+        public ITypeSelector IsImplementing<T>()
         {
             filteredTypes = filteredTypes.Where(x => typeof(T).IsAssignableFrom(typeof(T)));
             return this;
         }
 
-        public IFilterSyntax IsImplementingGenericType(Type genericTypeDefinition)
+        public ITypeSelector IsImplementingGenericType(Type genericTypeDefinition)
         {
             Check.NotNull(genericTypeDefinition, nameof(genericTypeDefinition));
             filteredTypes = filteredTypes.Where(x => x.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericTypeDefinition));
@@ -116,13 +115,13 @@ namespace Flubar.TypeFiltering
 
         #region ISelectSyntax Members
 
-        public IFilterSyntax Select(Func<Type, bool> filter)
+        public ITypeSelector Select(Func<Type, bool> filter)
         {
             filteredTypes = filteredTypes.Where(filter);
             return this;
         }
 
-        public IFilterSyntax SelectAllClasses()
+        public ITypeSelector SelectAllClasses()
         {
             return Select(x => x.IsClass && !x.IsAbstract);
         }

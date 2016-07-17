@@ -2,9 +2,9 @@
 
 namespace Flubar.Syntax
 {
-    public static class WhereSyntaxExtensions
+    public static class SelectSyntaxExtensions
     {
-        public static IFilterSyntax InNamespaceOf<T>(this IWhereSyntax syntax)
+        public static ITypeSelector InNamespaceOf<T>(this ISelectSyntax syntax)
         {
             throw new NotImplementedException();
         }

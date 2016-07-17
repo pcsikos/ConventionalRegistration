@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 namespace Flubar.Syntax
 {
+    /// <summary>
+    /// Syntax to explicitly include types.
+    /// </summary>
     public interface IIncludeSyntax
     {
-        IFilterSyntax Including<T>();
-        IFilterSyntax Including(IEnumerable<Type> types);
-        IFilterSyntax Including(params Type[] types);
+        ITypeSelector Including<T>();
+        ITypeSelector Including(IEnumerable<Type> types);
+        ITypeSelector Including(params Type[] types);
     }
 }

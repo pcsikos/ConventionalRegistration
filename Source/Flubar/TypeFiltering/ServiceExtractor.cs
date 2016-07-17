@@ -1,5 +1,4 @@
-﻿using Flubar.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Flubar.TypeFiltering
