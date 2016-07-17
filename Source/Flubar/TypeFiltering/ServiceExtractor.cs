@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flubar.Infrastructure;
+using System;
 using System.Collections.Generic;
 
 namespace Flubar.TypeFiltering
@@ -12,6 +13,9 @@ namespace Flubar.TypeFiltering
 
         public IEnumerable<Type> GetAllowedServices(Type implementationType, IEnumerable<Type> services)
         {
+            Check.NotNull(implementationType, nameof(implementationType));
+            Check.NotNull(services, nameof(services));
+            var allowedServices = new List<Type>();
             foreach (var serviceType in services)
             {
                 if (customRegistrations.ContainsKey(serviceType))
@@ -25,8 +29,9 @@ namespace Flubar.TypeFiltering
                     AddImplementation(implementationType, genericType);
                     continue;
                 }
-                yield return serviceType;
+                allowedServices.Add(serviceType);
             }
+            return allowedServices;
         }
       
         private void AddImplementation(Type implementationType, Type serviceType)

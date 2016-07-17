@@ -1,4 +1,6 @@
-﻿using Flubar.Configuration;
+﻿
+using Flubar;
+using Flubar.Configuration;
 using Flubar.Diagnostics;
 using Flubar.RegistrationProducers;
 using Flubar.TypeFiltering;
@@ -262,7 +264,6 @@ using TypeFilter = Flubar.TypeFiltering.TypeFilter;
                 [ExpectedException(typeof(System.ArgumentNullException))]
                 public void GetAllowedServices_ImplementationNullValueGiven_ShouldThrowArgumentNullException()
                 {
-                    var serviceFilterAggregator = ProxyGenerator.CreateProxy<ServiceFilterAggregator>();		 
                     serviceFilterAggregator.GetAllowedServices(null, new [] {ProxyGenerator.CreateProxy<Type>(), ProxyGenerator.CreateProxy<Type>()});		 
                 }
 
@@ -271,7 +272,6 @@ using TypeFilter = Flubar.TypeFiltering.TypeFilter;
                 [ExpectedException(typeof(System.ArgumentNullException))]
                 public void GetAllowedServices_ServicesNullValueGiven_ShouldThrowArgumentNullException()
                 {
-                    var serviceFilterAggregator = ProxyGenerator.CreateProxy<ServiceFilterAggregator>();		 
                     serviceFilterAggregator.GetAllowedServices(ProxyGenerator.CreateProxy<Type>(), null);		 
                 }
 
@@ -460,15 +460,6 @@ using TypeFilter = Flubar.TypeFiltering.TypeFilter;
                 {
                     var serviceMappingTracker = ProxyGenerator.CreateProxy<ServiceMappingTracker>();		 
                     serviceMappingTracker.ExcludeService(null, ProxyGenerator.CreateProxy<Type>());		 
-                }
-
-                [TestMethod]
-                [TestCategory("UnitTestGenerator.ArgumentCheck")]
-                [ExpectedException(typeof(System.ArgumentNullException))]
-                public void ExcludeService_ImplementationNullValueGiven_ShouldThrowArgumentNullException()
-                {
-                    var serviceMappingTracker = ProxyGenerator.CreateProxy<ServiceMappingTracker>();		 
-                    serviceMappingTracker.ExcludeService(ProxyGenerator.CreateProxy<Type>(), null);		 
                 }
 
                 [TestMethod]

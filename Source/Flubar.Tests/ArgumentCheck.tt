@@ -13,6 +13,10 @@
 <#@ import namespace="UnitTestGenerator" #>
 <#@ import namespace="UnitTestGenerator.Extensions.Composition" #>
 <#@ import namespace="Flubar" #>
+<#@ import namespace="Flubar.TypeFiltering" #>
+<#@ import namespace="System.Linq.Expressions" #>
+
+using Flubar;
 using Flubar.Configuration;
 using Flubar.Diagnostics;
 using Flubar.RegistrationProducers;
@@ -31,7 +35,10 @@ using TypeFilter = Flubar.TypeFiltering.TypeFilter;
 
 	var assembly = typeof(Flubar.StrategySelector).Assembly;
     var generator = assembly.ComposeTestClassBuilder(GetProjectName(), configure: configure => configure
-                        .IncludeBuiltinGenerators());
+                        .IncludeBuiltinGenerators()
+						.ParameterTypeMapping(new Dictionary<Type, string> {
+                             { typeof(ServiceFilterAggregator), "serviceFilterAggregator"  } 
+                        }));
 
     foreach(var testClass in generator.BuildTestClasses())
     {

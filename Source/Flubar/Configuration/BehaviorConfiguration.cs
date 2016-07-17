@@ -79,12 +79,14 @@ namespace Flubar.Configuration
 
         public BehaviorConfiguration ExcludeServices(Func<Type, bool> filter)
         {
+            Check.NotNull(filter, nameof(filter));
             this.filter = filter;
             return this;
         }
 
         public BehaviorConfiguration ExcludeServices(params Type[] serviceTypesToExclude)
         {
+            Check.NotNull(serviceTypesToExclude, nameof(serviceTypesToExclude));
             ExcludedServices = serviceTypesToExclude;
             return this;
         }

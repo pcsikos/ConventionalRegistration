@@ -44,6 +44,8 @@ namespace Flubar.TypeFiltering
 
         public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
+            Check.NotNull(implementation, nameof(implementation));
+            Check.NotNull(services, nameof(services));
             return services.Where(service => !Contains(service));
         }
     }

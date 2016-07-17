@@ -34,6 +34,7 @@ namespace Flubar
 
         public IRegisterSyntax UsingSingleInterfaceStrategy(IEnumerable<Type> excluding)
         {
+            Check.NotNull(excluding, nameof(excluding));
             throw new NotImplementedException();
         }
 
@@ -49,11 +50,13 @@ namespace Flubar
 
         public IRegisterSyntax UsingAllInterfacesStrategy(IEnumerable<Type> excluding)
         {
+            Check.NotNull(excluding, nameof(excluding));
             throw new NotImplementedException();
         }
 
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
         {
+            Check.NotNull(registrationProducer, nameof(registrationProducer));
             var registrations = types.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
             return new RegistrationPerformer(registrations);
         }

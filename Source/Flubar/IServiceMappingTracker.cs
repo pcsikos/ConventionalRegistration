@@ -8,7 +8,7 @@ namespace Flubar
     /// </summary>
     public interface IServiceMappingTracker
     {
-        void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation);
+        void ExcludeServices(IEnumerable<Type> serviceTypes, Type implementation = null);
         void ExcludeService(Type serviceType, Type implementation = null);
     }
 }

@@ -27,10 +27,9 @@ namespace Flubar.TypeFiltering
             ExcludeServices(registration.ServicesTypes, registration.ImplementationType);
         }
 
-        public void ExcludeService(Type serviceType, Type implementation)
+        public void ExcludeService(Type serviceType, Type implementation = null)
         {
             Check.NotNull(serviceType, nameof(serviceType));
-            Check.NotNull(implementation, nameof(implementation));
 
             if (!serviceType.IsInterface)
             {

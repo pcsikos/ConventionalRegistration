@@ -22,6 +22,7 @@ namespace Flubar
 
         public void RegisterEach(Action<IRegistrationEntry> registrationExecution)
         {
+            Check.NotNull(registrationExecution, nameof(registrationExecution));
             foreach (var registration in registrations)
             {
                 registrationExecution(registration);
@@ -30,6 +31,7 @@ namespace Flubar
 
         public void RegisterAll(Action<IEnumerable<IRegistrationEntry>> registrationExecution)
         {
+            Check.NotNull(registrationExecution, nameof(registrationExecution));
             registrationExecution(registrations);
         }
 

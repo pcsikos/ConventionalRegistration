@@ -10,7 +10,7 @@ namespace Flubar.TypeFiltering
     /// <summary>
     /// Represents a collection of <see cref="Type"/> and provides methods to manipulate with it.
     /// </summary>
-    class TypeSelector : IFilterSyntax, ISelectSyntax
+    public class TypeSelector : IFilterSyntax, ISelectSyntax
     {
         private IEnumerable<Type> filteredTypes;
 
@@ -49,6 +49,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax Excluding(IEnumerable<Type> types)
         {
+            Check.NotNull(types, nameof(types));
             filteredTypes = filteredTypes.Where(t => !types.Contains(t));
             return this;
         }
@@ -74,6 +75,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax WithoutAttribute(Type attributeType)
         {
+            Check.NotNull(attributeType, nameof(attributeType));
             return Where(t => !t.GetCustomAttributes(attributeType, true).Any());
         }
 
@@ -84,6 +86,7 @@ namespace Flubar.TypeFiltering
 
         public IFilterSyntax WithAttribute(Type attributeType)
         {
+            Check.NotNull(attributeType, nameof(attributeType));
             return Where(t => t.GetCustomAttributes(attributeType, true).Any());
         }
 

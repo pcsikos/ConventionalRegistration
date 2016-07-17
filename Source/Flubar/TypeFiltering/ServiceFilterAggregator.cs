@@ -21,6 +21,7 @@ namespace Flubar.TypeFiltering
         public IEnumerable<Type> GetAllowedServices(Type implementation, IEnumerable<Type> services)
         {
             Check.NotNull(implementation, nameof(implementation));
+            Check.NotNull(services, nameof(services));
             var allowedServices = services;
             foreach (var filter in filters)
             {
