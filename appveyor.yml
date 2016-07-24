@@ -1,0 +1,17 @@
+version: 1.0.{build}
+
+install:
+- cmd: nuget restore "Source\Flubar.sln"
+
+build:
+  project: Source\Flubar.sln
+  verbosity: minimal
+  
+environment:
+    COVERALLS_REPO_TOKEN:  
+       secure: muML0d7J2xGP5nO992s+L49wIpntX1d5pNcN5w4CatRP1hBbYKfq7BfCLqR5+gOf
+
+after_test: 
+  - Source\packages\OpenCover.4.6.166\tools\OpenCover.Console.exe -register:user -filter:"+[Flubar]* -[*.Tests]*" -excludebyattribute:*.ExcludeFromCodeCoverage*^ -mergebyhash -target:"C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\MSTest.exe" -targetargs:"/testcontainer:Source/Flubar.Tests/bin/Debug/Flubar.Tests.dll" -output:coverage.xml
+  - Source\packages\coveralls.net.0.6.0\tools\csmacnz.Coveralls.exe --opencover -i coverage.xml
+  

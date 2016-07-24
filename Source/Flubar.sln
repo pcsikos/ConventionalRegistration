@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flubar", "Flubar\Flubar.csproj", "{ED8574B0-CA3A-45D9-83DA-1F269B00551D}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flubar.Unity.Tests", "Flubar.Unity.Tests\Flubar.Unity.Tests.csproj", "{767806F1-0223-483A-A2F2-9D53E12FE670}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flubar.Unity", "Flubar.Unity\Flubar.Unity.csproj", "{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flubar.CI", "Flubar.CI\Flubar.CI.csproj", "{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
