@@ -58,8 +58,8 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="UnitTestGenerator, Version=0.4.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\UnitTestGenerator.0.4.3.0\lib\net45\UnitTestGenerator.dll</HintPath>
+    <Reference Include="UnitTestGenerator, Version=0.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UnitTestGenerator.0.4.4.0\lib\net45\UnitTestGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="UnitTestGenerator.Extensions.Composition, Version=0.4.3.0, Culture=neutral, processorArchitecture=MSIL">

@@ -5,6 +5,7 @@ using Flubar.TypeFiltering;
 
 namespace Flubar.Configuration
 {
+    //todo: refactor
     public class BehaviorConfiguration : IBehaviorConfiguration
     {
         private IEnumerable<Type> excludedServices;
