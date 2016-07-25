@@ -3,23 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration", "Flubar\ConventionalRegistration.csproj", "{ED8574B0-CA3A-45D9-83DA-1F269B00551D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration", "ConventionalRegistration\ConventionalRegistration.csproj", "{ED8574B0-CA3A-45D9-83DA-1F269B00551D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.SimpleInjector", "Flubar.SimpleInjector\ConventionalRegistration.SimpleInjector.csproj", "{3C15D32B-8DD0-491B-A2F8-C8856C490DEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.SimpleInjector", "ConventionalRegistration.SimpleInjector\ConventionalRegistration.SimpleInjector.csproj", "{3C15D32B-8DD0-491B-A2F8-C8856C490DEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.SimpleInjector.Tests", "Flubar.SimpleInjector.Tests\ConventionalRegistration.SimpleInjector.Tests.csproj", "{BCE0AE5C-145E-4A9D-977D-B67798DD431F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.SimpleInjector.Tests", "ConventionalRegistration.SimpleInjector.Tests\ConventionalRegistration.SimpleInjector.Tests.csproj", "{BCE0AE5C-145E-4A9D-977D-B67798DD431F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DFE6FEE4-E7B9-4A56-8CD8-EC75B8D6E15A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Tests", "Flubar.Tests\ConventionalRegistration.Tests.csproj", "{8C7DF938-F44C-4727-B99F-8FB366EE0EC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Tests", "ConventionalRegistration.Tests\ConventionalRegistration.Tests.csproj", "{8C7DF938-F44C-4727-B99F-8FB366EE0EC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAssembly", "TestAssembly\TestAssembly.csproj", "{E706E784-DE47-4ED7-9F43-6CDBD58CB7FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Unity.Tests", "Flubar.Unity.Tests\ConventionalRegistration.Unity.Tests.csproj", "{767806F1-0223-483A-A2F2-9D53E12FE670}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Unity.Tests", "ConventionalRegistration.Unity.Tests\ConventionalRegistration.Unity.Tests.csproj", "{767806F1-0223-483A-A2F2-9D53E12FE670}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Unity", "Flubar.Unity\ConventionalRegistration.Unity.csproj", "{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.Unity", "ConventionalRegistration.Unity\ConventionalRegistration.Unity.csproj", "{F3075E2B-A39D-4A97-9B51-241BF5B3DD5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.CI", "Flubar.CI\ConventionalRegistration.CI.csproj", "{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConventionalRegistration.CI", "ConventionalRegistration.CI\ConventionalRegistration.CI.csproj", "{30C7EE98-0C6D-4FD9-B998-1E3F43FC4C1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
