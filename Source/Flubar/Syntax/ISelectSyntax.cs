@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar.Syntax
+namespace ConventionalRegistration.Syntax
 {
     /// <summary>
     /// Provides methods to filter the collection of types.

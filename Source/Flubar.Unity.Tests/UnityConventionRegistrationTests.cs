@@ -1,16 +1,13 @@
-﻿using Flubar.Configuration;
-using Flubar.Diagnostics;
+﻿using System;
+using System.Linq;
+using ConventionalRegistration.Configuration;
+using ConventionalRegistration.Diagnostics;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TestAssembly;
 using TestAssembly.Data;
 
-namespace Flubar.Unity.Tests
+namespace ConventionalRegistration.Unity.Tests
 {
     [TestClass]
     public class UnityConventionRegistrationTests : InstanceResolverTests

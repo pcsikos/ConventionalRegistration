@@ -1,12 +1,8 @@
-﻿
-using SimpleInjector;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using SimpleInjector.Advanced;
+using SimpleInjector;
 
-namespace Flubar.SimpleInjector
+namespace ConventionalRegistration.SimpleInjector
 {
 	public partial interface IContainer		
 	{

@@ -1,9 +1,8 @@
 ﻿using System;
+using ConventionalRegistration.RegistrationProducers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FluentAssertions;
-using Flubar.RegistrationProducers;
 
-namespace Flubar.Tests
+namespace ConventionalRegistration.Tests
 {
     [TestClass]
     public class TypeSelectorTests : UnitTest

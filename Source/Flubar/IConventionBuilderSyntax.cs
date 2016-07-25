@@ -1,6 +1,6 @@
-﻿using Flubar.TypeFiltering;
+﻿using ConventionalRegistration.TypeFiltering;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to define conventions, import packages and exclude implementations.

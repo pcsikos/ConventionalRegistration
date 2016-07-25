@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Flubar.Syntax;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Represents a collection of <see cref="Type"/> and provides methods to manipulate with it.

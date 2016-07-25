@@ -1,10 +1,10 @@
-﻿using Flubar.RegistrationProducers;
-using Flubar.Syntax;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConventionalRegistration.RegistrationProducers;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to select a strategy how to create the service/implementation registrations.

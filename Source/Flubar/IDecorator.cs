@@ -1,4 +1,4 @@
-﻿namespace Flubar
+﻿namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides members to expose the decorated object.

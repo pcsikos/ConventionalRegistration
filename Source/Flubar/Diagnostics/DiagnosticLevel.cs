@@ -1,4 +1,4 @@
-﻿namespace Flubar.Diagnostics
+﻿namespace ConventionalRegistration.Diagnostics
 {
     public enum DiagnosticLevel
     {

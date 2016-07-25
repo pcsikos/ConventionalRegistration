@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     public static class Check
     {

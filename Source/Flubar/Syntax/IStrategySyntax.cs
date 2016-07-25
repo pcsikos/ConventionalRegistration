@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.RegistrationProducers;
+using ConventionalRegistration.RegistrationProducers;
 
-namespace Flubar.Syntax
+namespace ConventionalRegistration.Syntax
 {
     /// <summary>
     /// Provides methods to select the interface selection strategy.

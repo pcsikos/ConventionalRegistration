@@ -1,4 +1,4 @@
-﻿namespace Flubar.Syntax
+﻿namespace ConventionalRegistration.Syntax
 {
     public interface ISourceSyntax : IAssemblySourceSyntax
     {

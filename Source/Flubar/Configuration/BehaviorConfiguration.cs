@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.Diagnostics;
-using Flubar.TypeFiltering;
+using ConventionalRegistration.Diagnostics;
+using ConventionalRegistration.TypeFiltering;
 
-namespace Flubar.Configuration
+namespace ConventionalRegistration.Configuration
 {
     //todo: refactor
     public class BehaviorConfiguration : IBehaviorConfiguration

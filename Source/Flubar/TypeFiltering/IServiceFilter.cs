@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Provides methods to exclude service which fulfill the implementation's conditions.

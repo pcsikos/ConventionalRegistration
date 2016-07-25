@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.TypeFiltering;
+using ConventionalRegistration.TypeFiltering;
 using SimpleInjector;
 
-namespace Flubar.SimpleInjector
+namespace ConventionalRegistration.SimpleInjector
 {
     partial class SimpleInjectorContainerAdapter : ISimpleInjectorContainerAdapter
     {

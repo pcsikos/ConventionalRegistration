@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Represents a collection of excluded implementations and implements <see cref="IImplementationFilter"/> and <see cref="IServiceFilter"/> to access them.

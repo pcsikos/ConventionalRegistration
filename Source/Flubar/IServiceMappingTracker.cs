@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to exclude registered services.

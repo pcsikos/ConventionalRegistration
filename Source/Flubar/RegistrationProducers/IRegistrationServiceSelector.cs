@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar.RegistrationProducers
+namespace ConventionalRegistration.RegistrationProducers
 {
     public interface IRegistrationServiceSelector
     {

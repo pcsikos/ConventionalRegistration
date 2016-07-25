@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar.Syntax
+namespace ConventionalRegistration.Syntax
 {
     public static class SelectSyntaxExtensions
     {

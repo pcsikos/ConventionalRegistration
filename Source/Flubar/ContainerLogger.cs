@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.Diagnostics;
+using ConventionalRegistration.Diagnostics;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides a decorator over <see cref="IContainerAdapter{TLifetime}"/> to log the key parts of the process of registration.

@@ -1,7 +1,7 @@
 ﻿using System;
-using Flubar.Syntax;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to define conventions to map services to implementations.

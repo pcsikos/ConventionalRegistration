@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
-using TestAssembly;
 
-namespace Flubar.SimpleInjector.Tests
+namespace ConventionalRegistration.SimpleInjector.Tests
 {
     [TestClass]
     public class Usage

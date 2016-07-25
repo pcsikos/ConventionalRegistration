@@ -1,4 +1,4 @@
-﻿namespace Flubar
+﻿namespace ConventionalRegistration
 {
     public static class Strings
     {

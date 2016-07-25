@@ -1,12 +1,9 @@
-﻿using Flubar.Syntax;
-using Flubar.TypeFiltering;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
-using FluentAssertions;
-using System;
 
-namespace Flubar.SimpleInjector.Tests
+namespace ConventionalRegistration.SimpleInjector.Tests
 {
     [TestClass]
     public class ContainerExtensionsTests

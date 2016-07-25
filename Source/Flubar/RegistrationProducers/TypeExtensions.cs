@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar.RegistrationProducers
+namespace ConventionalRegistration.RegistrationProducers
 {
     public static class TypeExtensions
     {

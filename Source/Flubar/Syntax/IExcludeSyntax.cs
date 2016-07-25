@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar.Syntax
+namespace ConventionalRegistration.Syntax
 {
     /// <summary>
     /// Syntax to exclude types.

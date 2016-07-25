@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Flubar.Syntax;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Provides methods to select specific assemblies from the current AppDomain.

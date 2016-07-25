@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Flubar.Syntax;
-using Flubar.TypeFiltering;
+using ConventionalRegistration.Syntax;
+using ConventionalRegistration.TypeFiltering;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides the functionality for convention based registration.

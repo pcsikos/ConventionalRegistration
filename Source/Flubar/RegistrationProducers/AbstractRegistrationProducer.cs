@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Flubar.RegistrationProducers
+namespace ConventionalRegistration.RegistrationProducers
 {
     public abstract class AbstractRegistrationProducer : IRegistrationProducer
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Represents a service with available implementations.

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to register implementations to services over an IoC container as an adapter.

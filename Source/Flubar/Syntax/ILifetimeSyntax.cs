@@ -1,4 +1,4 @@
-﻿namespace Flubar.Syntax
+﻿namespace ConventionalRegistration.Syntax
 {
     /// <summary>
     /// Provides simplified lifetime selectors.

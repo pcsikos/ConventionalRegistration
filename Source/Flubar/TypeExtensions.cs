@@ -1,9 +1,9 @@
-﻿using Flubar.RegistrationProducers;
-using Flubar.Syntax;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using ConventionalRegistration.RegistrationProducers;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides a set of extension method over <see cref="IEnumerable{Type}"/>

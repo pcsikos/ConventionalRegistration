@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Flubar.Tests
+﻿namespace ConventionalRegistration.Tests
 {
     public partial class RegistrationEntryTests
     {

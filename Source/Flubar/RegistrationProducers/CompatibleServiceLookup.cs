@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar.RegistrationProducers
+namespace ConventionalRegistration.RegistrationProducers
 {
     public class CompatibleServiceLookup : IRegistrationServiceSelector
     {

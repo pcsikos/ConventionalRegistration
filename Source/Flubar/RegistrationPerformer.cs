@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.Syntax;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Executes the act of registration itself by calling a passed handler.

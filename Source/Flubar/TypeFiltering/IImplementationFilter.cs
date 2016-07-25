@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Provides methods to exclude specific implementations.

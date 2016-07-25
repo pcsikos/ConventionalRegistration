@@ -1,10 +1,10 @@
 ﻿using System;
-using Flubar.Configuration;
-using Flubar.Diagnostics;
+using ConventionalRegistration.Configuration;
+using ConventionalRegistration.Diagnostics;
+using ConventionalRegistration.TypeFiltering;
 using SimpleInjector;
-using Flubar.TypeFiltering;
 
-namespace Flubar.SimpleInjector
+namespace ConventionalRegistration.SimpleInjector
 {
     public static class ContainerExtensions
     {

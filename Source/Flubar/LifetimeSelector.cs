@@ -1,6 +1,6 @@
-﻿using Flubar.Syntax;
+﻿using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Exposes lifetime members of <see cref="IContainerAdapter{TLifetime}" /> as a facade over <see cref="ILifetimeSyntax{TLifetime}"/>.

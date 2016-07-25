@@ -1,14 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestAssembly;
 using TestAssembly.Data;
 
-namespace Flubar.Unity.Tests
+namespace ConventionalRegistration.Unity.Tests
 {
     [TestClass]
     public class UnityManualRegistrationTests : InstanceResolverTests

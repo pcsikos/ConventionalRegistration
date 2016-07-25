@@ -1,7 +1,7 @@
-﻿using Flubar.Syntax;
-using System;
+﻿using System;
+using ConventionalRegistration.Syntax;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to register conventions as a package or a module.

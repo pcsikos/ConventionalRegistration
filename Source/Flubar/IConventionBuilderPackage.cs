@@ -1,4 +1,4 @@
-﻿namespace Flubar
+﻿namespace ConventionalRegistration
 {
     /// <summary>
     /// Defines a method to support the registration from multiple packages.

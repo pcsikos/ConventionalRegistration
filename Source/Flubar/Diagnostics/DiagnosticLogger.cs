@@ -1,6 +1,6 @@
-﻿using Flubar.Configuration;
+﻿using ConventionalRegistration.Configuration;
 
-namespace Flubar.Diagnostics
+namespace ConventionalRegistration.Diagnostics
 {
     //todo: move to separate namespace
     public class DiagnosticLogger : ILog

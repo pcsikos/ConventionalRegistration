@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Represents a registration entry with implementation and related services.

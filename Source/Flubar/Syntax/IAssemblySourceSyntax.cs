@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Flubar.Syntax
+namespace ConventionalRegistration.Syntax
 {
     /// <summary>
     /// Syntax to select assemblies.

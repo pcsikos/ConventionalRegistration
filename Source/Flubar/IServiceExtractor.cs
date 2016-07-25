@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Flubar.TypeFiltering;
+using ConventionalRegistration.TypeFiltering;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides methods to extract specific services and exclude them from registration.

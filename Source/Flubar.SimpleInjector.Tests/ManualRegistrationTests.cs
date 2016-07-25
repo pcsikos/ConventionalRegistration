@@ -1,16 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SimpleInjector;
-using SimpleInjector.Extensions.LifetimeScoping;
-using SimpleInjector.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
 
-namespace Flubar.SimpleInjector.Tests
+namespace ConventionalRegistration.SimpleInjector.Tests
 {
     [TestClass]
     public class ManualRegistrationTests : InstanceResolverTests

@@ -1,7 +1,7 @@
-﻿using Flubar.TypeFiltering;
+﻿using ConventionalRegistration.TypeFiltering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Flubar.Tests.TypeFiltering
+namespace ConventionalRegistration.Tests.TypeFiltering
 {
     public partial class ServiceFilterAggregatorTests
     {

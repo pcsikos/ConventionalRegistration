@@ -1,12 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using ConventionalRegistration.Configuration;
+using ConventionalRegistration.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleInjector;
 using TestAssembly;
 using TestAssembly.Data;
-using System;
-using Flubar.Configuration;
-using Flubar.Diagnostics;
 
-namespace Flubar.SimpleInjector.Tests
+namespace ConventionalRegistration.SimpleInjector.Tests
 {
     [TestClass]
     public class ConventionRegistrationTests : InstanceResolverTests

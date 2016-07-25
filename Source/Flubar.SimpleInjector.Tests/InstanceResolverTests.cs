@@ -1,14 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using FluentAssertions;
-using SimpleInjector;
-using TestAssembly;
-using SimpleInjector.Extensions.LifetimeScoping;
-using TestAssembly.Data;
-using System.Diagnostics;
+﻿using System;
 using System.Linq;
+using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SimpleInjector;
+using SimpleInjector.Extensions.LifetimeScoping;
+using TestAssembly;
+using TestAssembly.Data;
 
-namespace Flubar.SimpleInjector.Tests
+namespace ConventionalRegistration.SimpleInjector.Tests
 {
     public abstract class InstanceResolverTests
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Flubar.TypeFiltering
+namespace ConventionalRegistration.TypeFiltering
 {
     /// <summary>
     /// Chains a collection of <see cref="IServiceFilter"/> and hides them behind one <see cref="IServiceFilter"/>.

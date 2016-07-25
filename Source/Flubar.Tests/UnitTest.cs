@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Flubar.Tests
+namespace ConventionalRegistration.Tests
 {
     public class UnitTest
     {

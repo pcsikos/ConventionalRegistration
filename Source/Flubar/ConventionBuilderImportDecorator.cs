@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Flubar.Syntax;
-using Flubar.TypeFiltering;
+using ConventionalRegistration.Syntax;
+using ConventionalRegistration.TypeFiltering;
 
-namespace Flubar
+namespace ConventionalRegistration
 {
     /// <summary>
     /// Provides a decorator over <see cref="IConventionBuilder{TLifetime}"/> to expose builder syntax in one place.
