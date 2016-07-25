@@ -7,33 +7,33 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Reflection" #>
 <#@ import namespace="EnvDTE" #>
-<#@ Assembly Name="$(SolutionDir)Flubar\bin\Debug\Flubar.dll" #>
+<#@ Assembly Name="$(SolutionDir)Flubar\bin\Debug\ConventionalRegistration.dll" #>
 <#@ Assembly Name="$(SolutionDir)Flubar.Tests\bin\Debug\UnitTestGenerator.dll" #>
 <#@ Assembly Name="$(SolutionDir)Flubar.Tests\bin\Debug\UnitTestGenerator.Extensions.Composition.dll" #>
 <#@ import namespace="UnitTestGenerator" #>
 <#@ import namespace="UnitTestGenerator.Extensions.Composition" #>
-<#@ import namespace="Flubar" #>
-<#@ import namespace="Flubar.TypeFiltering" #>
+<#@ import namespace="ConventionalRegistration" #>
+<#@ import namespace="ConventionalRegistration.TypeFiltering" #>
 <#@ import namespace="System.Linq.Expressions" #>
 
-using Flubar;
-using Flubar.Configuration;
-using Flubar.Diagnostics;
-using Flubar.RegistrationProducers;
-using Flubar.TypeFiltering;
+using ConventionalRegistration;
+using ConventionalRegistration.Configuration;
+using ConventionalRegistration.Diagnostics;
+using ConventionalRegistration.RegistrationProducers;
+using ConventionalRegistration.TypeFiltering;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnitTestGenerator;
 using UnitTestGenerator.DynamicProxy;
-using TypeFilter = Flubar.TypeFiltering.TypeFilter;
+using TypeFilter = ConventionalRegistration.TypeFiltering.TypeFilter;
 
 #pragma warning disable RECS0026 // Possible unassigned object created by 'new'
 #pragma warning disable RECS0001 // Class is declared partial but has only one part
 <#
 
-	var assembly = typeof(Flubar.StrategySelector).Assembly;
+	var assembly = typeof(ConventionalRegistration.StrategySelector).Assembly;
     var generator = assembly.ComposeTestClassBuilder(GetProjectName(), configure: configure => configure
                         .IncludeBuiltinGenerators()
 						.ParameterTypeMapping(new Dictionary<Type, string> {
@@ -86,7 +86,7 @@ using TypeFilter = Flubar.TypeFiltering.TypeFilter;
 
     string TranslateNamespace(string nSpace)
     {
-		var assembly = typeof(Flubar.StrategySelector).Assembly;
+		var assembly = typeof(ConventionalRegistration.StrategySelector).Assembly;
 		var name = assembly.GetName().Name;
         return nSpace.Replace(name, name + ".Tests");
     }
