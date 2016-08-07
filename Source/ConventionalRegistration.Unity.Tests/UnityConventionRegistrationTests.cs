@@ -68,6 +68,8 @@ namespace ConventionalRegistration.Unity.Tests
             RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), new ContainerControlledLifetimeManager());
             Container.RegisterType<Func<ITransientService>>(new ContainerControlledLifetimeManager(), new InjectionFactory(c => (Func<ITransientService>)(() => c.Resolve<ITransientService>())));
             Container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
+            Container.RegisterType<IValidator<Customer>, IdValidator<Customer>>("IdValidator<Customer>");
+            Container.RegisterType<IValidator<Product>, IdValidator<Product>>("IdValidator<Product>");
             Container.RegisterType<IValidator<Customer>, CustomerLocationValidator>("CustomerLocationValidator", new InjectionFactory(c => new CustomerLocationValidator { Name = "abc" }));
 
             Container.RegisterType(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>), "TransactionCommandHandler",

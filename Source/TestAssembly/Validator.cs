@@ -13,6 +13,13 @@ namespace TestAssembly
     {
     }
 
+    public class IdValidator<TEntity> : IValidator<TEntity>
+        where TEntity : IEntity
+    {
+
+    }
+
+
     public class CustomerLocationValidator : IValidator<Customer>
     {
         public string Name { get; set; }
@@ -28,8 +35,19 @@ namespace TestAssembly
 
     }
 
-    public class Product
+    public class Product : IEntity
     {
+        public int Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
 
+    public interface IEntity
+    {
+        int Id { get; }
     }
 }

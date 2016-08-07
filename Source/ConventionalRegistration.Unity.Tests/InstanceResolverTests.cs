@@ -183,14 +183,15 @@ namespace ConventionalRegistration.Unity.Tests
             instance1.Should().NotBeSameAs(instance2);
         }
 
-        [TestMethod]
         public void Resolving_OpenGeneric_ShouldInstanceWithCorrectGenericArgument()
         {
             var customerRepository = GetInstance<IRepository<Customer>>();
             var orderRepository = GetInstance<IRepository<Order>>();
+            var invoiceRepository = GetInstance<IRepository<Invoice>>();
 
             customerRepository.Should().NotBeNull();
             orderRepository.Should().NotBeNull();
+            invoiceRepository.Should().NotBeNull();
         }
 
         [TestMethod]
@@ -209,7 +210,7 @@ namespace ConventionalRegistration.Unity.Tests
             var customerValidators = Container.ResolveAll<IValidator<Customer>>();
             var orderValidators = Container.ResolveAll<IValidator<Order>>();
 
-            customerValidators.Should().NotBeNull().And.HaveCount(2).And.Subject.Should().Contain(x => x is CustomerLocationValidator);
+            customerValidators.Should().NotBeNull().And.HaveCount(3).And.Subject.Should().Contain(x => x is CustomerLocationValidator);
             customerValidators.OfType<CustomerLocationValidator>().Single().Name.Should().Be("abc");
             orderValidators.Should().NotBeNull().And.HaveCount(1);
         }
@@ -218,7 +219,7 @@ namespace ConventionalRegistration.Unity.Tests
         public void Resolving_CollectionOfOpenGenericsForUndefinedType()
         {
             var productValidators = Container.ResolveAll<IValidator<Product>>();
-            productValidators.Should().BeEmpty();
+            productValidators.Should().NotBeNull().And.HaveCount(1);
         }
 
         [TestMethod]

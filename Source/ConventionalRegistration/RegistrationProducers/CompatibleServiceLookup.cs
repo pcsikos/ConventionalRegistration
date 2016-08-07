@@ -23,13 +23,13 @@ namespace ConventionalRegistration.RegistrationProducers
 
         public virtual IEnumerable<Type> GetServicesFrom(Type implementation)
         {
-            Check.NotNull(implementation, "implementation");
+            Check.NotNull(implementation, nameof(implementation));
             if (!implementation.IsClass || implementation.IsAbstract)
             {
                 return Enumerable.Empty<Type>();
             }
 
-            IEnumerable<Type> interfaces = (implementation.IsGenericTypeDefinition) ? GetGenericInterfacesMatching(implementation) : implementation.GetInterfaces();
+            IEnumerable<Type> interfaces = implementation.IsGenericTypeDefinition ? implementation.GetGenericInterfacesMatching() : implementation.GetInterfaces();
             if (filter == null)
             {
                 return interfaces;
@@ -38,13 +38,5 @@ namespace ConventionalRegistration.RegistrationProducers
         }
 
         #endregion
-
-        private static IEnumerable<Type> GetGenericInterfacesMatching(Type implementation)
-        {
-            var interfaces = implementation.GetInterfaces().ToArray();
-            interfaces = interfaces.Where(x => x.IsConstructedGenericType && x.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()))
-                .Select(x => x.IsConstructedGenericType ? x.GetGenericTypeDefinition() : x).ToArray();
-            return interfaces;
-        }
     }
 }

@@ -27,6 +27,9 @@ namespace ConventionalRegistration.Unity.Tests
             Container.RegisterType<IValidator<Customer>, CustomerLocationValidator>("CustomerLocationValidator", new InjectionFactory(c => new CustomerLocationValidator { Name = "abc" }));
             Container.RegisterType<IValidator<Customer>, CustomerCreditValidator>("CustomerCreditValidator");
             Container.RegisterType<IValidator<Order>, OrderValidator>("OrderValidator");
+            //            Container.RegisterType(typeof(IValidator<>), typeof(IdValidator<>), "IdValidator");
+            Container.RegisterType<IValidator<Customer>, IdValidator<Customer>>("IdValidator<Customer>");
+            Container.RegisterType<IValidator<Product>, IdValidator<Product>>("IdValidator<Product>");
             Container.RegisterType<ICommandValidator<PlaceOrderCommand>, PlaceOrderCommandValidator>("PlaceOrderCommandValidator");
             Container.RegisterType<ICommandValidator<CancelOrderCommand>, CancelOrderCommandValidator>("CancelOrderCommandValidator");
 

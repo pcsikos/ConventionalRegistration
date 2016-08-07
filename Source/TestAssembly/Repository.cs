@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TestAssembly.Data;
 
 namespace TestAssembly
@@ -29,12 +26,25 @@ namespace TestAssembly
 
     }
 
-    public class Customer
+    public class Customer : IEntity
     {
+        public int Id
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public string Name { get; set; }
     }
 
     public class Order 
+    {
+
+    }
+
+    public class Invoice
     {
 
     }

@@ -24,7 +24,7 @@ namespace ConventionalRegistration.SimpleInjector.Tests
                     TestContext.WriteLine(message);
                 }
             };
-            config.ExcludedServices = new[] { typeof(ICommand) };
+            config.ExcludedServices = new[] { typeof(ICommand), typeof(IEntity) };
             Container.RegistrationByConvention(config, builder =>
             {
                 builder.ExplicitRegistration(c =>

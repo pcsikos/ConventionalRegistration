@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ConventionalRegistration.RegistrationProducers;
 using ConventionalRegistration.Syntax;
+using System.Linq;
 
 namespace ConventionalRegistration
 {
@@ -43,6 +44,14 @@ namespace ConventionalRegistration
         public static IRegisterSyntax UsingStrategy(this IEnumerable<Type> types, IRegistrationProducer registrationProducer)
         {
             return new StrategySelector(types).UsingStrategy(registrationProducer);
+        }
+
+        public static IEnumerable<Type> GetGenericInterfacesMatching(this Type implementation)
+        {
+            var interfaces = implementation.GetInterfaces().ToArray();
+            interfaces = interfaces.Where(x => x.IsGenericType && !x.IsGenericTypeDefinition && x.GetGenericArguments().SequenceEqual(implementation.GetGenericArguments()))
+                .Select(x => x.IsGenericType && !x.IsGenericTypeDefinition ? x.GetGenericTypeDefinition() : x).ToArray();
+            return interfaces;
         }
     }
 }

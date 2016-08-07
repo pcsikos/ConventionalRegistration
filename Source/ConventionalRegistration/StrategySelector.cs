@@ -56,7 +56,7 @@ namespace ConventionalRegistration
         public IRegisterSyntax UsingStrategy(IRegistrationProducer registrationProducer)
         {
             Check.NotNull(registrationProducer, nameof(registrationProducer));
-            var registrations = types.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null);
+            var registrations = types.Select(type => registrationProducer.CreateRegistrationEntry(type)).Where(x => x != null).ToArray();
             return new RegistrationPerformer(registrations);
         }
 

@@ -26,7 +26,7 @@ namespace ConventionalRegistration.SimpleInjector.Tests
             Container.Register<ICommandHandler<CustomCommand>, CustomCommandHandler>();
             Container.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
             Container.Register(() => new CustomerLocationValidator { Name = "abc" });
-            Container.RegisterCollection(typeof(IValidator<>), new[] { typeof(CustomerLocationValidator), typeof(CustomerCreditValidator), typeof(OrderValidator) });
+            Container.RegisterCollection(typeof(IValidator<>), new[] { typeof(CustomerLocationValidator), typeof(CustomerCreditValidator), typeof(OrderValidator), typeof(IdValidator<>) });
             Container.RegisterCollection(typeof(ICommandValidator<>), new[] { typeof(PlaceOrderCommandValidator), typeof(CancelOrderCommandValidator), typeof(AddressCommandValidator) });
 
             Container.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionCommandHandler<>));

@@ -86,6 +86,7 @@
       <DependentUpon>ArgumentCheck.tt</DependentUpon>
     </Compile>
     <Compile Include="RegistrationEntryTests.cs" />
+    <Compile Include="TypeExtensionsTests.cs" />
     <Compile Include="TypeFiltering\ServiceFilterAggregatorTests.cs" />
     <Compile Include="TypeSelectorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
