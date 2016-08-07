@@ -65,17 +65,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ContainerWrapper.tt">
+    <None Include="ContainerWrapper.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ContainerWrapper.cs</LastGenOutput>
-    </Content>
-    <Content Include="Tools\SourceCodeGeneration.dll" />
+    </None>
+    <None Include="Tools\SourceCodeGeneration.dll" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

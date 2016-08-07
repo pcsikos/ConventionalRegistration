@@ -13,5 +13,8 @@
     <!--description>$description$ Cannot be used directly without container specific implementation. More at https://github.com/pcsikos/ConventionalRegistration.</description-->
     <copyright>Peter Csikos 2016</copyright>
     <!--tags>dependency-injection Inversion-of-Control registration-by-convention convention-based-registration conventional-registration ioc di .net</tags-->
+	<dependencies>
+            <dependency id="SimpleInjector" version="3.1.0" />
+    </dependencies>
   </metadata>
 </package>
