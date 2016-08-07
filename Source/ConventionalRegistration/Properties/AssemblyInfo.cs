@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Flubar")]
-[assembly: AssemblyDescription("Fluent Batch Registration for Inversion of Control container.")]
+[assembly: AssemblyTitle("ConventionalRegistration")]
+[assembly: AssemblyDescription("Core functionality for convention based registration.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Peter Csikós")]
-[assembly: AssemblyProduct("Flubar")]
-[assembly: AssemblyCopyright("Copyright © Peter Csikós 2015")]
+[assembly: AssemblyProduct("ConventionalRegistration")]
+[assembly: AssemblyCopyright("Copyright © Peter Csikós 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.0.0")]
 [assembly: AssemblyFileVersion("0.1.0.0")]
-[assembly: InternalsVisibleTo("Flubar.Tests")]
+#if DEBUG
+[assembly: InternalsVisibleTo("ConventionalRegistration.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+#endif

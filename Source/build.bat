@@ -18,10 +18,9 @@ set net45Profile=TargetFrameworkVersion=v4.5;TargetFrameworkProfile=;Configurati
 
 
 
-rem %msbuild% "ConventionalRegistration\ConventionalRegistration.csproj" /nologo /p:%net40ClientProfile% /p:VersionNumber=%numeric_version_Core%
+%msbuild% "ConventionalRegistration\ConventionalRegistration.csproj" /nologo /p:%net40ClientProfile% /p:VersionNumber=%numeric_version_Core%
 %msbuild% "ConventionalRegistration.SimpleInjector\ConventionalRegistration.SimpleInjector.csproj" /nologo /p:%net40ClientProfile% /p:VersionNumber=%numeric_version_SimpleInjector%
 rem %msbuild% "ConventionalRegistration.Unity\ConventionalRegistration.Unity.csproj" /nologo /p:%net40ClientProfile% /p:VersionNumber=%numeric_version_Unity%
-
 
 rem %msbuild% "ConventionalRegistration\ConventionalRegistration.csproj" /nologo /p:%net45Profile% /p:VersionNumber=%numeric_version_Core%
 rem %msbuild% "ConventionalRegistration.SimpleInjector\ConventionalRegistration.SimpleInjector.csproj" /nologo /p:%net45Profile% /p:VersionNumber=%numeric_version_SimpleInjector%

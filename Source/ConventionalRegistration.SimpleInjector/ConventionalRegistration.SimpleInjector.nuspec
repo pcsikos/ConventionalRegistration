@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>ConventionalRegistration.SimpleInjector</id>
+    <version>0.1.0-alpha</version>
+    <!--title>Conventional Registration for SimpleInjector</title-->
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/pcsikos/ConventionalRegistration</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+	<description>ConventionalRegistration.SimpleInjector</description>
+    <!--description>$description$ Cannot be used directly without container specific implementation. More at https://github.com/pcsikos/ConventionalRegistration.</description-->
+    <copyright>Peter Csikos 2016</copyright>
+    <!--tags>dependency-injection Inversion-of-Control registration-by-convention convention-based-registration conventional-registration ioc di .net</tags-->
+  </metadata>
+</package>
