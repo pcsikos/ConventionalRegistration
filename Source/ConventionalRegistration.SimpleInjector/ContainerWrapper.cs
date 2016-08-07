@@ -1,9 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
 using SimpleInjector;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using SimpleInjector.Advanced;
 
 namespace ConventionalRegistration.SimpleInjector
 {
+
+
 	public partial interface IContainer		
 	{
 
@@ -91,6 +109,8 @@ namespace ConventionalRegistration.SimpleInjector
       void RegisterDecorator(Type serviceType, Type decoratorType, Lifestyle lifestyle, Predicate<DecoratorPredicateContext> predicate);
 
       void RegisterDecorator(Type serviceType, Type decoratorType, Predicate<DecoratorPredicateContext> predicate);
+
 	}
+
 }
 

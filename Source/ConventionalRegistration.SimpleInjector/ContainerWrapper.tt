@@ -13,7 +13,7 @@
 <#
 	var wrappedType = typeof(Container);
 	var className = wrappedType.Name + "Wrapper";
-	var namespace2 = "Flubar.SimpleInjector";
+	var namespace2 = "ConventionalRegistration.SimpleInjector";
 	bool createMethodsAsVirtual = false;
 	var outputType = OutputType.Interface;
 	bool createInterface = (outputType & OutputType.Interface) == OutputType.Interface;

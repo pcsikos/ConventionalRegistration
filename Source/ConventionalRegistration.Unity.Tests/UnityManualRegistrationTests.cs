@@ -15,7 +15,7 @@ namespace ConventionalRegistration.Unity.Tests
             base.Initialize();
             Container.RegisterType<ITransientService, TransientService>();
             Container.RegisterType<ISingletonService, SingletonService>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<DbConnection>(new PerThreadLifetimeManager(), new InjectionFactory(c => new DbConnection("Datasource=flubar")));
+            Container.RegisterType<DbConnection>(new PerThreadLifetimeManager(), new InjectionFactory(c => new DbConnection("Datasource=source")));
             Container.RegisterType<DbContext1>(new PerThreadLifetimeManager());
             Container.RegisterType<DbContext2>(new PerThreadLifetimeManager());
             RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), new ContainerControlledLifetimeManager());
@@ -23,7 +23,7 @@ namespace ConventionalRegistration.Unity.Tests
             Container.RegisterType<Func<ITransientService>>(new ContainerControlledLifetimeManager(), new InjectionFactory(c => (Func<ITransientService>)(() => c.Resolve<ITransientService>())));
             Container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
             Container.RegisterType<ICommandHandler<CustomCommand>, CustomCommandHandler>("CommandHandler");
-            Container.RegisterType<IDataProvider>(new InjectionFactory(c => new XmlDataProvider("flubar:\\path")));
+            Container.RegisterType<IDataProvider>(new InjectionFactory(c => new XmlDataProvider("drive:\\path")));
             Container.RegisterType<IValidator<Customer>, CustomerLocationValidator>("CustomerLocationValidator", new InjectionFactory(c => new CustomerLocationValidator { Name = "abc" }));
             Container.RegisterType<IValidator<Customer>, CustomerCreditValidator>("CustomerCreditValidator");
             Container.RegisterType<IValidator<Order>, OrderValidator>("OrderValidator");

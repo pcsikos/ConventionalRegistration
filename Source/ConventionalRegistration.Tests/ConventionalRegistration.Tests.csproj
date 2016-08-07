@@ -106,15 +106,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ArgumentCheck.cs</LastGenOutput>
     </Content>
-    <Content Include="AutomaticTests.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AutomaticTests.txt</LastGenOutput>
-    </Content>
-    <Content Include="AutomaticTests.txt">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AutomaticTests.tt</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -31,8 +31,8 @@ namespace ConventionalRegistration.SimpleInjector.Tests
                 {
                     c.Register(() => new CustomerLocationValidator { Name = "abc" });
                     c.RegisterSingleton<ISingletonService, SingletonService>();
-                    c.Register(() => new DbConnection("Datasource=flubar"), Lifestyle.Scoped);
-                    c.Register<IDataProvider>(() => new XmlDataProvider("flubar:\\path"));
+                    c.Register(() => new DbConnection("Datasource=source"), Lifestyle.Scoped);
+                    c.Register<IDataProvider>(() => new XmlDataProvider("drive:\\path"));
                     c.Register<DbContext1>(Lifestyle.Scoped);
                     c.Register<DbContext2>(Lifestyle.Scoped);
                     c.RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), Lifestyle.Singleton);

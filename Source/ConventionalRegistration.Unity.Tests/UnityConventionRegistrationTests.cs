@@ -61,8 +61,8 @@ namespace ConventionalRegistration.Unity.Tests
             });
           
             Container.RegisterType<ISingletonService, SingletonService>(new ContainerControlledLifetimeManager());
-            Container.RegisterType<DbConnection>(new PerThreadLifetimeManager(), new InjectionFactory(c => new DbConnection("Datasource=flubar")));
-            Container.RegisterType<IDataProvider>(new InjectionFactory(c => new XmlDataProvider("flubar:\\path")));
+            Container.RegisterType<DbConnection>(new PerThreadLifetimeManager(), new InjectionFactory(c => new DbConnection("Datasource=source")));
+            Container.RegisterType<IDataProvider>(new InjectionFactory(c => new XmlDataProvider("drive:\\path")));
             Container.RegisterType<DbContext1>(new PerThreadLifetimeManager());
             Container.RegisterType<DbContext2>(new PerThreadLifetimeManager());
             RegisterMultipleServices(new[] { typeof(IFileRead), typeof(IFileWrite) }, typeof(FileOperation), new ContainerControlledLifetimeManager());
