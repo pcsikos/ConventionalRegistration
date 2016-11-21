@@ -32,7 +32,16 @@ namespace ConventionalRegistration.TypeFiltering
         public bool Contains(Type type)
         {
             Check.NotNull(type, nameof(type));
-            return types.Contains(type) || filters.Any(filter => filter(type));
+            if (types.Contains(type) || filters.Any(filter => filter(type)))
+            {
+                return true;
+            }
+            if (!type.IsGenericType)
+            {
+                return false;
+            }
+            var genericTypeDefinition = type.GetGenericTypeDefinition();
+            return types.Any(x => x.IsGenericTypeDefinition && x == genericTypeDefinition);
         }
 
         public void AddFilter(Func<Type, bool> filter)

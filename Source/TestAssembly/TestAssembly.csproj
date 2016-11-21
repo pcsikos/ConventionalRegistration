@@ -49,6 +49,7 @@
     <Compile Include="ExcludeFromRegistrationAttribute.cs" />
     <Compile Include="FileOperation.cs" />
     <Compile Include="Handlers.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="SingletonService.cs" />
     <Compile Include="TransientService.cs" />

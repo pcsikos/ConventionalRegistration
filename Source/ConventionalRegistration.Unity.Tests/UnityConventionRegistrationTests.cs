@@ -25,7 +25,7 @@ namespace ConventionalRegistration.Unity.Tests
                     TestContext.WriteLine(message);
                 }
             };
-            config.ExcludedServices = new[] { typeof(ICommand) };
+            config.ExcludedServices = new[] { typeof(ICommand), typeof(IQuery<>) };
 
             Container.RegistrationByConvention(config, (builder, implementaionFilter) =>
             {
