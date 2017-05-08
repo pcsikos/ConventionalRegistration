@@ -12,7 +12,8 @@ namespace ConventionalRegistration.Syntax
         ITypeSelector WithAttribute<T>() where T : Attribute;
         ITypeSelector WithAttribute(Type attributeType);
         ITypeSelector IsImplementing<T>();
-        ITypeSelector IsImplementingGenericType(Type genericTypeDefinition);
+        ITypeSelector IsImplementingGenericTypes(params Type[] genericTypeDefinitions);
+        ITypeSelector IsNotImplementingGenericTypes(params Type[] genericTypeDefinitions);
         ITypeSelector SelectAllClasses();
         ITypeSelector Select(Func<Type, bool> filter);
     }

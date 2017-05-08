@@ -102,16 +102,23 @@ namespace ConventionalRegistration.TypeFiltering
             return this;
         }
 
-        public ITypeSelector IsImplementingGenericType(Type genericTypeDefinition)
+        public ITypeSelector IsImplementingGenericTypes(params Type[] genericTypeDefinitions)
         {
-            Check.NotNull(genericTypeDefinition, nameof(genericTypeDefinition));
-            filteredTypes = filteredTypes.Where(x => x.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == genericTypeDefinition));
+            Check.NotNull(genericTypeDefinitions, nameof(genericTypeDefinitions));
+            filteredTypes = filteredTypes.Where(x => x.GetInterfaces().Any(i => i.IsGenericType && genericTypeDefinitions.Any(genericType => i.GetGenericTypeDefinition() == genericType)));
+            return this;
+        }
+
+        public ITypeSelector IsNotImplementingGenericTypes(params Type[] genericTypeDefinitions)
+        {
+            Check.NotNull(genericTypeDefinitions, nameof(genericTypeDefinitions));
+            filteredTypes = filteredTypes.Where(x => !x.GetInterfaces().Any(i => i.IsGenericType && genericTypeDefinitions.Any(genericType => i.GetGenericTypeDefinition() == genericType)));
             return this;
         }
 
         #endregion
 
-       
+
 
         #region ISelectSyntax Members
 
